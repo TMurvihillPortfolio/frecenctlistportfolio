@@ -1,0 +1,46 @@
+This template contains:
+
+--Sass folders and directories suggested archtecture
+--A few media queries
+--grid class css files
+--package json with build tools and dev tools
+--tests to check connections with js, css, and image files (just run index file)
+--favicon
+
+--------------
+
+To Set up New Git repo for project in GIT
+
+Create repo in github and copy url 
+Initialize repo in VS Code (Click on branch thing on left, then might have the intialize pop-up, 
+    click on branch thing across the top)
+
+ctrl ~ for terminal enter these commands
+
+git remote add origin $url goes here$ (looks like git@github.com:tmurvv/take2techsitesass.git)
+git push -u origin master
+
+If you keep getting prompted for credentials try:
+git config --global credential.helper wincred
+
+---------------
+To set up node
+go to command prompt ctrl ~ and type npm install to install from existing json file
+
+---------------------------------------------------------------------------
+to install manually if no existing json file:
+
+"node -v" to be sure node installed. lists node version
+"npm init" creates json file
+"npm install node-sass --save-dev" install sass and save reference to json file
+
+for development:
+"live-server" is already installed (updates browser with every change automatically)
+
+for build:
+
+"autoprefixer": "^8.3.0",
+    "concat": "^1.0.3",
+    "node-sass": "^4.8.3",
+    "postcss-cli": "^5.0.0"
+npm install npm-run-all --save-dev
