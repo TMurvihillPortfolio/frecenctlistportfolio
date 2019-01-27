@@ -1,0 +1,17 @@
+.btn {
+    border-radius: 7px;
+    padding: 7px 10px;
+    font-size: 16px;
+    &__primary {
+        background-color: $colorPrimary;
+    }
+    &__secondary {
+        background-color: $colorSecondary;
+    }
+    &__secondaryDark {
+        background-color: $colorSecondaryDark;
+    }
+    &__width125 {
+        width: 125px;
+    }
+}

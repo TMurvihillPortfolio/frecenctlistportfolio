@@ -1,0 +1,138 @@
+<!-- <?php session_start(); ?>
+<?php include 'php/config/session.php'; ?>
+<?php include 'php/config/config.php'; ?>
+<?php include 'php/classes/Database.php'; ?>
+<?php include 'php/reusables/listQuery.php'; ?>
+<?php //if (isset['viewCheckedFilter']) {echo 'viewCheckedFilter';}else{ echo "else";} ?> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400" rel="stylesheet">
+    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <title>'Frecent' ListMaker</title>
+</head>
+<body>   
+    <section class="list">      
+        <h1>My 'Frecent' List</h1>
+        <br> 
+        <hr>
+        <br>
+        <div class="list__search">
+            <div class="list__search--input"><input type="text" class="list__search--input-input" placeholder="search list"><img src = "./img/searchIcon.png" class="list__search--input-icon" alt="Search Icon Magnifying glass"></div>
+        </div>
+        <div class="list__addItem">
+            <button class="btn btn__secondary js--addItem" name="js--addItem">Add Item</button>
+            <div class="list__addItem--addItemForm">                 
+                <div>
+                    <h3>Add/Edit List Item</h3>                       
+                </div>
+                <hr>  
+                <!-- Add/Edit Item Form  -->
+                <form name="addItem" action="">                               
+                    <div class="flexWrap">
+                        <div class="list__addItem--addItemForm-qty"><label for="addQty">Qty</label><input name="addQty" type="text" id="js--addQty"></div>
+                        <div class="list__container--items-itemCheckBox" checked><label for="checkBox">Check Item?</label><input type="checkbox" name="checkBox" id="js--addChecked" checked></div>
+                        <div class="list__addItem--addItemForm-title"><label for="addTitle">Item Name</label><input name="addTitle" type="text" id="js--addItemTitle"></div>
+                        <!-- <div class="showAddItemCategory"><label for="addCategory">Category</label><input name="addCategory" type="text" id="js--addCategory" placeholder="produce dairy etc"></div> -->
+                        <div class="list__addItem--addItemForm-category">
+                            <label for="addCategory">Category</label>
+                            <select name="addCategory" id="js--addCategory">
+                                    <option value="select">select category</option>
+                                    <option value="produce">Produce</option>
+                                    <option value="meat">Meat</option>
+                                    <option value="dairy">Dairy</option>
+                                    <option value="frozen foods">Frozen foods</option>
+                                    <option value="breads">Breads</option>
+                                    <option value="dry goods">Dry Goods</option>
+                                    <option value="health and beauty">Health and Beauty</option>
+                                    <option value="non-food">Non-food Items</option>
+                                    <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="list__addItem--addItemForm-frecency">
+                            <label for="addFrecency">Starting 'Frecency'</label>
+                            <select name="addFrecency" id="js--addFrecencyRating">
+                                <option value="often">Often</option>
+                                <option value="sometimes" selected="selected">Sometimes</option>
+                                <option value="rarely">Rarely</option>
+                            </select>
+                        </div>
+                        <div class="list__addItem--addItemForm-increment"><label for="addIncrement">Increment</label> <input name="addIncrement" type="text" id="js--addIncrement"></div>
+                        <div class="" hidden> <input name="addHidden" type="text" id="js--addIncrement"></div>
+                        <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecencyEdit"></div>
+                    </div>
+                    <div class="flex">  
+                        <button type="button" class="btn btn__primary" name = "addEditSave" id="js--saveAddEditItem">Save</button>
+                        <button type="button" class="btn btn__secondary" name = "addEditCancel" id="js--cancelEditAddItem" style="display: inline-flex">Cancel</button>
+                    </div>
+                </form>  
+            </div>
+        </div>                   
+        <div class="list__orderBy">
+            <div class="list__orderBy--header">Order By:</div>
+            <div class="list__orderBy--btns">
+                <button class="btn btn__secondary btn__width125" name="frecency">'Frecency'</button>
+                <button class="btn btn__secondary btn__width125" name="title">Alphabetical</button>
+                <button class="btn btn__secondary btn__width125" name="category">Category</button>
+            </div>
+        </div>
+        <div class="list__filterBy">
+            <div class="list__filterBy--header">View By:</div>
+            <div class="list__filterBy--btns">
+                <button class="btn btn__secondary btn__width125" name="viewAllFilter">All</button>
+                <button class="btn btn__secondary btn__width125" name="viewCheckedFilter">Checked</button>
+                <button class="btn btn__secondary btn__width125" name="viewUncheckedFilter">Unchecked</button>               
+            </div>
+        </div>
+        <div class="list__container">
+            <div class="list__container--headers">
+                <p>Qty</p>
+                <p>Item</p>
+                <p>Checked</p>
+            </div>
+            
+            <div class="list__container--items">
+                <div class="list__container--items-item">
+                    <?php foreach($listItems as $item) : ?>
+                        <?php //if ($_SESSION['viewBy']=='checked' && $item['isChecked'] == false) continue; ?>
+                        <?php //if ($_SESSION['viewBy']=='unchecked' && $item['isChecked'] == true) continue; ?>
+                        <?php $item['isChecked'] ? $checked = 'checked': $checked = ''; ?>
+                        <div class="list__container--items-item" data-id = "test2">
+                            <div class="flex">
+                                <div class="list__container--items-itemQty"><input type="text" value="<?php echo $item['qty']; ?>" disabled></div>
+                                <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" value="<?php echo $item['qty']; ?>" disabled></div>
+                                <div class="list__container--items-itemTitle"><input type="text" onChange="toggleIsChecked('test2')" value="<?php echo $item['title']; ?>"></div>            
+                                <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" value="<?php echo $item['title']; ?>" disabled></div>            
+                                <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" <?php echo $checked ?>></div>
+                                <div class="list__container--items-itemEdit js--editItem"><img src="./img/editItemIcon.png" name="editItem" alt="Pencil icon for edit list item"></div>                                  
+                                <div class="list__container--items-itemDelete  js--deleteItem"><img src="./img/deleteRedX.png" name="deleteItem" alt="Trash can icon for delete list item"></div>                    
+                            </div>    
+                        </div>    
+                    <?php endforeach; ?> 
+                </div>                            
+            </div>                
+        </div>
+        
+    </section>
+</body>
+</html>
+
+<!-- <div class="list__container--items-item">
+    <div class="list__container--items-itemQty"><input type="text" value="1" disabled></div>
+    <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" value="1" disabled></div>
+    <div class="list__container--items-itemTitle"><input type="text" value="milk" disabled></div>            
+    <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" value="milk" disabled></div>            
+    <div class="list__container--items-itemCheckBox"><input type="checkbox"></div>
+    <div class="list__container--items-itemEdit js--editItem"><img src="/img/editItemIcon.png" name="editItem" alt="Pencil icon for edit list item"></div>                                  
+    <div class="list__container--items-itemDelete  js--deleteItem"><img src="/img/deleteRedX.png" name="deleteItem" alt="Trash can icon for delete list item"></div>                    
+</div>    
+<div class="list__container--items-saveCancel" style="display:none">                             
+    <button name="editSave" type="button" class="btn btn__primary">Save</button>
+    <button name="editCancel" type="button" class="btn btn__secondary">cancel</button>
+</div>  -->

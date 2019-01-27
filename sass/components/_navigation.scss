@@ -1,0 +1,35 @@
+
+
+.mainNav {
+    &__logo {       
+        height: 60px;
+        opacity: .15;
+        border-radius: 6px;      
+    }
+    &__nav {
+        margin: 10px;
+        display: flex;
+        float: right;
+        color: $colorGreyLightPrimary;
+        list-style: none;
+        height: 3.5rem;
+        z-index: 1000;
+        
+        &--item>a {
+            margin-right: 2rem;
+            color: $colorGreyLightPrimary;
+            text-decoration: none;
+            padding-bottom: 7px;
+            
+            &:link,
+            &:visited {
+                border-bottom: 1px solid transparent;
+                transition: border-bottom .4s;
+            }
+            &:hover,
+            &:active {
+                border-bottom: 1.5px solid $colorGreyLightPrimary;          
+            }
+        }
+    }
+}
