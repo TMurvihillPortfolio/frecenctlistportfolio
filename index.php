@@ -1,9 +1,29 @@
-<!-- <?php session_start(); ?>
-<?php include 'php/config/session.php'; ?>
-<?php include 'php/config/config.php'; ?>
-<?php include 'php/classes/Database.php'; ?>
-<?php include 'php/reusables/listQuery.php'; ?>
-<?php //if (isset['viewCheckedFilter']) {echo 'viewCheckedFilter';}else{ echo "else";} ?> -->
+<?php include_once 'php/config/session.php'; ?>
+<?php include_once 'php/config/config.php'; ?>
+<?php include_once 'php/classes/Database.php'; ?>
+<?php include_once 'php/reusables/listQuery.php'; ?>
+<?php include_once 'php/reusables/helpers.php'; ?>
+<?php 
+    //determine the list order
+    if (isset($_POST['category'])) {
+        $_SESSION['orderBy'] = 'category';
+        $listItems=getList($db);
+    } else if (isset($_POST['frecency'])) {
+        $_SESSION['orderBy'] = 'frecency';
+        $listItems=getList($db);
+    } else { 
+        $listItems=getList($db);
+    }
+    //determine if filter by (un)checked
+    if (isset($_POST['checked'])) {
+        $_SESSION['viewBy'] = 'checked';
+    } else if (isset($_POST['unChecked'])) {
+        echo "unChecked index.php if";
+        $_SESSION['viewBy'] = 'unChecked';
+    } else { 
+        echo "else checked";
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,37 +93,37 @@
                     </div>
                 </form>  
             </div>
-        </div>                   
-        <div class="list__orderBy">
-            <div class="list__orderBy--header">Order By:</div>
-            <div class="list__orderBy--btns">
-                <button class="btn btn__secondary btn__width125" name="frecency">'Frecency'</button>
-                <button class="btn btn__secondary btn__width125" name="title">Alphabetical</button>
-                <button class="btn btn__secondary btn__width125" name="category">Category</button>
+        </div> 
+        <form action="index.php" method="post">                  
+            <div class="list__orderBy">
+                <div class="list__orderBy--header">Order By:</div>
+                <div class="list__orderBy--btns">                   
+                        <input type="submit" class="btn btn__secondary btn__width125" name="frecency" value="Frecency"/>
+                        <input type="submit" class="btn btn__secondary btn__width125" name="title" value="Alphabetical"/>
+                        <input type="submit" class="btn btn__secondary btn__width125" name="category" value="Category"/>              
+                </div>                
             </div>
-        </div>
-        <div class="list__filterBy">
-            <div class="list__filterBy--header">View By:</div>
-            <div class="list__filterBy--btns">
-                <button class="btn btn__secondary btn__width125" name="viewAllFilter">All</button>
-                <button class="btn btn__secondary btn__width125" name="viewCheckedFilter">Checked</button>
-                <button class="btn btn__secondary btn__width125" name="viewUncheckedFilter">Unchecked</button>               
+            <div class="list__filterBy">
+                <div class="list__filterBy--header">View By:</div>
+                <div class="list__filterBy--btns">
+                    <input type='submit' class="btn btn__secondary btn__width125" name="viewAll" value="All"/>
+                    <input type='submit' class="btn btn__secondary btn__width125" name="checked" value="Checked"/>
+                    <input type='submit' class="btn btn__secondary btn__width125" name="unChecked" value="Unchecked"/>               
+                </div>
             </div>
-        </div>
+        </form>
         <div class="list__container">
             <div class="list__container--headers">
                 <p>Qty</p>
                 <p>Item</p>
                 <p>Checked</p>
-            </div>
-            
+            </div>           
             <div class="list__container--items">
                 <div class="list__container--items-item">
+                    <?php $displayHeader = ''; ?>
                     <?php foreach($listItems as $item) : ?>
-                        <?php //if ($_SESSION['viewBy']=='checked' && $item['isChecked'] == false) continue; ?>
-                        <?php //if ($_SESSION['viewBy']=='unchecked' && $item['isChecked'] == true) continue; ?>
-                        <?php $item['isChecked'] ? $checked = 'checked': $checked = ''; ?>
-                        <div class="list__container--items-item" data-id = "test2">
+                    <?php include 'php/reusables/prepareDisplayList.php'; ?>                   
+                        <div class="list__container--items-item" data-id = "<?php echo $item['id']; ?>">
                             <div class="flex">
                                 <div class="list__container--items-itemQty"><input type="text" value="<?php echo $item['qty']; ?>" disabled></div>
                                 <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" value="<?php echo $item['qty']; ?>" disabled></div>
@@ -117,8 +137,7 @@
                     <?php endforeach; ?> 
                 </div>                            
             </div>                
-        </div>
-        
+        </div>        
     </section>
 </body>
 </html>

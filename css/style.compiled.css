@@ -137,6 +137,8 @@ hr {
       margin-top: 25px;
       line-height: 2;
       width: 100%; }
+      .list__addItem--addItemForm-qty, .list__addItem--addItemForm-increment {
+        width: 80px; }
       .list__addItem--addItemForm-frecency > input {
         width: 80px !important;
         background-color: #ffe47d;
@@ -177,6 +179,7 @@ hr {
       word-spacing: 6px;
       font-weight: 600; }
     .list__orderBy--btns {
+      width: 100%;
       display: flex;
       justify-content: space-between; }
   .list__filterBy {
@@ -190,6 +193,7 @@ hr {
       word-spacing: 6px;
       font-weight: 600; }
     .list__filterBy--btns {
+      width: 100%;
       display: flex;
       justify-content: space-between; }
   .list__container--headers {
@@ -208,6 +212,15 @@ hr {
     .list__container--items-item {
       border: 1px solid #FFCE00;
       padding: 15px 5px 15px 25px; }
+      .list__container--items-itemHeader {
+        color: #D8DAEB;
+        text-align: center;
+        font-size: 24px;
+        margin: 20px;
+        font-style: italic;
+        font-weight: 600;
+        letter-spacing: 3px;
+        word-spacing: 3px; }
       .list__container--items-item input {
         font-size: 18px;
         letter-spacing: 1px;
@@ -219,11 +232,11 @@ hr {
       .list__container--items-itemQty, .list__container--items-itemCheckBox {
         text-align: center;
         flex: 2; }
-      .list__container--items-itemItem {
+      .list__container--items-itemTitle {
         flex: 16;
         margin-left: 30px; }
       .list__container--items-itemCheckBox > input {
-        vertical-align: -4px;
+        margin-top: 12.5px;
         transform: scale(2.5);
         justify-content: center; }
       .list__container--items-itemEdit, .list__container--items-itemDelete {
