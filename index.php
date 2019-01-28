@@ -11,7 +11,10 @@
     } else if (isset($_POST['frecency'])) {
         $_SESSION['orderBy'] = 'frecency';
         $listItems=getList($db);
-    } else { 
+    } else if (isset($_POST['alpha'])) {
+        $_SESSION['orderBy'] = 'alpha';
+        $listItems=getList($db);
+    } else {
         $listItems=getList($db);
     }
     //determine if filter by (un)checked
@@ -19,19 +22,53 @@
         $_SESSION['viewBy'] = 'checked';
     } else if (isset($_POST['unChecked'])) {
         $_SESSION['viewBy'] = 'unChecked';
+    } else if (isset($_POST['viewAll'])) {
+        $_SESSION['viewBy'] = 'all';
     }
 ?>
 <?php
     if (isset($_POST['addEditSave'])) {
+        $id = time() . mt_rand() . 'tmurv'; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
         $title = $_POST['addTitle'];
         $category = $_POST['addCategory'];
-        $frecency = $_POST['addFrecency'];
-        $id = 'test8';
-        echo $title.$category.$frecency;
-        $query = "INSERT INTO ListItems (title, category, frecency, id)
-        VALUES (:title, :category, :frecency, :id);";
+        $frecency = getFrecencyNumber($_POST['addFrecency']);
+        $increment = 1;
+        if (isset($_POST['checkBox'])) {
+            $increment = $_POST['increment'];
+        } 
+        $isChecked = 'off';
+        if (isset($_POST['checkBox'])) {
+            $isChecked = $_POST['checkBox'];
+        }    
+        $numClicks = 0;
+        $firstClick;
+        $lastClick;
+        if ($isChecked = 'on') {
+            $isChecked = 1;
+            $numClicks = 1;
+            $firstClick = time();
+            $lastClick = time();
+        } else {
+            $isChecked = 0;
+            $numClicks = 0;
+        }
+        //echo $title.'|'.$category.'|'.$frecency.'|'.$id.'|'.$isChecked.'|'.$numClicks.'|'.$firstClick.'|'.$lastClick;
+        $query = "INSERT INTO ListItems (title, category, frecency, id, increment, isChecked, numClicks, firstClick, lastClick)
+                                VALUES (:title, :category, :frecency, :id, :increment, :isChecked, :numClicks, :firstClick, :lastClick);";
         $statement = $db->prepare($query);
-        $statement->execute(array(':title'=>$title,':category' => $category, ':frecency' => $frecency, ':id'=>$id));
+        $statement->execute(array(
+                            ':title'=>$title,
+                            ':category' => $category, 
+                            ':frecency' => $frecency, 
+                            ':id' => $id,
+                            ':increment' => $increment,                           
+                            ':isChecked' => $isChecked,
+                            ':numClicks' => $numClicks,
+                            ':firstClick' => $firstClick,
+                            ':lastClick' => $lastClick
+        ));
+        $_POST['addEditSave'] = '';
+        header("Location: index.php", true, 301);
     }
 ?>
 <!DOCTYPE html>
@@ -44,6 +81,8 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400" rel="stylesheet">
     <link rel="shortcut icon" href="img/favicon.png">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <script type="text/javascript" src="js/script.js"></script>
 
     <title>'Frecent' ListMaker</title>
 </head>
@@ -109,7 +148,7 @@
                 <div class="list__orderBy--header">Order By:</div>
                 <div class="list__orderBy--btns">                   
                         <input type="submit" class="btn btn__secondary btn__width125" name="frecency" value="Frecency"/>
-                        <input type="submit" class="btn btn__secondary btn__width125" name="title" value="Alphabetical"/>
+                        <input type="submit" class="btn btn__secondary btn__width125" name="alpha" value="Alphabetical"/>
                         <input type="submit" class="btn btn__secondary btn__width125" name="category" value="Category"/>              
                 </div>                
             </div>

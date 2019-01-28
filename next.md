@@ -1,4 +1,6 @@
 # WHAT TO DO NEXT
 
-1. Use PHP query "order by" to enable functionality on the "order by" buttons -- frecency not showing in order.
-2. Use PHP query "view by" to enable functionality on the "view by" buttons
+1. get delete functionality going
+2. delete all the extra items
+3. check the checked and unchecked values
+4. add iff statements to post gets
