@@ -18,10 +18,20 @@
     if (isset($_POST['checked'])) {
         $_SESSION['viewBy'] = 'checked';
     } else if (isset($_POST['unChecked'])) {
-        echo "unChecked index.php if";
         $_SESSION['viewBy'] = 'unChecked';
-    } else { 
-        echo "else checked";
+    }
+?>
+<?php
+    if (isset($_POST['addEditSave'])) {
+        $title = $_POST['addTitle'];
+        $category = $_POST['addCategory'];
+        $frecency = $_POST['addFrecency'];
+        $id = 'test8';
+        echo $title.$category.$frecency;
+        $query = "INSERT INTO ListItems (title, category, frecency, id)
+        VALUES (:title, :category, :frecency, :id);";
+        $statement = $db->prepare($query);
+        $statement->execute(array(':title'=>$title,':category' => $category, ':frecency' => $frecency, ':id'=>$id));
     }
 ?>
 <!DOCTYPE html>
@@ -47,14 +57,14 @@
             <div class="list__search--input"><input type="text" class="list__search--input-input" placeholder="search list"><img src = "./img/searchIcon.png" class="list__search--input-icon" alt="Search Icon Magnifying glass"></div>
         </div>
         <div class="list__addItem">
-            <button class="btn btn__secondary js--addItem" name="js--addItem">Add Item</button>
-            <div class="list__addItem--addItemForm">                 
+            <button class="btn btn__secondary" onClick="document.getElementById('js--addItemForm').style.display = 'block';">Add Item</button>
+            <div class="list__addItem--addItemForm" id="js--addItemForm">                 
                 <div>
                     <h3>Add/Edit List Item</h3>                       
                 </div>
                 <hr>  
                 <!-- Add/Edit Item Form  -->
-                <form name="addItem" action="">                               
+                <form name="addItem" action="" method="post">                               
                     <div class="flexWrap">
                         <div class="list__addItem--addItemForm-qty"><label for="addQty">Qty</label><input name="addQty" type="text" id="js--addQty"></div>
                         <div class="list__container--items-itemCheckBox" checked><label for="checkBox">Check Item?</label><input type="checkbox" name="checkBox" id="js--addChecked" checked></div>
@@ -88,13 +98,13 @@
                         <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecencyEdit"></div>
                     </div>
                     <div class="flex">  
-                        <button type="button" class="btn btn__primary" name = "addEditSave" id="js--saveAddEditItem">Save</button>
-                        <button type="button" class="btn btn__secondary" name = "addEditCancel" id="js--cancelEditAddItem" style="display: inline-flex">Cancel</button>
+                        <input type="submit" class="btn btn__primary" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
+                        <button type="button" class="btn btn__secondary" name="addEditCancel" id="js--cancelEditAddItem" style="display: inline-flex" onClick="document.getElementById('js--addItemForm').style.display = 'none';">Cancel</button>
                     </div>
                 </form>  
             </div>
         </div> 
-        <form action="index.php" method="post">                  
+        <form action="index.php" method="post" name="viewByOrderBy">
             <div class="list__orderBy">
                 <div class="list__orderBy--header">Order By:</div>
                 <div class="list__orderBy--btns">                   
@@ -122,7 +132,27 @@
                 <div class="list__container--items-item">
                     <?php $displayHeader = ''; ?>
                     <?php foreach($listItems as $item) : ?>
-                    <?php include 'php/reusables/prepareDisplayList.php'; ?>                   
+                        <?php
+                            //filter by viewChecked
+                            if ($_SESSION['viewBy'] == 'checked' && $item['isChecked'] == false) continue;
+                            if ($_SESSION['viewBy'] == 'unChecked' && $item['isChecked'] == true) continue;
+                                
+                            //prepare heading variable if needed                          
+                            if ($_SESSION['orderBy']=='category') {
+                                if ($displayHeader !== $item['category']) {
+                                    echo '<div class="list__container--items-itemHeader">'.$item['category'].'</div>';
+                                    $displayHeader = $item['category'];
+                                }
+                            } else if ($_SESSION['orderBy']=='frecency') {
+                                $frecencyWord = getFrecencyWord($item['frecency']);
+                                if ($displayHeader !== $frecencyWord) {
+                                    echo '<div class="list__container--items-itemHeader">'.$frecencyWord.'</div>';
+                                    $displayHeader = $frecencyWord;
+                                }
+                            }                                                 
+                            //set is checkbox checked variable
+                            $item['isChecked'] ? $checked = 'checked': $checked = '';
+                        ?>                 
                         <div class="list__container--items-item" data-id = "<?php echo $item['id']; ?>">
                             <div class="flex">
                                 <div class="list__container--items-itemQty"><input type="text" value="<?php echo $item['qty']; ?>" disabled></div>
