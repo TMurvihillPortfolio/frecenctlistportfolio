@@ -131,13 +131,12 @@ hr {
       height: 25px;
       cursor: pointer; }
     .list__addItem--addItemForm {
-      display: none;
       border: 7px double #BCB5D7;
       padding: 15px;
       margin-top: 25px;
       line-height: 2;
       width: 100%; }
-      .list__addItem--addItemForm-qty, .list__addItem--addItemForm-increment {
+      .list__addItem--addItemForm-qty {
         width: 80px; }
       .list__addItem--addItemForm-frecency > input {
         width: 80px !important;
@@ -240,11 +239,12 @@ hr {
         transform: scale(2.5);
         justify-content: center; }
       .list__container--items-itemEdit, .list__container--items-itemDelete {
-        z-index: 2000; }
+        z-index: 2000;
+        background-color: transparent;
+        border: none; }
       .list__container--items-itemEdit > img,
       .list__container--items-itemDelete > img {
-        height: 26px;
-        padding-top: 10px;
+        height: 25px;
         margin: 0 3px; }
       .list__container--items-itemFrecency p {
         color: #D8DAEB;

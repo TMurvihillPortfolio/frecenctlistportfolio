@@ -19,4 +19,22 @@
         echo e;
         }
     }
+
+    function getCategories($db) {
+        $query = "SELECT * FROM Categories ORDER BY category";
+        $statement = $db->prepare($query);
+        $statement->execute(array());
+        $categories=$statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $categories;
+    }
+
+    function getListItemById($db, $id) {
+        $query = "SELECT * FROM ListItems WHERE id=:id";
+        $statement = $db->prepare($query);
+        $statement->execute(array(':id'=>$id));
+        $listItem=$statement->fetch(PDO::FETCH_ASSOC);
+        
+        return $listItem;
+    }
 ?>

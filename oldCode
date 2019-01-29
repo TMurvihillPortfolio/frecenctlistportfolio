@@ -1,0 +1,25 @@
+<!-- <option value="select">select category</option>
+    <option value="produce">Produce</option>
+    <option value="meat">Meat</option>
+    <option value="dairy">Dairy</option>
+    <option value="frozen foods">Frozen foods</option>
+    <option value="breads" selected>Breads</option>
+    <option value="dry goods">Dry Goods</option>
+    <option value="health and beauty">Health and Beauty</option>
+    <option value="non-food">Non-food Items</option>
+    <option value="other">Other</option> -->
+ -----
+ 
+<!-- <div class="list__container--items-item">
+    <div class="list__container--items-itemQty"><input type="text" value="1" disabled></div>
+    <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" value="1" disabled></div>
+    <div class="list__container--items-itemTitle"><input type="text" value="milk" disabled></div>            
+    <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" value="milk" disabled></div>            
+    <div class="list__container--items-itemCheckBox"><input type="checkbox"></div>
+    <div class="list__container--items-itemEdit js--editItem"><img src="/img/editItemIcon.png" name="editItem" alt="Pencil icon for edit list item"></div>                                  
+    <div class="list__container--items-itemDelete  js--deleteItem"><img src="/img/deleteRedX.png" name="deleteItem" alt="Trash can icon for delete list item"></div>                    
+</div>    
+<div class="list__container--items-saveCancel" style="display:none">                             
+    <button name="editSave" type="button" class="btn btn__primary">Save</button>
+    <button name="editCancel" type="button" class="btn btn__secondary">cancel</button>
+</div>  -->                           

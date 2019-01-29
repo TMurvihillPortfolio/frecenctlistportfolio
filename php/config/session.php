@@ -2,13 +2,13 @@
     //initialize session
     session_start();
     //initialize session variables
-    if (!$_SESSION['list']) {
+    if (!isset($_SESSION['list'])) {
         $_SESSION['list'] = '';
     }
-    if (!$_SESSION['orderBy']) {
+    if (!isset($_SESSION['orderBy'])) {
         $_SESSION['orderBy'] = '';
     }
-    if (!$_SESSION['viewBy']) {
+    if (!isset($_SESSION['viewBy'])) {
         $_SESSION['viewBy'] = '';
     }
 

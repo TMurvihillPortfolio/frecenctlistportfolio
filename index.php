@@ -1,7 +1,7 @@
 <?php include_once 'php/config/session.php'; ?>
 <?php include_once 'php/config/config.php'; ?>
 <?php include_once 'php/classes/Database.php'; ?>
-<?php include_once 'php/reusables/listQuery.php'; ?>
+<?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
 <?php 
     //determine the list order
@@ -25,49 +25,151 @@
     } else if (isset($_POST['viewAll'])) {
         $_SESSION['viewBy'] = 'all';
     }
+    //Get Categories Query dependency: php/reusables/queries.php
+    $categories=getCategories($db);
 ?>
 <?php
     if (isset($_POST['addEditSave'])) {
+        //initialize data variables
         $id = time() . mt_rand() . 'tmurv'; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
-        $title = $_POST['addTitle'];
-        $category = $_POST['addCategory'];
-        $frecency = getFrecencyNumber($_POST['addFrecency']);
-        $increment = 1;
-        if (isset($_POST['checkBox'])) {
-            $increment = $_POST['increment'];
-        } 
+        $title = '';
+        $category = '';
+        $frecency = -1;
+        $qty = 1;
         $isChecked = 'off';
-        if (isset($_POST['checkBox'])) {
-            $isChecked = $_POST['checkBox'];
-        }    
         $numClicks = 0;
-        $firstClick;
-        $lastClick;
-        if ($isChecked = 'on') {
-            $isChecked = 1;
-            $numClicks = 1;
-            $firstClick = time();
-            $lastClick = time();
-        } else {
-            $isChecked = 0;
-            $numClicks = 0;
+        $firstClick = '';
+        $lastClick = '';
+
+        //Get user input values from form
+        if (isset($_POST['addTitle'])) {
+            $title = $_POST['addTitle'];
+        }              
+        if (isset($_POST['addCategory'])) {
+            $category = $_POST['addCategory'];
+        } 
+        if (isset($_POST['addFrecency'])) {
+            $frecency = getFrecencyNumber($_POST['addFrecency']);
+        } 
+        if (isset($_POST['addQty'])) {
+            $qty = (int)$_POST['addQty'];
+        }        
+
+        //if item checked, set click values
+        if (isset($_POST['checkBox'])) {
+            if ($_POST['checkBox'] == 'on') {
+                $isChecked = 1;
+                $numClicks = 1;
+                $firstClick = time();
+                $lastClick = time();
+            } else {
+                $isChecked = 0;
+                $numClicks = 0;
+            }
         }
-        //echo $title.'|'.$category.'|'.$frecency.'|'.$id.'|'.$isChecked.'|'.$numClicks.'|'.$firstClick.'|'.$lastClick;
-        $query = "INSERT INTO ListItems (title, category, frecency, id, increment, isChecked, numClicks, firstClick, lastClick)
-                                VALUES (:title, :category, :frecency, :id, :increment, :isChecked, :numClicks, :firstClick, :lastClick);";
+        
+        //add the item
+        try {
+            $query = "INSERT INTO ListItems (title, category, frecency, id,  isChecked, numClicks, firstClick, lastClick)
+                                VALUES (:title, :category, :frecency, :id, :isChecked, :numClicks, :firstClick, :lastClick);";
+            $statement = $db->prepare($query);
+            $statement->execute(array(
+                                ':title'=>$title,
+                                ':category' => $category, 
+                                ':frecency' => $frecency, 
+                                ':id' => $id,                           
+                                ':isChecked' => $isChecked,
+                                ':numClicks' => $numClicks,
+                                ':firstClick' => $firstClick,
+                                ':lastClick' => $lastClick
+            ));
+        } catch (Exception $e) {
+            //NOT YET IMPLEMENTED
+        }
+
+        //restore environment
+        $_POST = [];
+        //header("Location: index.php", true, 301);
+    }
+?>
+<?php
+    if (isset($_POST['editItem'])) {
+        // if (isset($_POST['checkBox'])) {echo $_POST['checkBox'];}else{echo "no set";}
+        // exit;
+        //initialize data variables
+        $id = '';
+        // $title = '';
+        // $category = '';
+        $editFrecency = -1;
+        $editQty = 1;
+        // $isChecked = 'off';
+        // $numClicks = 0;
+        // $firstClick = '';
+        // $lastClick = '';
+
+        
+        //Get id from form
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+        } 
+        //Get editItem values from db that are not in post variable
+        $editItemObject = getListItemById($db, $id); 
+        
+        //populate variables for edit form
+        if (isset($_POST['editTitle'])) {
+            $editTitle = $_POST['editTitle'];
+        }              
+         
+        if (isset($_POST['editQty'])) {
+            $editQty = (int)$_POST['editQty'];
+        }        
+
+        
+
+        // //if item checked, set click values
+        // if (isset($_POST['checkBox'])) {
+        //     if ($_POST['checkBox'] == 'on') {
+        //         $isChecked = 1;
+        //         $numClicks = 1;
+        //         $firstClick = time();
+        //         $lastClick = time();
+        //     } else {
+        //         $isChecked = 0;
+        //         $numClicks = 0;
+        //     }
+        // }
+        
+        // //add the item
+        // try {
+        //     $query = "INSERT INTO ListItems (title, category, frecency, id, isChecked, numClicks, firstClick, lastClick)
+        //                         VALUES (:title, :category, :frecency, :id, :isChecked, :numClicks, :firstClick, :lastClick);";
+        //     $statement = $db->prepare($query);
+        //     $statement->execute(array(
+        //                         ':title'=>$title,
+        //                         ':category' => $category, 
+        //                         ':frecency' => $frecency, 
+        //                         ':id' => $id,                          
+        //                         ':isChecked' => $isChecked,
+        //                         ':numClicks' => $numClicks,
+        //                         ':firstClick' => $firstClick,
+        //                         ':lastClick' => $lastClick
+        //     ));
+        // } catch Exception $e {
+        //     //NOT YET IMPLEMENTE
+        // }
+
+        // //restore environment
+        // $_POST = [];
+        // header("Location: index.php", true, 301);
+    }
+?>
+<?php 
+    if (isset($_POST['itemDelete'])) {
+        $id = $_POST['id'];
+        $query = "DELETE FROM ListItems WHERE id = :id";
         $statement = $db->prepare($query);
-        $statement->execute(array(
-                            ':title'=>$title,
-                            ':category' => $category, 
-                            ':frecency' => $frecency, 
-                            ':id' => $id,
-                            ':increment' => $increment,                           
-                            ':isChecked' => $isChecked,
-                            ':numClicks' => $numClicks,
-                            ':firstClick' => $firstClick,
-                            ':lastClick' => $lastClick
-        ));
-        $_POST['addEditSave'] = '';
+        $statement->execute(array(":id"=>$id));
+        $listItems=getList($db);
         header("Location: index.php", true, 301);
     }
 ?>
@@ -97,7 +199,8 @@
         </div>
         <div class="list__addItem">
             <button class="btn btn__secondary" onClick="document.getElementById('js--addItemForm').style.display = 'block';">Add Item</button>
-            <div class="list__addItem--addItemForm" id="js--addItemForm">                 
+            <div class="list__addItem--addItemForm" style="display: <?php echo (isset($_POST['editItem'])) ? 'block' : 'none' ?>" id="js--addItemForm">                 
+                <!-- Add/Edit Item Form Headers -->
                 <div>
                     <h3>Add/Edit List Item</h3>                       
                 </div>
@@ -105,35 +208,55 @@
                 <!-- Add/Edit Item Form  -->
                 <form name="addItem" action="" method="post">                               
                     <div class="flexWrap">
-                        <div class="list__addItem--addItemForm-qty"><label for="addQty">Qty</label><input name="addQty" type="text" id="js--addQty"></div>
-                        <div class="list__container--items-itemCheckBox" checked><label for="checkBox">Check Item?</label><input type="checkbox" name="checkBox" id="js--addChecked" checked></div>
-                        <div class="list__addItem--addItemForm-title"><label for="addTitle">Item Name</label><input name="addTitle" type="text" id="js--addItemTitle"></div>
+                        <div class="list__addItem--addItemForm-qty"><label for="addQty">Qty</label><input name="addQty" type="text" value="<?php echo (isset($_POST['editItem'])) ? $_POST['editQty'] : 1 ?>"></div>
+                        <div class="list__container--items-itemCheckBox" checked>
+                            <label for="checkBox">Check Item?</label>
+                            <input type="checkbox" name="checkBox" 
+                                <?php 
+                                    if (isset($_POST['editItem'])) {
+                                        if (isset($_POST['checkBox'])) {
+                                            echo ($_POST['checkBox'] == 'on') ?  'checked' : ''; 
+                                        }
+                                    } else { 
+                                        echo 'checked'; 
+                                    } 
+                                ?>
+                            >
+                        </div>
+                        <div class="list__addItem--addItemForm-title"><label for="addTitle">Item Name</label><input name="addTitle" type="text" value="<?php echo (isset($_POST['editItem'])) ? $_POST['editTitle'] : '' ?>"></div>
                         <!-- <div class="showAddItemCategory"><label for="addCategory">Category</label><input name="addCategory" type="text" id="js--addCategory" placeholder="produce dairy etc"></div> -->
                         <div class="list__addItem--addItemForm-category">
                             <label for="addCategory">Category</label>
-                            <select name="addCategory" id="js--addCategory">
-                                    <option value="select">select category</option>
-                                    <option value="produce">Produce</option>
-                                    <option value="meat">Meat</option>
-                                    <option value="dairy">Dairy</option>
-                                    <option value="frozen foods">Frozen foods</option>
-                                    <option value="breads">Breads</option>
-                                    <option value="dry goods">Dry Goods</option>
-                                    <option value="health and beauty">Health and Beauty</option>
-                                    <option value="non-food">Non-food Items</option>
-                                    <option value="other">Other</option>
-                            </select>
+                            <select name="addCategory">
+                                <?php foreach($categories as $row) : ?> 
+                                    <?php if (isset($_POST['editItem'])) : ?>
+                                        <?php $selected = ""; ?> 
+                                        <?php if(strtolower($row['category'])==strtolower($editItemObject['category'])) {$selected = 'selected';} ?>
+                                        <option value="<?php echo $row['category']; ?>" <?php echo $selected; ?>>
+                                            <?php echo $row['category']; ?>
+                                        </option>
+                                    <?php else : ?>                                       
+                                        <option value="<?php echo $row['category']; ?>">
+                                            <?php echo $row['category']; ?>
+                                        </option>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>                                   
                         </div>
                         <div class="list__addItem--addItemForm-frecency">
+                        <?php if (isset($_POST['editItem'])) : ?>
+                            <label for="editFrecency">'Frecency' (0-20 rare; 20-80 sometimes; 80+ often)</label>   
+                            <input name="editFrecency" type="text" value="<?php echo $editItemObject['frecency']; ?>"/>
+                        <?php else : ?>
                             <label for="addFrecency">Starting 'Frecency'</label>
                             <select name="addFrecency" id="js--addFrecencyRating">
                                 <option value="often">Often</option>
-                                <option value="sometimes" selected="selected">Sometimes</option>
+                                <option value="sometimes" selected>Sometimes</option>
                                 <option value="rarely">Rarely</option>
                             </select>
+                        <?php endif; ?>
+
                         </div>
-                        <div class="list__addItem--addItemForm-increment"><label for="addIncrement">Increment</label> <input name="addIncrement" type="text" id="js--addIncrement"></div>
-                        <div class="" hidden> <input name="addHidden" type="text" id="js--addIncrement"></div>
                         <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecencyEdit"></div>
                     </div>
                     <div class="flex">  
@@ -191,18 +314,21 @@
                             }                                                 
                             //set is checkbox checked variable
                             $item['isChecked'] ? $checked = 'checked': $checked = '';
-                        ?>                 
-                        <div class="list__container--items-item" data-id = "<?php echo $item['id']; ?>">
-                            <div class="flex">
-                                <div class="list__container--items-itemQty"><input type="text" value="<?php echo $item['qty']; ?>" disabled></div>
-                                <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" value="<?php echo $item['qty']; ?>" disabled></div>
-                                <div class="list__container--items-itemTitle"><input type="text" onChange="toggleIsChecked('test2')" value="<?php echo $item['title']; ?>"></div>            
-                                <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" value="<?php echo $item['title']; ?>" disabled></div>            
-                                <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" <?php echo $checked ?>></div>
-                                <div class="list__container--items-itemEdit js--editItem"><img src="./img/editItemIcon.png" name="editItem" alt="Pencil icon for edit list item"></div>                                  
-                                <div class="list__container--items-itemDelete  js--deleteItem"><img src="./img/deleteRedX.png" name="deleteItem" alt="Trash can icon for delete list item"></div>                    
-                            </div>    
-                        </div>    
+                        ?>
+                        <form method='post'>               
+                            <div class="list__container--items-item">
+                                <div class="flex">
+                                    <div class="list__container--items-itemQty"><input type="text" value="<?php echo $item['qty']; ?>" disabled></div>
+                                    <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" name="editQty" value="<?php echo $item['qty']; ?>"></div>
+                                    <div class="list__container--items-itemTitle"><input type="text" value="<?php echo $item['title']; ?>"></div>            
+                                    <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" name="editTitle" value="<?php echo $item['title']; ?>"></div>            
+                                    <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" <?php echo $checked ?>></div>                                  
+                                    <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
+                                    <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Trash can icon for delete list item"></button>  
+                                    <div class="list__container--items-itemId" hidden><input type="text" name='id' value="<?php echo $item['id']; ?>"></div>                                                   
+                                </div>    
+                            </div>
+                        </form>    
                     <?php endforeach; ?> 
                 </div>                            
             </div>                
@@ -210,17 +336,3 @@
     </section>
 </body>
 </html>
-
-<!-- <div class="list__container--items-item">
-    <div class="list__container--items-itemQty"><input type="text" value="1" disabled></div>
-    <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" value="1" disabled></div>
-    <div class="list__container--items-itemTitle"><input type="text" value="milk" disabled></div>            
-    <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" value="milk" disabled></div>            
-    <div class="list__container--items-itemCheckBox"><input type="checkbox"></div>
-    <div class="list__container--items-itemEdit js--editItem"><img src="/img/editItemIcon.png" name="editItem" alt="Pencil icon for edit list item"></div>                                  
-    <div class="list__container--items-itemDelete  js--deleteItem"><img src="/img/deleteRedX.png" name="deleteItem" alt="Trash can icon for delete list item"></div>                    
-</div>    
-<div class="list__container--items-saveCancel" style="display:none">                             
-    <button name="editSave" type="button" class="btn btn__primary">Save</button>
-    <button name="editCancel" type="button" class="btn btn__secondary">cancel</button>
-</div>  -->
