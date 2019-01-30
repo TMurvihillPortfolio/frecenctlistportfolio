@@ -74,11 +74,12 @@
                 border-radius: 3px;
                 padding: 6px 9px;
             }            
-            &-submitButtons {
-                display: block;      
+            &-submitButtons>input {
+                display: block;                    
                 margin: auto;
                 margin-top: 15px;
                 width: 6rem;
+                
             }
         }  
     }
@@ -176,7 +177,9 @@
                 &CheckBox>input {                  
                     margin-top: 12.5px;
                     transform: scale(2.5);
-                    justify-content: center;     
+                    justify-content: center;  
+                    width: fit-content;
+                    margin-right: 0;   
                 } 
                 &Edit,
                 &Delete {

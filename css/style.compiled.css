@@ -157,7 +157,7 @@ hr {
         width: 100%;
         border-radius: 3px;
         padding: 6px 9px; }
-      .list__addItem--addItemForm-submitButtons {
+      .list__addItem--addItemForm-submitButtons > input {
         display: block;
         margin: auto;
         margin-top: 15px;
@@ -238,7 +238,9 @@ hr {
       .list__container--items-itemCheckBox > input {
         margin-top: 12.5px;
         transform: scale(2.5);
-        justify-content: center; }
+        justify-content: center;
+        width: fit-content;
+        margin-right: 0; }
       .list__container--items-itemEdit, .list__container--items-itemDelete {
         z-index: 2000;
         background-color: transparent;

@@ -319,9 +319,9 @@
                         <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecencyEdit"></div>
                         <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="id" value="<?php echo isset($editItemObject) ? $editItemObject['id'] : ''; ?>"></div>
                     </div>
-                    <div class="flex">  
-                        <input type="submit" class="btn btn__primary list__addItem--addItemForm-submitButtons" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
-                        <input type="submit" class="btn btn__secondary list__addItem--addItemForm-submitButtons" name="addEditCancel" id="js--cancelEditAddItem" onClick="document.getElementById('js--addItemForm').style.display = 'none';" value="Cancel"/>
+                    <div class="flex list__addItem--addItemForm-submitButtons">  
+                        <input type="submit" class="btn btn__primary" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
+                        <input type="submit" class="btn btn__secondary" name="addEditCancel" id="js--cancelEditAddItem" onClick="document.getElementById('js--addItemForm').style.display = 'none';" value="Cancel"/>
                     </div>    
                 </form>  
             </div>
