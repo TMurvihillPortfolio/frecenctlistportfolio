@@ -28,71 +28,131 @@
     //Get Categories Query dependency: php/reusables/queries.php
     $categories=getCategories($db);
 ?>
-<?php
-    if (isset($_POST['addEditSave'])) {
-        //initialize data variables
-        $id = time() . mt_rand() . 'tmurv'; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
-        $title = '';
-        $category = '';
-        $frecency = -1;
-        $qty = 1;
-        $isChecked = 'off';
-        $numClicks = 0;
-        $firstClick = '';
-        $lastClick = '';
-
-        //Get user input values from form
-        if (isset($_POST['addTitle'])) {
-            $title = $_POST['addTitle'];
-        }              
-        if (isset($_POST['addCategory'])) {
-            $category = $_POST['addCategory'];
-        } 
-        if (isset($_POST['addFrecency'])) {
-            $frecency = getFrecencyNumber($_POST['addFrecency']);
-        } 
-        if (isset($_POST['addQty'])) {
-            $qty = (int)$_POST['addQty'];
-        }        
-
-        //if item checked, set click values
-        if (isset($_POST['checkBox'])) {
-            if ($_POST['checkBox'] == 'on') {
-                $isChecked = 1;
-                $numClicks = 1;
-                $firstClick = time();
-                $lastClick = time();
-            } else {
-                $isChecked = 0;
-                $numClicks = 0;
-            }
-        }
-        
-        //add the item
-        try {
-            $query = "INSERT INTO ListItems (title, category, frecency, id,  isChecked, numClicks, firstClick, lastClick)
-                                VALUES (:title, :category, :frecency, :id, :isChecked, :numClicks, :firstClick, :lastClick);";
-            $statement = $db->prepare($query);
-            $statement->execute(array(
-                                ':title'=>$title,
-                                ':category' => $category, 
-                                ':frecency' => $frecency, 
-                                ':id' => $id,                           
-                                ':isChecked' => $isChecked,
-                                ':numClicks' => $numClicks,
-                                ':firstClick' => $firstClick,
-                                ':lastClick' => $lastClick
-            ));
-        } catch (Exception $e) {
-            //NOT YET IMPLEMENTED
-        }
-
-        //restore environment
-        $_POST = [];
-        //header("Location: index.php", true, 301);
+<?php 
+    if (isset($_POST['addEditCancel'])) {
+        unset($_POST['editItem']);
+        unset($_POST['addEditCancel']);
     }
 ?>
 <?php
+    if (isset($_POST['addEditSave'])) {
+        //EDIT the item
+        if (isset($_POST['id']) && $_POST['id'] !== '') {          
+            //initialize data variables
+            $id = '';
+            $title = '';
+            $category = '';
+            $frecency = -1;
+            $qty = 1;
+            $isChecked = 'off';
+
+            //Get user input values from form
+            if (isset($_POST['id'])) {
+                $id = $_POST['id'];
+            }              
+            if (isset($_POST['addTitle'])) {
+                $title = $_POST['addTitle'];
+            }              
+            if (isset($_POST['addCategory'])) {
+                $category = $_POST['addCategory'];
+            } 
+            if (isset($_POST['addFrecency'])) {
+                $frecency = (int)$_POST['addFrecency'];
+                //NOT YET IMPLEMENTED -- update num of clicks based on frecency number
+            } 
+            if (isset($_POST['addQty'])) {
+                $qty = (int)$_POST['addQty'];
+            }        
+            //if item checked, set click values
+            if (isset($_POST['checkBox'])) {
+                $_POST['checkBox'] == 'on' ? $isChecked = 1 : $isChecked = 0;
+            }
+            
+            //edit the item in db
+            try {
+                //Create and execute query
+                $query = "UPDATE  ListItems SET title=:title, 
+                                                category=:category, 
+                                                frecency=:frecency, 
+                                                qty=:qty, 
+                                                isChecked=:isChecked
+                                            WHERE id=:id";
+                $statement = $db->prepare($query);
+                $statement->execute(array(':title' => $title,
+                                        ':category' => $category,
+                                        ':frecency' => $frecency,
+                                        ':qty' => $qty,
+                                        ':isChecked' => $isChecked,
+                                        ':id' => $id
+                                    ));
+            } catch (Exception $e) {
+                //NOT YET IMPLEMENTED
+            } 
+            
+            //ADD Item
+        } else {
+            //initialize data variables
+            $id = time() . mt_rand() . 'tmurv'; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
+            $title = '';
+            $category = '';
+            $frecency = -1;
+            $qty = 1;
+            $isChecked = 'off';
+            $numClicks = 0;
+            $firstClick = '';
+            $lastClick = '';
+
+            //Get user input values from form
+            if (isset($_POST['addTitle'])) {
+                $title = $_POST['addTitle'];
+            }              
+            if (isset($_POST['addCategory'])) {
+                $category = $_POST['addCategory'];
+            } 
+            if (isset($_POST['addFrecency'])) {
+                $frecency = getFrecencyNumber($_POST['addFrecency']);
+            } 
+            if (isset($_POST['addQty'])) {
+                $qty = (int)$_POST['addQty'];
+            }        
+
+            //if item checked, set initial click values
+            if (isset($_POST['checkBox'])) {
+                if ($_POST['checkBox'] == 'on') {
+                    $isChecked = 1;
+                    $numClicks = 1;
+                    $firstClick = time();
+                    $lastClick = time();
+                } else {
+                    $isChecked = 0;
+                    $numClicks = 0;
+                }
+            } 
+            //Create and execute the query         
+            try {
+                $query = "INSERT INTO ListItems (title, category, frecency, id,  isChecked, numClicks, firstClick, lastClick)
+                                    VALUES (:title, :category, :frecency, :id, :isChecked, :numClicks, :firstClick, :lastClick);";
+                $statement = $db->prepare($query);
+                $statement->execute(array(
+                                    ':title'=>$title,
+                                    ':category' => $category, 
+                                    ':frecency' => $frecency, 
+                                    ':id' => $id,                           
+                                    ':isChecked' => $isChecked,
+                                    ':numClicks' => $numClicks,
+                                    ':firstClick' => $firstClick,
+                                    ':lastClick' => $lastClick
+                ));
+            } catch (Exception $e) {
+                //NOT YET IMPLEMENTED
+            }           
+        }
+        //restore environment   
+        header("Location: index.php", true, 301);      
+    }
+?>
+<?php
+    //Show edit item window
     if (isset($_POST['editItem'])) {
         // if (isset($_POST['checkBox'])) {echo $_POST['checkBox'];}else{echo "no set";}
         // exit;
@@ -109,8 +169,8 @@
 
         
         //Get id from form
-        if (isset($_POST['id'])) {
-            $id = $_POST['id'];
+        if (isset($_POST['editId'])) {
+            $id = $_POST['editId'];
         } 
         //Get editItem values from db that are not in post variable
         $editItemObject = getListItemById($db, $id); 
@@ -123,8 +183,6 @@
         if (isset($_POST['editQty'])) {
             $editQty = (int)$_POST['editQty'];
         }        
-
-        
 
         // //if item checked, set click values
         // if (isset($_POST['checkBox'])) {
@@ -165,7 +223,7 @@
 ?>
 <?php 
     if (isset($_POST['itemDelete'])) {
-        $id = $_POST['id'];
+        $id = $_POST['editId'];
         $query = "DELETE FROM ListItems WHERE id = :id";
         $statement = $db->prepare($query);
         $statement->execute(array(":id"=>$id));
@@ -233,11 +291,11 @@
                                         <?php $selected = ""; ?> 
                                         <?php if(strtolower($row['category'])==strtolower($editItemObject['category'])) {$selected = 'selected';} ?>
                                         <option value="<?php echo $row['category']; ?>" <?php echo $selected; ?>>
-                                            <?php echo $row['category']; ?>
+                                            <?php echo substr($row['category'],2); ?>
                                         </option>
                                     <?php else : ?>                                       
                                         <option value="<?php echo $row['category']; ?>">
-                                            <?php echo $row['category']; ?>
+                                            <?php echo substr($row['category'],2); ?>
                                         </option>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
@@ -253,16 +311,18 @@
                                 <option value="often">Often</option>
                                 <option value="sometimes" selected>Sometimes</option>
                                 <option value="rarely">Rarely</option>
+                                <option value="oneTimePurchase">One-time Purchase</option>
                             </select>
                         <?php endif; ?>
 
                         </div>
                         <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecencyEdit"></div>
+                        <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="id" value="<?php echo isset($editItemObject) ? $editItemObject['id'] : ''; ?>"></div>
                     </div>
                     <div class="flex">  
-                        <input type="submit" class="btn btn__primary" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
-                        <button type="button" class="btn btn__secondary" name="addEditCancel" id="js--cancelEditAddItem" style="display: inline-flex" onClick="document.getElementById('js--addItemForm').style.display = 'none';">Cancel</button>
-                    </div>
+                        <input type="submit" class="btn btn__primary list__addItem--addItemForm-submitButtons" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
+                        <input type="submit" class="btn btn__secondary list__addItem--addItemForm-submitButtons" name="addEditCancel" id="js--cancelEditAddItem" onClick="document.getElementById('js--addItemForm').style.display = 'none';" value="Cancel"/>
+                    </div>    
                 </form>  
             </div>
         </div> 
@@ -301,9 +361,9 @@
                                 
                             //prepare heading variable if needed                          
                             if ($_SESSION['orderBy']=='category') {
-                                if ($displayHeader !== $item['category']) {
-                                    echo '<div class="list__container--items-itemHeader">'.$item['category'].'</div>';
-                                    $displayHeader = $item['category'];
+                                if ($displayHeader !== substr($item['category'],2)) {
+                                    echo '<div class="list__container--items-itemHeader">'.substr($item['category'],2).'</div>';
+                                    $displayHeader = substr($item['category'],2);
                                 }
                             } else if ($_SESSION['orderBy']=='frecency') {
                                 $frecencyWord = getFrecencyWord($item['frecency']);
@@ -325,7 +385,7 @@
                                     <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" <?php echo $checked ?>></div>                                  
                                     <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
                                     <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Trash can icon for delete list item"></button>  
-                                    <div class="list__container--items-itemId" hidden><input type="text" name='id' value="<?php echo $item['id']; ?>"></div>                                                   
+                                    <div class="list__container--items-itemId" hidden><input type="text" name='editId' value="<?php echo $item['id']; ?>"></div>                                                   
                                 </div>    
                             </div>
                         </form>    

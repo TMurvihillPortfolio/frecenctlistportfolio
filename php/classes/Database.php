@@ -9,6 +9,6 @@
         //echo "Connected to frecency database";
     } catch (PDOException $ex){
         //NOT YET IMPLEMENTED -- error handling
-        echo "Connection failed ".$ex->getMessage();
+        //echo "Connection failed ".$ex->getMessage();
     }
 ?>

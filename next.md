@@ -1,7 +1,6 @@
 # WHAT TO DO NEXT
 
-## implement edit functionality -- got quantity field in displaying on edit. Work on the rest!
-
-- cycle through categories table to get selected item in edit categories drop down
-
-- fix addEdit form formatting
+- fix agressive checkbox on add/edit form
+- check each field for success on populate add/edit
+- check each field for success on update db for add/edit
+- debug category add -- change to select order field and remove numbers

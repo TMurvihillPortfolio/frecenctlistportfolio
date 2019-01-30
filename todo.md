@@ -1,5 +1,6 @@
 # TODO
 
+- frecency not sorting properly on add and edit item
 - implement error messages
 
 ### Low Priority

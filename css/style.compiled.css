@@ -157,10 +157,11 @@ hr {
         width: 100%;
         border-radius: 3px;
         padding: 6px 9px; }
-      .list__addItem--addItemForm button {
+      .list__addItem--addItemForm-submitButtons {
         display: block;
         margin: auto;
-        margin-top: 15px; }
+        margin-top: 15px;
+        width: 6rem; }
   .list > h1 {
     text-align: center;
     color: #FFCE00;
