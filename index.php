@@ -89,8 +89,9 @@
                 //NOT YET IMPLEMENTED
             } 
             
-            //ADD Item
+        //ADD Item
         } else {
+            
             //initialize data variables
             $id = time() . mt_rand() . 'tmurv'; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
             $title = '';
@@ -118,11 +119,15 @@
 
             //if item checked, set initial click values
             if (isset($_POST['checkBox'])) {
+                
                 if ($_POST['checkBox'] == 'on') {
                     $isChecked = 1;
-                    $numClicks = 1;
-                    $firstClick = time();
-                    $lastClick = time();
+                    $firstClick = date('Y-m-d', strtotime("-90 days")); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
+                    $lastClick = date('Y-m-d H:i:s');
+                    echo $firstClick.$lastClick;
+                    exit();
+                    $numClicks = calculateClicks($db, $firstClick, $frecency); //Might be simulated for calculations
+                    
                 } else {
                     $isChecked = 0;
                     $numClicks = 0;
@@ -152,8 +157,7 @@
         header("Location: index.php", true, 301);      
     }
 ?>
-<?php
-    //Show edit item window
+<?php //Show edit item window
     if (isset($_POST['editItem'])) {
         // if (isset($_POST['checkBox'])) {echo $_POST['checkBox'];}else{echo "no set";}
         // exit;

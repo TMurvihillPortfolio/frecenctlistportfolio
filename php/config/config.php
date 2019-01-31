@@ -6,4 +6,7 @@
     $username = 'tmurvvvv_me';
     $password = '!Tm427712*';
     $dsn = "{$driver}:host={$host}; dbname={$dbname}";
+
+    //for frecency calculations
+    $frecencyPeriodInDays = 100;
 ?>

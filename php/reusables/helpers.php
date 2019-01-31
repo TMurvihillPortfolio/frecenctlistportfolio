@@ -1,4 +1,6 @@
 <?php
+    include "../config/config.php";
+
     //take frecency number and return frecency word (rarely, sometimes, often)
     function getFrecencyWord($frecencyNumber) {
         if ($frecencyNumber == 0) {
@@ -26,4 +28,19 @@
             default :
                 return 0;
         }
+    }
+
+    //Calculate the number of click for a given $frecency
+        //dependencies config.php file
+    function calculateClicks($db, $firstClick, $frecency=0) {
+        if ($frecency == 0 || $frecency == '') {
+            return 0;
+        } 
+        //frecency = numClicks * currentClickPeriod (100days) /timeSinceFirstClick
+        $timeSinceFirstClick = Date() - $firstClick;
+        $numClicks = ($frecency*$timeSinceFirstClick) / $frecencyPeriodInDays;
+        return 5000;
+
+
+        
     }

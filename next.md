@@ -1,3 +1,5 @@
 # WHAT TO DO NEXT
 
-- debug category add -- change to select order field and remove numbers
+- finish working on $numClicks calculation function in helper folder
+- add clicks CRUD functionality including first last click
+- remove frecency field, make it only by calculation 
