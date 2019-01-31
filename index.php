@@ -130,13 +130,14 @@
             } 
             //Create and execute the query         
             try {
-                $query = "INSERT INTO ListItems (title, category, frecency, id,  isChecked, numClicks, firstClick, lastClick)
-                                    VALUES (:title, :category, :frecency, :id, :isChecked, :numClicks, :firstClick, :lastClick);";
+                $query = "INSERT INTO ListItems (title, category, frecency, qty, id,  isChecked, numClicks, firstClick, lastClick)
+                                    VALUES (:title, :category, :frecency, :qty, :id, :isChecked, :numClicks, :firstClick, :lastClick);";
                 $statement = $db->prepare($query);
                 $statement->execute(array(
                                     ':title'=>$title,
                                     ':category' => $category, 
                                     ':frecency' => $frecency, 
+                                    ':qty' => $qty, 
                                     ':id' => $id,                           
                                     ':isChecked' => $isChecked,
                                     ':numClicks' => $numClicks,
@@ -182,6 +183,9 @@
          
         if (isset($_POST['editQty'])) {
             $editQty = (int)$_POST['editQty'];
+        }        
+        if (isset($_POST['frecency'])) {
+            $frecency = (int)$_POST['frecency'];
         }        
 
         // //if item checked, set click values
@@ -291,11 +295,11 @@
                                         <?php $selected = ""; ?> 
                                         <?php if(strtolower($row['category'])==strtolower($editItemObject['category'])) {$selected = 'selected';} ?>
                                         <option value="<?php echo $row['category']; ?>" <?php echo $selected; ?>>
-                                            <?php echo substr($row['category'],2); ?>
+                                            <?php echo $row['category']; ?>
                                         </option>
                                     <?php else : ?>                                       
                                         <option value="<?php echo $row['category']; ?>">
-                                            <?php echo substr($row['category'],2); ?>
+                                            <?php echo $row['category']; ?>
                                         </option>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
@@ -303,8 +307,8 @@
                         </div>
                         <div class="list__addItem--addItemForm-frecency">
                         <?php if (isset($_POST['editItem'])) : ?>
-                            <label for="editFrecency">'Frecency' (0-20 rare; 20-80 sometimes; 80+ often)</label>   
-                            <input name="editFrecency" type="text" value="<?php echo $editItemObject['frecency']; ?>"/>
+                            <label for="addFrecency">'Frecency' (0-20 rarely; 20-80 sometimes; 80+ often)</label>   
+                            <input name="addFrecency" type="text" value="<?php echo $editItemObject['frecency']; ?>"/>
                         <?php else : ?>
                             <label for="addFrecency">Starting 'Frecency'</label>
                             <select name="addFrecency" id="js--addFrecencyRating">
@@ -361,9 +365,9 @@
                                 
                             //prepare heading variable if needed                          
                             if ($_SESSION['orderBy']=='category') {
-                                if ($displayHeader !== substr($item['category'],2)) {
-                                    echo '<div class="list__container--items-itemHeader">'.substr($item['category'],2).'</div>';
-                                    $displayHeader = substr($item['category'],2);
+                                if ($displayHeader !== $item['category']) {
+                                    echo '<div class="list__container--items-itemHeader">'.$item['category'].'</div>';
+                                    $displayHeader = $item['category'];
                                 }
                             } else if ($_SESSION['orderBy']=='frecency') {
                                 $frecencyWord = getFrecencyWord($item['frecency']);
@@ -384,7 +388,8 @@
                                     <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" name="editTitle" value="<?php echo $item['title']; ?>"></div>            
                                     <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" <?php echo $checked ?>></div>                                  
                                     <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
-                                    <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Trash can icon for delete list item"></button>  
+                                    <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
+                                    <div class="list__container--items-frecency" hidden><input type="text" name='editId' value="<?php echo $item['frecency']; ?>"></div>                                                   
                                     <div class="list__container--items-itemId" hidden><input type="text" name='editId' value="<?php echo $item['id']; ?>"></div>                                                   
                                 </div>    
                             </div>

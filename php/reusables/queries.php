@@ -4,7 +4,7 @@
         if ($_SESSION['orderBy'] =='frecency') {
             $query = "SELECT * FROM ListItems ORDER BY frecency DESC";
         } else if ($_SESSION['orderBy'] == 'category') {
-            $query = "SELECT * FROM ListItems ORDER BY category";
+            $query = "SELECT * FROM ListItems ORDER BY category ASC, frecency DESC";
         } else {            
             $query = "SELECT * FROM ListItems ORDER BY title";
         }
@@ -21,7 +21,7 @@
     }
 
     function getCategories($db) {
-        $query = "SELECT * FROM Categories ORDER BY category";
+        $query = "SELECT * FROM Categories ORDER BY viewOrder";
         $statement = $db->prepare($query);
         $statement->execute(array());
         $categories=$statement->fetchAll(PDO::FETCH_ASSOC);
