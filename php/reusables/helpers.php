@@ -1,7 +1,5 @@
 <?php
-    include "../config/config.php";
-
-    //take frecency number and return frecency word (rarely, sometimes, often)
+    //take frecency number and return frecency word (rarely, sometimes, often, one-time purchase)
     function getFrecencyWord($frecencyNumber) {
         if ($frecencyNumber == 0) {
             return "one-time purchase";
@@ -12,35 +10,32 @@
         } else if ($frecencyNumber >= 80) {
             return "often";
         }
-    }   
+    }
     
-    //take frecency word (rarely, sometimes, often) and return frecency number
+    //take frecency word (rarely, sometimes, often, one-time purchase) and return frecency number
     function getFrecencyNumber($frecencyWord) {
         switch ($frecencyWord) {
             case 'often' :
-                return 80;
+                return 90;
             case 'sometimes' :
                 return 50;
             case 'rarely' :
-                return 20;
-            case 'One-time Purchase' :
+                return 10;
+            case 'one-time Purchase' :
                 return 0;
             default :
                 return 0;
         }
     }
 
-    //Calculate the number of click for a given $frecency
-        //dependencies config.php file
-    function calculateClicks($db, $firstClick, $frecency=0) {
+    //Calculate the number of click for a given frecency. Master formula = numClicks * currentClickPeriod (from config file) /timeSinceFirstClick
+    function calculateClicks($firstClick, $frecency=0, $frecencyPeriodInDays) {
+        //return 0 if no frecency number
         if ($frecency == 0 || $frecency == '') {
             return 0;
         } 
-        //frecency = numClicks * currentClickPeriod (100days) /timeSinceFirstClick
-        $timeSinceFirstClick = Date() - $firstClick;
-        $numClicks = ($frecency*$timeSinceFirstClick) / $frecencyPeriodInDays;
-        return 5000;
-
-
-        
+        //get time in days since first click
+        $timeSinceFirstClick = (strtotime("now") - strtotime($firstClick))/86400;
+        //return number of clicks for the given frecency
+        return round(($frecency*$timeSinceFirstClick) / $frecencyPeriodInDays);   //frecencyPeriodInDays can be found in config file    
     }
