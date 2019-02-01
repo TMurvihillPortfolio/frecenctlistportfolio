@@ -243,7 +243,7 @@
         // header("Location: index.php", true, 301);
     }
 ?>
-<?php 
+<?php //Delete item
     if (isset($_POST['itemDelete'])) {
         $id = $_POST['editId'];
         $query = "DELETE FROM ListItems WHERE id = :id";
@@ -267,6 +267,19 @@
     <script type="text/javascript" src="js/script.js"></script>
 
     <title>'Frecent' ListMaker</title>
+    <script>
+        function updateNumClicks(str, isChecked) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function (){
+                //NOT YET implemented Message to user box
+                // if (this.readyState == 4 && this.status == 200) {
+                //     myError.innerHTML = this.responseText;
+                // }
+            };
+            xmlhttp.open("GET", "php/reusables/updateNumClicksAPI.php?id=" + str + "&ischecked=" + isChecked, true);
+            xmlhttp.send();         
+        }   
+    </script>
 </head>
 <body>   
     <section class="list">      
@@ -390,7 +403,7 @@
                                     $displayHeader = $item['category'];
                                 }
                             } else if ($_SESSION['orderBy']=='frecency') {
-                                $frecencyWord = getFrecencyWord($item['frecency']);
+                                $frecencyWord = getFrecencyWord(round($item['calcfrec']));
                                 if ($displayHeader !== $frecencyWord) {
                                     echo '<div class="list__container--items-itemHeader">'.$frecencyWord.'</div>';
                                     $displayHeader = $frecencyWord;
@@ -406,10 +419,10 @@
                                     <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" name="editQty" value="<?php echo $item['qty']; ?>"></div>
                                     <div class="list__container--items-itemTitle"><input type="text" value="<?php echo $item['title']; ?>"></div>            
                                     <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" name="editTitle" value="<?php echo $item['title']; ?>"></div>            
-                                    <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" <?php echo $checked ?>></div>                                  
+                                    <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" data-id="<?php echo $item['id']; ?>" data-checked="<?php echo $item['isChecked']; ?>" onclick="updateNumClicks(this.dataset.id, this.dataset.checked)" <?php echo $checked ?>></div>                                  
                                     <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
                                     <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
-                                    <div class="list__container--items-frecency" hidden><input type="text" name='editId' value="<?php echo $item['frecency']; ?>"></div>                                                   
+                                    <div class="list__container--items-frecency" hidden><input type="text" name='editId' value="<?php echo $item['calcfrec']; ?>"></div>                                                   
                                     <div class="list__container--items-itemId" hidden><input type="text" name='editId' value="<?php echo $item['id']; ?>"></div>                                                   
                                 </div>    
                             </div>

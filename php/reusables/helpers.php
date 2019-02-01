@@ -29,13 +29,32 @@
     }
 
     //Calculate the number of click for a given frecency. Master formula = numClicks * currentClickPeriod (from config file) /timeSinceFirstClick
-    function calculateClicks($firstClick, $frecency=0, $frecencyPeriodInDays) {
+    function calculateClicks($firstClick, $frecency=0, $frecencyInterval) {
         //return 0 if no frecency number
         if ($frecency == 0 || $frecency == '') {
             return 0;
         } 
         //get time in days since first click
-        $timeSinceFirstClick = (strtotime("now") - strtotime($firstClick))/86400;
+        $frecencyIntervalsSinceFirstClick = (strtotime("now") - strtotime($firstClick))/86400;
         //return number of clicks for the given frecency
-        return round(($frecency*$timeSinceFirstClick) / $frecencyPeriodInDays);   //frecencyPeriodInDays can be found in config file    
+        return round(($frecency*$frecencyIntervalsSinceFirstClick) / $frecencyInterval);   //frecencyPeriodInDays can be found in config file    
+    }
+    //Calculate the frecency for a given numClicks and timePeriod. Master formula = numClicks * currentClickPeriod (from config file) /timeSinceFirstClick
+    function calculateFrecency($numClicks, $firstClick, $lastClick, $frecencyInterval) {
+        //get time in days since first click
+        $frecencyIntervalsSinceFirstClick = (strtotime($lastClick) - strtotime($firstClick))/86400;
+
+        //return 0 if no frecency number
+        if ($numClicks == 0 || $numClicks == '') {
+            return 0;
+        }
+        //return 0 if no time since first and lastClick
+        if ($frecencyIntervalsSinceFirstClick == 0 || $frecencyIntervalsSinceFirstClick == '') {
+            return 0;
+        }
+            
+        //return number of clicks for the given frecency
+        //return round(($numClicks*$frecencyInterval) / $frecencyIntervalsSinceFirstClick); //frecencyPeriodInDays can be found in config file 
+        return round(($numClicks) / $frecencyIntervalsSinceFirstClick); //frecencyPeriodInDays can be found in config file 
+            
     }

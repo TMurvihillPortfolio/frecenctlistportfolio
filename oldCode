@@ -1,3 +1,6 @@
+<div class="list__container--items-frecency" style="width: 50px;"><input type="text" name='editId' value="<?php echo calculateFrecency($item['numClicks'], $item['firstClick'], $item['lastClick'], $frecencyInterval); ?>"></div>                                                   
+<div class="list__container--items-frecency" style="width: 50px;"><input type="text" name='editId' value="<?php echo ($item['numClicks']) / $item['frecency']; ?>"></div>                                                   
+                                    
 <!-- <option value="select">select category</option>
     <option value="produce">Produce</option>
     <option value="meat">Meat</option>
