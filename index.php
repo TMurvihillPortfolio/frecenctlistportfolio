@@ -75,9 +75,8 @@
                 $_POST['checkBox'] == 'on' ? $isChecked = 1 : $isChecked = 0;
             }
             //Calculate num of clicks
-            $numClicks = calculateClicks($firstClick, $frecency, $frecencyPeriodInDays);
-
-            
+            $numClicks = calculateClicks($firstClick, $frecency, $frecencyInterval);
+           
             //edit the item in db
             try {
                 //Create and execute query
@@ -138,9 +137,9 @@
                 
                 if ($_POST['checkBox'] == 'on') {
                     $isChecked = 1;
-                    $firstClick = date('Y-m-d', strtotime("-$frecencyPeriodInDays days")); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
+                    $firstClick = date('Y-m-d', strtotime("-$frecencyInterval days")); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
                     $lastClick = date('Y-m-d H:i:s');
-                    $numClicks = calculateClicks($firstClick, $frecency, $frecencyPeriodInDays); //Might be simulated for calculations
+                    $numClicks = calculateClicks($firstClick, $frecency, $frecencyInterval); //Might be simulated for calculations
                     
                 } else {
                     $isChecked = 0;
@@ -201,10 +200,7 @@
          
         if (isset($_POST['editQty'])) {
             $editQty = (int)$_POST['editQty'];
-        }        
-        if (isset($_POST['frecency'])) {
-            $frecency = (int)$_POST['frecency'];
-        }        
+        }      
 
         // //if item checked, set click values
         // if (isset($_POST['checkBox'])) {
@@ -338,8 +334,8 @@
                         </div>
                         <div class="list__addItem--addItemForm-frecency">
                         <?php if (isset($_POST['editItem'])) : ?>
-                            <label for="addFrecency">'Frecency' (0-20 rarely; 20-80 sometimes; 80+ often)</label>   
-                            <input name="addFrecency" type="text" value="<?php echo $editItemObject['frecency']; ?>"/>
+                            <label for="addFrecency">'Frecency' (80+ often, 21-79 sometimes, 1-20 rarely, 0 one-time purchase)</label>   
+                            <input name="addFrecency" type="text" value="<?php echo frecencyDisplay($editItemObject['calcfrec']); ?>"/>
                         <?php else : ?>
                             <label for="addFrecency">Starting 'Frecency'</label>
                             <select name="addFrecency" id="js--addFrecencyRating">
@@ -351,10 +347,10 @@
                         <?php endif; ?>
 
                         </div>
-                        <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecencyEdit" value="<?php echo isset($editItemObject) ? $editItemObject['frecency'] : ''; ?>"></div>
-                        <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFirstClickEdit" value="<?php echo isset($editItemObject) ? $editItemObject['firstClick'] : ''; ?>"></div>
-                        <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemLastClickEdit" value="<?php echo isset($editItemObject) ? $editItemObject['lastClick'] : ''; ?>"></div>
-                        <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="id" value="<?php echo isset($editItemObject) ? $editItemObject['id'] : ''; ?>"></div>
+                        <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecency" value="<?php echo isset($editItemObject) ? $editItemObject['calcfrec'] : ''; ?>"></div>
+                        <div class="" hidden><input id="js--addFirstClickEdit" type="text" name="addItemFirstClickEdit" value="<?php echo isset($editItemObject) ? $editItemObject['firstClick'] : ''; ?>"></div>
+                        <div class="" hidden><input id="js--addLastClickEdit" type="text" name="addItemLastClickEdit" value="<?php echo isset($editItemObject) ? $editItemObject['lastClick'] : ''; ?>"></div>
+                        <div class="" hidden><input id="js--addIdEdit" type="text" name="id" value="<?php echo isset($editItemObject) ? $editItemObject['id'] : ''; ?>"></div>
                     </div>
                     <div class="flex list__addItem--addItemForm-submitButtons">  
                         <input type="submit" class="btn btn__primary" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
@@ -422,7 +418,7 @@
                                     <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" data-id="<?php echo $item['id']; ?>" data-checked="<?php echo $item['isChecked']; ?>" onclick="updateNumClicks(this.dataset.id, this.dataset.checked)" <?php echo $checked ?>></div>                                  
                                     <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
                                     <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
-                                    <div class="list__container--items-frecency" hidden><input type="text" name='editId' value="<?php echo $item['calcfrec']; ?>"></div>                                                   
+                                    <div class="list__container--items-frecency" hidden><input type="text" name='frecency' value="<?php echo $item['calcfrec']; ?>"></div>                                                   
                                     <div class="list__container--items-itemId" hidden><input type="text" name='editId' value="<?php echo $item['id']; ?>"></div>                                                   
                                 </div>    
                             </div>

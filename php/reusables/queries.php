@@ -30,7 +30,7 @@
     }
 
     function getListItemById($db, $id) {
-        $query = "SELECT * FROM ListItems WHERE id=:id";
+        $query = "SELECT *, numClicks*10000/(lastClick-firstClick) as calcfrec FROM ListItems WHERE id=:id";
         $statement = $db->prepare($query);
         $statement->execute(array(':id'=>$id));
         $listItem=$statement->fetch(PDO::FETCH_ASSOC);

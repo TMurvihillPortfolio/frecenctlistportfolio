@@ -36,8 +36,12 @@
         } 
         //get time in days since first click
         $frecencyIntervalsSinceFirstClick = (strtotime("now") - strtotime($firstClick))/86400;
+
+        if ($frecencyIntervalsSinceFirstClick == 0 || $frecencyIntervalsSinceFirstClick == '') {
+            return 0;
+        }
         //return number of clicks for the given frecency
-        return round(($frecency*$frecencyIntervalsSinceFirstClick) / $frecencyInterval);   //frecencyPeriodInDays can be found in config file    
+        return round(($frecency*$frecencyIntervalsSinceFirstClick) / $frecencyInterval);   //frecencyInterval can be found in config file    
     }
     //Calculate the frecency for a given numClicks and timePeriod. Master formula = numClicks * currentClickPeriod (from config file) /timeSinceFirstClick
     function calculateFrecency($numClicks, $firstClick, $lastClick, $frecencyInterval) {
@@ -54,7 +58,14 @@
         }
             
         //return number of clicks for the given frecency
-        //return round(($numClicks*$frecencyInterval) / $frecencyIntervalsSinceFirstClick); //frecencyPeriodInDays can be found in config file 
-        return round(($numClicks) / $frecencyIntervalsSinceFirstClick); //frecencyPeriodInDays can be found in config file 
-            
+        //return round(($numClicks*$frecencyInterval) / $frecencyIntervalsSinceFirstClick); //frecencyInterval can be found in config file 
+        return round(($numClicks) / $frecencyIntervalsSinceFirstClick); //frecencyInterval can be found in config file             
+    }
+
+    //adjust frecency number for display for very large and very small numbers
+    function frecencyDisplay($frecencyNum) {
+        if ($frecencyNum == 0) return 0;
+        if ($frecencyNum < 1) return "<1";
+        if ($frecencyNum > 100) return "100+";
+        return round($frecencyNum);
     }
