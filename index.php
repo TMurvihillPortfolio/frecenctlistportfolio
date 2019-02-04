@@ -7,15 +7,15 @@
     //determine the list order
     if (isset($_POST['category'])) {
         $_SESSION['orderBy'] = 'category';
-        $listItems=getList($db);
+        $listItems=getList($db, $frecencyInterval);
     } else if (isset($_POST['frecency'])) {
         $_SESSION['orderBy'] = 'frecency';
-        $listItems=getList($db);
+        $listItems=getList($db, $frecencyInterval);
     } else if (isset($_POST['alpha'])) {
         $_SESSION['orderBy'] = 'alpha';
-        $listItems=getList($db);
+        $listItems=getList($db, $frecencyInterval);
     } else {
-        $listItems=getList($db);
+        $listItems=getList($db, $frecencyInterval);
     }
     //determine if filter by (un)checked
     if (isset($_POST['checked'])) {
@@ -82,7 +82,6 @@
                 //Create and execute query
                 $query = "UPDATE  ListItems SET title=:title, 
                                                 category=:category, 
-                                                frecency=:frecency, 
                                                 qty=:qty,
                                                 firstClick=:firstClick,
                                                 lastClick=:lastClick,
@@ -92,7 +91,6 @@
                 $statement = $db->prepare($query);
                 $statement->execute(array(':title' => $title,
                                         ':category' => $category,
-                                        ':frecency' => $frecency,
                                         ':qty' => $qty,
                                         ':firstClick' => $firstClick,
                                         ':lastClick' => $lastClick,
@@ -137,8 +135,9 @@
                 
                 if ($_POST['checkBox'] == 'on') {
                     $isChecked = 1;
-                    $firstClick = date('Y-m-d', strtotime("-$frecencyInterval days")); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
+                    $firstClick = date('Y-m-d', strtotime("-100 days")); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
                     $lastClick = date('Y-m-d H:i:s');
+                    $frecencyIntervalsSinceFirstClick = (strtotime("now") - strtotime($firstClick))/86400;
                     $numClicks = calculateClicks($firstClick, $frecency, $frecencyInterval); //Might be simulated for calculations
                     
                 } else {
@@ -148,13 +147,12 @@
             } 
             //Create and execute the query         
             try {
-                $query = "INSERT INTO ListItems (title, category, frecency, qty, id,  isChecked, numClicks, firstClick, lastClick)
-                                    VALUES (:title, :category, :frecency, :qty, :id, :isChecked, :numClicks, :firstClick, :lastClick);";
+                $query = "INSERT INTO ListItems (title, category, qty, id,  isChecked, numClicks, firstClick, lastClick)
+                                    VALUES (:title, :category, :qty, :id, :isChecked, :numClicks, :firstClick, :lastClick);";
                 $statement = $db->prepare($query);
                 $statement->execute(array(
                                     ':title'=>$title,
                                     ':category' => $category, 
-                                    ':frecency' => $frecency, 
                                     ':qty' => $qty, 
                                     ':id' => $id,                           
                                     ':isChecked' => $isChecked,
@@ -172,32 +170,21 @@
 ?>
 <?php //Show edit item window
     if (isset($_POST['editItem'])) {
-        // if (isset($_POST['checkBox'])) {echo $_POST['checkBox'];}else{echo "no set";}
-        // exit;
-        //initialize data variables
         $id = '';
-        // $title = '';
-        // $category = '';
         $editFrecency = -1;
         $editQty = 1;
-        // $isChecked = 'off';
-        // $numClicks = 0;
-        // $firstClick = '';
-        // $lastClick = '';
-
-        
+       
         //Get id from form
         if (isset($_POST['editId'])) {
             $id = $_POST['editId'];
         } 
         //Get editItem values from db that are not in post variable
-        $editItemObject = getListItemById($db, $id); 
+        $editItemObject = getListItemById($db, $id, $frecencyInterval); 
         
         //populate variables for edit form
         if (isset($_POST['editTitle'])) {
             $editTitle = $_POST['editTitle'];
-        }              
-         
+        }                      
         if (isset($_POST['editQty'])) {
             $editQty = (int)$_POST['editQty'];
         }      
@@ -209,7 +196,7 @@
         $query = "DELETE FROM ListItems WHERE id = :id";
         $statement = $db->prepare($query);
         $statement->execute(array(":id"=>$id));
-        $listItems=getList($db);
+        $listItems=getList($db, $frecencyInterval);
         header("Location: index.php", true, 301);
     }
 ?>
@@ -299,7 +286,7 @@
                         <div class="list__addItem--addItemForm-frecency">
                         <?php if (isset($_POST['editItem'])) : ?>
                             <label for="addFrecency">'Frecency' (80+ often, 21-79 sometimes, 1-20 rarely, 0 one-time purchase)</label>   
-                            <input name="addFrecency" type="text" value="<?php echo frecencyDisplay($editItemObject['calcfrec']); ?>"/>
+                            <input name="addFrecency" type="text" value="<?php echo calculateFrecency($editItemObject['numClicks'],$editItemObject['firstClick'], $frecencyInterval); ?>"/>
                         <?php else : ?>
                             <label for="addFrecency">Starting 'Frecency'</label>
                             <select name="addFrecency" id="js--addFrecencyRating">
@@ -323,7 +310,7 @@
                 </form>  
             </div>
         </div> 
-        <form action="index.php" method="post" name="viewByOrderBy">
+        <form action="index.php" method="post" name="viewByOrderBy"  style="display: <?php echo (isset($_POST['editItem'])) ? 'none' : 'block' ?>">
             <div class="list__orderBy" id="js--addItemOrderBy">
                 <div class="list__orderBy--header">Order By:</div>
                 <div class="list__orderBy--btns">                   
@@ -341,7 +328,7 @@
                 </div>
             </div>
         </form>
-        <div class="list__container" id="js--addItemListContainer">
+        <div class="list__container" style="display: <?php echo (isset($_POST['editItem'])) ? 'none' : 'block' ?>" id="js--addItemListContainer">
             <div class="list__container--headers">
                 <p>Qty</p>
                 <p>Item</p>
@@ -363,7 +350,7 @@
                                     $displayHeader = $item['category'];
                                 }
                             } else if ($_SESSION['orderBy']=='frecency') {
-                                $frecencyWord = getFrecencyWord(round($item['calcfrec']));
+                                $frecencyWord = getFrecencyWord(calculateFrecency($item['numClicks'], $item['firstClick'], $frecencyInterval));
                                 if ($displayHeader !== $frecencyWord) {
                                     echo '<div class="list__container--items-itemHeader">'.$frecencyWord.'</div>';
                                     $displayHeader = $frecencyWord;
@@ -380,7 +367,7 @@
                                     <div class="list__container--items-itemTitle"><input type="text" value="<?php echo $item['title']; ?>"></div>            
                                     <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" name="editTitle" value="<?php echo $item['title']; ?>"></div>            
                                     <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" data-id="<?php echo $item['id']; ?>" data-checked="<?php echo $item['isChecked']; ?>" onclick="updateNumClicks(this.dataset.id, this.dataset.checked)" <?php echo $checked ?>></div>                                  
-                                    <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem" onClick="prepareEnvironmentAddItemForm();"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
+                                    <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
                                     <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
                                     <div class="list__container--items-frecency" hidden><input type="text" name='frecency' value="<?php echo $item['calcfrec']; ?>"></div>                                                   
                                     <div class="list__container--items-itemId" hidden><input type="text" name='editId' value="<?php echo $item['id']; ?>"></div>                                                   

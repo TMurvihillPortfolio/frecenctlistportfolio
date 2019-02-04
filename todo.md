@@ -1,6 +1,7 @@
 # TODO
 
 - implement error messages
+- frecency calc does not work when you change the dates, frecency order goes wacky
 
 ### Low Priority
 - after delete, scroll to location of where deleted item was

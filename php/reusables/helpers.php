@@ -16,11 +16,11 @@
     function getFrecencyNumber($frecencyWord) {
         switch ($frecencyWord) {
             case 'often' :
-                return 90;
+                return 18;
             case 'sometimes' :
-                return 50;
-            case 'rarely' :
                 return 10;
+            case 'rarely' :
+                return 2;
             case 'one-time Purchase' :
                 return 0;
             default :
@@ -30,24 +30,26 @@
 
     //Calculate the number of click for a given frecency. Master formula = numClicks * currentClickPeriod (from config file) /timeSinceFirstClick
     function calculateClicks($firstClick, $frecency=0, $frecencyInterval) {
+        
         //return 0 if no frecency number
         if ($frecency == 0 || $frecency == '') {
             return 0;
         } 
         //get time in days since first click
-        $frecencyIntervalsSinceFirstClick = (strtotime("now") - strtotime($firstClick))/86400;
+        $frecencyIntervalsSinceFirstClick = ((strtotime(Date("Y-m-d")) - strtotime($firstClick))/86400)/100                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ;
 
         if ($frecencyIntervalsSinceFirstClick == 0 || $frecencyIntervalsSinceFirstClick == '') {
             return 0;
         }
         //return number of clicks for the given frecency
-        return round(($frecency*$frecencyIntervalsSinceFirstClick) / $frecencyInterval);   //frecencyInterval can be found in config file    
+        return round($frecencyIntervalsSinceFirstClick*($frecency / $frecencyInterval));   //frecencyInterval can be found in config file    
     }
     //Calculate the frecency for a given numClicks and timePeriod. Master formula = numClicks * currentClickPeriod (from config file) /timeSinceFirstClick
-    function calculateFrecency($numClicks, $firstClick, $lastClick, $frecencyInterval) {
+    function calculateFrecency($numClicks, $firstClick, $frecencyInterval) {
         //get time in days since first click
-        $frecencyIntervalsSinceFirstClick = (strtotime($lastClick) - strtotime($firstClick))/86400;
-
+        $frecencyIntervalsSinceFirstClick = (((strtotime(date("Y-m-d"))-strtotime($firstClick))/86400)/100);
+        $clicksPerInterval = $numClicks/$frecencyIntervalsSinceFirstClick;
+        
         //return 0 if no frecency number
         if ($numClicks == 0 || $numClicks == '') {
             return 0;
@@ -58,8 +60,9 @@
         }
             
         //return number of clicks for the given frecency
-        //return round(($numClicks*$frecencyInterval) / $frecencyIntervalsSinceFirstClick); //frecencyInterval can be found in config file 
-        return round(($numClicks) / $frecencyIntervalsSinceFirstClick); //frecencyInterval can be found in config file             
+        //sql version  of calculation for queries: frecency = ((numClicks/((DATE()-firstClick)/86400))/100)*5 
+        return round($clicksPerInterval*$frecencyInterval); //frecencyInterval can be found in config file   
+        //return 24;          
     }
 
     //adjust frecency number for display for very large and very small numbers

@@ -9,5 +9,5 @@
 
     //for frecency calculations
     //!!!!! WARNING if this number changed all list item numCLicks need to be updated in database
-    $frecencyInterval = 100; //NOT YET IMPLEMENTED if this number changed all list items need to be updated in database
+    $frecencyInterval = 5; //NOT YET IMPLEMENTED if this number changed all list items need to be updated in database
 ?>

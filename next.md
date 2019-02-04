@@ -1,8 +1,8 @@
 # WHAT TO DO NEXT
 
-- why isn't list stay disappearred when edit item clicked
-- get frecency to work correctly in editItem
-- get frecency to work correctly in addItem (might be ok already)
-- remove frecency field, make it only by calculation 
-- change expected clicks for 'often' to once per day to once per days, i.e 20 clickes per 100 days
+- clicks being added on unclick as well as click
+- when rare item rounded to zero, becomes one-time-purchase, needs to stay rare
+- editting category on apples made it add a new item? check this
+- number of clicks not updating in added items, only in old items
+- start over with frecency
 
