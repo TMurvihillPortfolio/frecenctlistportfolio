@@ -1,3 +1,40 @@
+ // //if item checked, set click values
+        // if (isset($_POST['checkBox'])) {
+        //     if ($_POST['checkBox'] == 'on') {
+        //         $isChecked = 1;
+        //         $numClicks = 1;
+        //         $firstClick = time();
+        //         $lastClick = time();
+        //     } else {
+        //         $isChecked = 0;
+        //         $numClicks = 0;
+        //     }
+        // }
+        
+        // //add the item
+        // try {
+        //     $query = "INSERT INTO ListItems (title, category, frecency, id, isChecked, numClicks, firstClick, lastClick)
+        //                         VALUES (:title, :category, :frecency, :id, :isChecked, :numClicks, :firstClick, :lastClick);";
+        //     $statement = $db->prepare($query);
+        //     $statement->execute(array(
+        //                         ':title'=>$title,
+        //                         ':category' => $category, 
+        //                         ':frecency' => $frecency, 
+        //                         ':id' => $id,                          
+        //                         ':isChecked' => $isChecked,
+        //                         ':numClicks' => $numClicks,
+        //                         ':firstClick' => $firstClick,
+        //                         ':lastClick' => $lastClick
+        //     ));
+        // } catch Exception $e {
+        //     //NOT YET IMPLEMENTE
+        // }
+
+        // //restore environment
+        // $_POST = [];
+        // header("Location: index.php", true, 301);
+
+
 <div class="list__container--items-frecency" style="width: 50px;"><input type="text" name='editId' value="<?php echo calculateFrecency($item['numClicks'], $item['firstClick'], $item['lastClick'], $frecencyInterval); ?>"></div>                                                   
 <div class="list__container--items-frecency" style="width: 50px;"><input type="text" name='editId' value="<?php echo ($item['numClicks']) / $item['frecency']; ?>"></div>                                                   
                                     

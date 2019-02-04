@@ -7,6 +7,12 @@
     }
     &__secondary {
         background-color: $colorSecondary;
+        &--selected {
+            color: $colorPrimary;
+            background-color: $colorSecondaryDark;           
+            outline: 2px solid $colorSecondary;
+            border-radius: unset;           
+        }
     }
     &__secondaryDark {
         background-color: $colorSecondaryDark;

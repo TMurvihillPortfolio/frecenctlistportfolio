@@ -16,7 +16,7 @@
             $listItems=$statement->fetchAll(PDO::FETCH_ASSOC);
             return $listItems;
         } catch (Exception $e) {
-            echo e;
+            echo $e;
         }
     }
 

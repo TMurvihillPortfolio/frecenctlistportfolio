@@ -40,6 +40,11 @@ hr {
     background-color: #FFCE00; }
   .btn__secondary {
     background-color: #BCB5D7; }
+    .btn__secondary--selected {
+      color: #FFCE00;
+      background-color: #4D2D6F;
+      outline: 2px solid #BCB5D7;
+      border-radius: unset; }
   .btn__secondaryDark {
     background-color: #4D2D6F; }
   .btn__width125 {

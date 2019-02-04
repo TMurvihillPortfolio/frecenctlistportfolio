@@ -201,42 +201,6 @@
         if (isset($_POST['editQty'])) {
             $editQty = (int)$_POST['editQty'];
         }      
-
-        // //if item checked, set click values
-        // if (isset($_POST['checkBox'])) {
-        //     if ($_POST['checkBox'] == 'on') {
-        //         $isChecked = 1;
-        //         $numClicks = 1;
-        //         $firstClick = time();
-        //         $lastClick = time();
-        //     } else {
-        //         $isChecked = 0;
-        //         $numClicks = 0;
-        //     }
-        // }
-        
-        // //add the item
-        // try {
-        //     $query = "INSERT INTO ListItems (title, category, frecency, id, isChecked, numClicks, firstClick, lastClick)
-        //                         VALUES (:title, :category, :frecency, :id, :isChecked, :numClicks, :firstClick, :lastClick);";
-        //     $statement = $db->prepare($query);
-        //     $statement->execute(array(
-        //                         ':title'=>$title,
-        //                         ':category' => $category, 
-        //                         ':frecency' => $frecency, 
-        //                         ':id' => $id,                          
-        //                         ':isChecked' => $isChecked,
-        //                         ':numClicks' => $numClicks,
-        //                         ':firstClick' => $firstClick,
-        //                         ':lastClick' => $lastClick
-        //     ));
-        // } catch Exception $e {
-        //     //NOT YET IMPLEMENTE
-        // }
-
-        // //restore environment
-        // $_POST = [];
-        // header("Location: index.php", true, 301);
     }
 ?>
 <?php //Delete item
@@ -260,7 +224,7 @@
     <link rel="shortcut icon" href="img/favicon.png">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
-    <script type="text/javascript" src="js/script.js"></script>
+    
 
     <title>'Frecent' ListMaker</title>
     <script>
@@ -287,7 +251,7 @@
             <div class="list__search--input"><input type="text" class="list__search--input-input" placeholder="search list"><img src = "./img/searchIcon.png" class="list__search--input-icon" alt="Search Icon Magnifying glass"></div>
         </div>
         <div class="list__addItem">
-            <button class="btn btn__secondary" onClick="document.getElementById('js--addItemForm').style.display = 'block';">Add Item</button>
+            <button class="btn btn__secondary" onClick="prepareEnvironmentAddItemForm();">Add Item</button>
             <div class="list__addItem--addItemForm" style="display: <?php echo (isset($_POST['editItem'])) ? 'block' : 'none' ?>" id="js--addItemForm">                 
                 <!-- Add/Edit Item Form Headers -->
                 <div>
@@ -354,30 +318,30 @@
                     </div>
                     <div class="flex list__addItem--addItemForm-submitButtons">  
                         <input type="submit" class="btn btn__primary" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
-                        <input type="submit" class="btn btn__secondary" name="addEditCancel" id="js--cancelEditAddItem" onClick="document.getElementById('js--addItemForm').style.display = 'none';" value="Cancel"/>
+                        <input type="submit" class="btn btn__secondary" name="addEditCancel" id="js--cancelEditAddItem" onClick="restoreEnvironmentAddItemForm();" value="Cancel"/>
                     </div>    
                 </form>  
             </div>
         </div> 
         <form action="index.php" method="post" name="viewByOrderBy">
-            <div class="list__orderBy">
+            <div class="list__orderBy" id="js--addItemOrderBy">
                 <div class="list__orderBy--header">Order By:</div>
                 <div class="list__orderBy--btns">                   
-                        <input type="submit" class="btn btn__secondary btn__width125" name="frecency" value="Frecency"/>
-                        <input type="submit" class="btn btn__secondary btn__width125" name="alpha" value="Alphabetical"/>
-                        <input type="submit" class="btn btn__secondary btn__width125" name="category" value="Category"/>              
+                        <input type="submit" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'frecency') ? 'btn__secondary--selected' : ''; ?>" name="frecency" value="Frecency"/>
+                        <input type="submit" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'alpha') ? 'btn__secondary--selected' : ''; ?>" name="alpha" value="Alphabetical"/>
+                        <input type="submit" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'category') ? 'btn__secondary--selected' : ''; ?>" name="category" value="Category"/>              
                 </div>                
             </div>
-            <div class="list__filterBy">
+            <div class="list__filterBy" id="js--addItemFilterBy">
                 <div class="list__filterBy--header">View By:</div>
                 <div class="list__filterBy--btns">
-                    <input type='submit' class="btn btn__secondary btn__width125" name="viewAll" value="All"/>
-                    <input type='submit' class="btn btn__secondary btn__width125" name="checked" value="Checked"/>
-                    <input type='submit' class="btn btn__secondary btn__width125" name="unChecked" value="Unchecked"/>               
+                    <input type='submit' class="btn btn__secondary btn__width125 <?php echo ($_SESSION['viewBy'] == 'all') ? 'btn__secondary--selected' : ''; ?>" name="viewAll" value="All"/>
+                    <input type='submit' class="btn btn__secondary btn__width125 <?php echo ($_SESSION['viewBy'] == 'checked') ? 'btn__secondary--selected' : ''; ?>" name="checked" value="Checked"/>
+                    <input type='submit' class="btn btn__secondary btn__width125 <?php echo ($_SESSION['viewBy'] == 'unChecked') ? 'btn__secondary--selected' : ''; ?>" name="unChecked" value="Unchecked"/>               
                 </div>
             </div>
         </form>
-        <div class="list__container">
+        <div class="list__container" id="js--addItemListContainer">
             <div class="list__container--headers">
                 <p>Qty</p>
                 <p>Item</p>
@@ -416,7 +380,7 @@
                                     <div class="list__container--items-itemTitle"><input type="text" value="<?php echo $item['title']; ?>"></div>            
                                     <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" name="editTitle" value="<?php echo $item['title']; ?>"></div>            
                                     <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" data-id="<?php echo $item['id']; ?>" data-checked="<?php echo $item['isChecked']; ?>" onclick="updateNumClicks(this.dataset.id, this.dataset.checked)" <?php echo $checked ?>></div>                                  
-                                    <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
+                                    <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem" onClick="prepareEnvironmentAddItemForm();"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
                                     <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
                                     <div class="list__container--items-frecency" hidden><input type="text" name='frecency' value="<?php echo $item['calcfrec']; ?>"></div>                                                   
                                     <div class="list__container--items-itemId" hidden><input type="text" name='editId' value="<?php echo $item['id']; ?>"></div>                                                   
@@ -428,5 +392,6 @@
             </div>                
         </div>        
     </section>
+    <script type="text/javascript" src="js/script.js?v=6.07"></script>
 </body>
 </html>
