@@ -220,6 +220,31 @@
         <br> 
         <hr>
         <br>
+        <!-- Login -->
+        <div class="login signatureBox">
+            <div class="login__line1">
+                <h3>Login<span> Page</span> </h3>
+                <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up</a></h4>
+            </div>
+            
+            <form action="login.php" method="post" class="login__form">
+                                                
+                <div class="login__form--email">
+                    <label for="email">Email: </label>
+                    <input name="email" type="email" required>                                           
+                </div>
+                            
+                <div class="login__form--password">
+                    <label for="password">Password: </label>
+                    <input name="password" type="password" placeholder="password" required>                
+                </div>
+            
+                <div class="login__form--submit">
+                    <input type="submit" name="submit" class="btn" value="Submit"/>           
+                    <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up<a></h4>
+                </div>
+            </form>
+        </div>
         <div class="list__search">
             <div class="list__search--input"><input type="text" class="list__search--input-input" placeholder="search list"><img src = "./img/searchIcon.png" class="list__search--input-icon" alt="Search Icon Magnifying glass"></div>
         </div>
@@ -296,7 +321,7 @@
                 </form>  
             </div>
         </div> 
-        <form action="index.php" method="post" name="viewByOrderBy"  style="display: <?php echo (isset($_POST['editItem'])) ? 'none' : 'block' ?>">
+        <form action="index.php" method="post" name="viewByOrderBy" style="display: <?php echo (isset($_POST['editItem'])) ? 'none' : 'block' ?>">
             <div class="list__orderBy" id="js--addItemOrderBy">
                 <div class="list__orderBy--header">Order By:</div>
                 <div class="list__orderBy--btns">                   

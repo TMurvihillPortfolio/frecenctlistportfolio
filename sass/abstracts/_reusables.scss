@@ -21,3 +21,18 @@
         width: 125px;
     }
 }
+.signatureBox {
+    display: block;
+    margin: 25px auto;
+    border: 2px solid $colorPrimary;
+    border-top: 30px solid $colorPrimary;
+    padding: 1rem;
+    width: fit-content;
+
+    & h4 {
+        color: $colorPrimary;
+    }
+    & span {
+        color: $colorSecondary;
+    }
+}

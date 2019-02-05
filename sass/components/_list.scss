@@ -1,5 +1,4 @@
 .list {
-   
     padding: 50px;
     width: 85%;
     margin: 50px auto;
@@ -8,6 +7,7 @@
     border: 1px solid $colorSecondaryDark;
    
     &__search { 
+        display: none;
         &--input {
             background-color: $colorGreyLightPrimary;
             width: 350px;
@@ -27,6 +27,7 @@
         }
     } 
     &__addItem{ 
+        display: none;
         margin: auto;
 
         &>button {
@@ -78,8 +79,7 @@
                 display: block;                    
                 margin: auto;
                 margin-top: 15px;
-                width: 6rem;
-                
+                width: 6rem;               
             }
         }  
     }
@@ -88,10 +88,10 @@
         color: $colorPrimary;
         letter-spacing: 4px;
         word-spacing: 9px;
-        font-weight: 500;
-        
+        font-weight: 500;        
     }
     &__orderBy {
+        display: none;
         margin: 30px 0;
         &--header {
             color: $colorPrimary;
@@ -109,6 +109,7 @@
         }
     }
     &__filterBy {
+        display: none;
         margin: 30px 0;
         &--header {
             color: $colorPrimary;

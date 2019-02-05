@@ -32,6 +32,18 @@ hr {
   justify-content: space-between;
   flex-wrap: wrap; }
 
+@media only screen and (max-width: 75em) {
+  font-size: 56.25%; }
+
+@media only screen and (max-width: 56.25em) {
+  font-size: 50%; }
+
+@media only screen and (max-width: 37.5em) {
+  font-size: 50%; }
+
+@media only screen and (min-width: 112.5em) {
+  font-size: 75%; }
+
 .btn {
   border-radius: 7px;
   padding: 7px 10px;
@@ -49,6 +61,18 @@ hr {
     background-color: #4D2D6F; }
   .btn__width125 {
     width: 125px; }
+
+.signatureBox {
+  display: block;
+  margin: 25px auto;
+  border: 2px solid #FFCE00;
+  border-top: 30px solid #FFCE00;
+  padding: 1rem;
+  width: fit-content; }
+  .signatureBox h4 {
+    color: #FFCE00; }
+  .signatureBox span {
+    color: #BCB5D7; }
 
 .header {
   width: 100%;
@@ -112,21 +136,24 @@ hr {
   border-radius: 7px;
   background-color: #4D2D6F;
   border: 1px solid #4D2D6F; }
-  .list__search--input {
-    background-color: #fcfcfc;
-    width: 350px;
-    height: 40px;
-    display: flex;
-    margin: auto;
-    border-radius: 7px; }
-    .list__search--input > input {
-      font-size: 24px;
-      width: 100%;
-      border-radius: 3px;
-      padding: 2px; }
-    .list__search--input > img {
-      height: 30px; }
+  .list__search {
+    display: none; }
+    .list__search--input {
+      background-color: #fcfcfc;
+      width: 350px;
+      height: 40px;
+      display: flex;
+      margin: auto;
+      border-radius: 7px; }
+      .list__search--input > input {
+        font-size: 24px;
+        width: 100%;
+        border-radius: 3px;
+        padding: 2px; }
+      .list__search--input > img {
+        height: 30px; }
   .list__addItem {
+    display: none;
     margin: auto; }
     .list__addItem > button {
       width: 40%;
@@ -174,6 +201,7 @@ hr {
     word-spacing: 9px;
     font-weight: 500; }
   .list__orderBy {
+    display: none;
     margin: 30px 0; }
     .list__orderBy--header {
       color: #FFCE00;
@@ -188,6 +216,7 @@ hr {
       display: flex;
       justify-content: space-between; }
   .list__filterBy {
+    display: none;
     margin: 30px 0; }
     .list__filterBy--header {
       color: #FFCE00;
@@ -264,3 +293,71 @@ hr {
           background-color: #ffe47d;
           font-size: 14px;
           padding: 2px; }
+
+.login {
+  display: block; }
+  .login__line1 {
+    display: flex;
+    justify-content: space-between; }
+    .login__line1 > h3 {
+      font-size: 200%;
+      color: #BCB5D7;
+      margin-bottom: 2rem;
+      margin-top: 1rem; }
+      .login__line1 > h3 > span {
+        color: #FFCE00; }
+    .login__line1--signup {
+      padding-top: 1rem; }
+      .login__line1--signup > a {
+        font-style: italic;
+        color: #FFCE00;
+        margin-left: 1rem; }
+  .login__form {
+    color: #FFCE00;
+    font-weight: 400; }
+    .login__form--username {
+      display: flex; }
+      .login__form--username > input {
+        padding-left: 5px; }
+      @media only screen and (max-width: 37.5em) {
+        .login__form--username {
+          display: block; } }
+    .login__form--email {
+      display: flex; }
+      .login__form--email > label {
+        flex: 2; }
+      .login__form--email > input {
+        padding-left: 5px;
+        width: 14rem;
+        flex: 6; }
+      @media only screen and (max-width: 37.5em) {
+        .login__form--email {
+          display: block; } }
+    .login__form--password {
+      display: flex; }
+      @media only screen and (max-width: 37.5em) {
+        .login__form--password {
+          display: block; } }
+      .login__form--password > label {
+        flex: 2; }
+      .login__form--password > input {
+        flex: 6; }
+    .login__form--submit {
+      display: flex;
+      justify-content: space-between; }
+      .login__form--submit > input {
+        font-size: 100%; }
+      .login__form--submit > a {
+        margin-right: -170px; }
+    .login__form > div > label,
+    .login__form > div > input,
+    .login__form > div > select {
+      margin: .5rem;
+      border-radius: 7px; }
+    @media only screen and (max-width: 37.5em) {
+      .login__form > div > input,
+      .login__form > div > select {
+        font-size: 100%; } }
+    .login__form > div > input {
+      border-radius: 4px;
+      font-size: 20px; }

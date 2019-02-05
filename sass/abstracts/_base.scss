@@ -37,3 +37,22 @@ hr {
     justify-content: space-between;
     flex-wrap: wrap;
 }
+//BTW Media queries do not refer to the rem size we defined above.
+//We use ems in the mixin in order to get user changes in default settings into scope. 
+
+@include respond(landscape) {
+    //We want landscape to default to 9px font-size. 9px/16px = 56.25%. 
+    //Now 4rem in our code becomes 36px instead of 40px
+    font-size: 56.25%; // font = 9px; screen= 1200px
+}
+
+@include respond(portrait) {
+    font-size: 50%; // font = 8px; screen= 900px
+}
+@include respond(phone) {
+    font-size: 50%; // font = 8px; screen= 600px
+}
+
+@include respond(bigScreen) {
+    font-size: 75%; // font = 12px; screen= 1800+px
+}
