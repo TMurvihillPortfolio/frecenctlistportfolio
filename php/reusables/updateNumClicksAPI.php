@@ -13,7 +13,7 @@
 
     //for frecency calculations
     //!!!!! WARNING if this number changed all list item numCLicks need to be updated in database
-    $frecencyInterval = 100; //NOT YET IMPLEMENTED if this number changed all list items need to be updated in database
+    //$frecencyInterval = 100; //NOT YET IMPLEMENTED if this number changed all list items need to be updated in database
 //end config.php
 
 //set variables from config file array
@@ -27,17 +27,18 @@
 //connect to the database
 try {
     $db = new PDO($dsn,$username,$password);
-
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     //echo "Connected to frecency database";
 } catch (PDOException $ex){
     echo "Connection failed ".$ex->getMessage();
 }
 
+//Get posted variables
 $updateClicksId = $_REQUEST['id'];
-$isChecked = $_REQUEST['ischecked'];
+($_REQUEST['ischecked'] === 'true') ? $isChecked = 1 : $isChecked = 0;
 
-if ($isChecked==0) {
+//update db number of clicks and isClicked
+if ($isChecked==1) {
     $query = "UPDATE ListItems SET numClicks = (numClicks + 1), isChecked = 1 WHERE id = :updateClicksId";
     $statement = $db->prepare($query);
     $statement->execute(array(":updateClicksId"=>$updateClicksId));

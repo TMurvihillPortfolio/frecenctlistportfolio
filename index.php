@@ -211,22 +211,8 @@
     <link rel="shortcut icon" href="img/favicon.png">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
-    
-
     <title>'Frecent' ListMaker</title>
-    <script>
-        function updateNumClicks(str, isChecked) {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function (){
-                //NOT YET implemented Message to user box
-                // if (this.readyState == 4 && this.status == 200) {
-                //     myError.innerHTML = this.responseText;
-                // }
-            };
-            xmlhttp.open("GET", "php/reusables/updateNumClicksAPI.php?id=" + str + "&ischecked=" + isChecked, true);
-            xmlhttp.send();         
-        }   
-    </script>
+    
 </head>
 <body>   
     <section class="list">      
@@ -364,9 +350,9 @@
                                 <div class="flex">
                                     <div class="list__container--items-itemQty"><input type="text" value="<?php echo $item['qty']; ?>" disabled></div>
                                     <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" name="editQty" value="<?php echo $item['qty']; ?>"></div>
-                                    <div class="list__container--items-itemTitle"><input type="text" value="<?php echo $item['title']; ?>"></div>            
+                                    <div class="list__container--items-itemTitle" id='js--tempId'><input type="text" value="<?php echo $item['title']; ?>"></div>            
                                     <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" name="editTitle" value="<?php echo $item['title']; ?>"></div>            
-                                    <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" data-id="<?php echo $item['id']; ?>" data-checked="<?php echo $item['isChecked']; ?>" onclick="updateNumClicks(this.dataset.id, this.dataset.checked)" <?php echo $checked ?>></div>                                  
+                                    <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" data-id="<?php echo $item['id']; ?>" onclick="updateNumClicks(this.dataset.id, this.checked);" <?php echo $checked ?>></div>                                  
                                     <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
                                     <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
                                     <div class="list__container--items-frecency" hidden><input type="text" name='frecency' value="<?php echo $item['calcfrec']; ?>"></div>                                                   
@@ -379,6 +365,24 @@
             </div>                
         </div>        
     </section>
+    <script>
+        function updateNumClicks(str, isChecked) {
+            console.log(str + '|' + isChecked);
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function (){               
+                //NOT YET implemented Message to user box on erro
+                // if (this.readyState == 4 && this.status == 200) {
+                //     //document.getElementById("js--tempId").style.background-color = 'green';
+                //     document.getElementById("js--tempId").innerHTML = this.responseText;
+                // } else {
+                //     //document.getElementById("js--tempId").style.background-color = 'red';
+                //     //document.getElementById("js--tempId").innerHTML = this.responseText;
+                // }
+            };
+            xmlhttp.open("GET", "php/reusables/updateNumClicksAPI.php?id=" + str + "&ischecked=" + isChecked, true);
+            xmlhttp.send();         
+        }   
+    </script>
     <script type="text/javascript" src="js/script.js?v=6.07"></script>
 </body>
 </html>
