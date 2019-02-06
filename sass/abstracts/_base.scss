@@ -8,7 +8,8 @@ html {
     //This defines what our default font is in rems. We decided we wanted 1 rem to default to = 10px. 
     //We chose 10px for ease of conversion from px to rem
     font-size: 62.5%; // 1 rem = 10px or 10px/16px = 62.5%
-    background-color: #fff;
+    //background-color: $colorSecondaryLight;
+    background-color: tomato;
     color: #555;
     font-family: 'Lato', 'Arial', san-serif;
     font-size: 20px;

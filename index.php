@@ -292,14 +292,14 @@
                 <li class="mainNav__nav--item">
                     <a href="index.php#about">About</a>
                 </li>
-                <li class="mainNav__nav--item">
+                <!-- <li class="mainNav__nav--item">
                     <a href="login.php">Login</a>
-                </li>
+                </li> -->
             <!-- <?php endif; ?> -->
         </ul>
     </section>
     <section class="list">      
-        <h1>My 'Frecent' List</h1>
+        <h1><?php echo (isset($_SESSION['id']) && $_SESSION['id'] !== '') ? $_SESSION['id'] : "My"; ?>'s 'Frecent' List</h1>
         <br> 
         <hr>
         <br>
