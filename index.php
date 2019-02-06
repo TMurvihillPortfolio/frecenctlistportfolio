@@ -3,8 +3,76 @@
 <?php include_once 'php/classes/Database.php'; ?>
 <?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
-<?php 
-    //determine the list order
+<?php //determine if login window needed
+    $_SESSION['user']="";
+    $loginNeeded = true;
+
+    if (isset($_SESSION['user']) && $_SESSION['user'] !== '') {
+        echo 'imi false';
+        $loginNeeded = false;
+    }
+    echo $loginNeeded ? 'true' : 'false';
+?>
+<?php //on login submit button
+    if(isset($_POST['submit'])){  
+        echo 'imin submit';  
+        $inputPassword = $_POST['password'];
+        $inputEmail = $_POST['email'];
+        
+        try {
+            $splQuery = "SELECT * FROM user WHERE email = :email";
+            $statement = $db->prepare($splQuery);
+            $statement->execute(array(':email'=>$inputEmail));
+
+            if($row=$statement->fetch()){
+                echo "imin 28";
+                $id = $row['id'];
+                $hashed_password = $row['password'];
+                $password = $row['password'];
+                $activated = $row['active'];
+                echo '<br>';
+                echo $password.'|';
+                echo $inputPassword.'|';
+    
+                //if(password_verify($inputPassword, $hashed_password)){ //NOT YET IMPLEMENTED HASHED PASSWORD
+                if ($password == $inputPassword) {
+                    echo 'imin verigy';
+                    if ($activated) {
+                        echo 'imin activated';
+                        //clear old session
+                        if (isset($_SESSION['id'])) {
+                            unset($_SESSION['piggyBankId']);
+                            unset($_SESSION['piggyBankOwner']);
+                            unset($_SESSION['piggyBankName']);
+                            unset($_SESSION['id']);
+
+                            // NOT YET IMPLEMENTED if(isset($_COOKIE['rememberUserCookie'])){
+                            //     uset($_COOKIE['rememberUserCookie']);
+                            //     setcookie('rememberUserCookie', null, -1, '/');
+                            // } 
+                        }
+                        $_SESSION['id'] = $id; 
+                        echo 'imin id';
+                        echo $_SESSION['id'];                        
+                        //header("Location: index.php");
+                    }else{
+                        $result="Account not activated. Please check your email inbox for a verification email.";
+                    }
+                }else{           
+                    $result = "Invalid password.<br>Please try again.";
+                }
+                    
+            }else{
+                $result = "Email not found.<br>Please try again.";
+            }
+
+        } catch (PDOException $ex) {
+            $result = "An error occurred.<br>Error message number: ".$ex->getCode();
+        }  
+    }
+?>
+<?php //get list and categories
+    
     if (isset($_POST['category'])) {
         $_SESSION['orderBy'] = 'category';
         $listItems=getList($db, $frecencyInterval);
@@ -28,13 +96,13 @@
     //Get Categories Query dependency: php/reusables/queries.php
     $categories=getCategories($db);
 ?>
-<?php 
+<?php //restore environment
     if (isset($_POST['addEditCancel'])) {
         unset($_POST['editItem']);
         unset($_POST['addEditCancel']);
     }
 ?>
-<?php
+<?php //add/edit submit button clicked
     if (isset($_POST['addEditSave'])) {
         //EDIT the item
         if (isset($_POST['id']) && $_POST['id'] !== '') {          
@@ -168,7 +236,7 @@
         header("Location: index.php", true, 301);      
     }
 ?>
-<?php //Show edit item window
+<?php //show edit item window
     if (isset($_POST['editItem'])) {
         $id = '';
         $editFrecency = -1;
@@ -221,22 +289,23 @@
         <hr>
         <br>
         <!-- Login -->
-        <div class="login signatureBox">
+        <div class="login signatureBox" style="display: <?php echo $loginNeeded ? 'block' : 'none' ?>">
             <div class="login__line1">
                 <h3>Login<span> Page</span> </h3>
                 <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up</a></h4>
+                
             </div>
-            
-            <form action="login.php" method="post" class="login__form">
+            <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
+            <form action="index.php" method="post" class="login__form">
                                                 
                 <div class="login__form--email">
                     <label for="email">Email: </label>
-                    <input name="email" type="email" required>                                           
+                    <input name="email" type="email" value='tmurv@shaw.ca' required>                                           
                 </div>
                             
                 <div class="login__form--password">
                     <label for="password">Password: </label>
-                    <input name="password" type="password" placeholder="password" required>                
+                    <input name="password" type="password" placeholder="password" value='weSS#4ling' required>                
                 </div>
             
                 <div class="login__form--submit">
@@ -245,10 +314,10 @@
                 </div>
             </form>
         </div>
-        <div class="list__search">
+        <div class="list__search" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
             <div class="list__search--input"><input type="text" class="list__search--input-input" placeholder="search list"><img src = "./img/searchIcon.png" class="list__search--input-icon" alt="Search Icon Magnifying glass"></div>
         </div>
-        <div class="list__addItem">
+        <div class="list__addItem" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
             <button class="btn btn__secondary" onClick="prepareEnvironmentAddItemForm();">Add Item</button>
             <div class="list__addItem--addItemForm" style="display: <?php echo (isset($_POST['editItem'])) ? 'block' : 'none' ?>" id="js--addItemForm">                 
                 <!-- Add/Edit Item Form Headers -->
@@ -321,8 +390,8 @@
                 </form>  
             </div>
         </div> 
-        <form action="index.php" method="post" name="viewByOrderBy" style="display: <?php echo (isset($_POST['editItem'])) ? 'none' : 'block' ?>">
-            <div class="list__orderBy" id="js--addItemOrderBy">
+        <form action="index.php" method="post" name="viewByOrderBy">
+            <div class="list__orderBy" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>" id="js--addItemOrderBy">
                 <div class="list__orderBy--header">Order By:</div>
                 <div class="list__orderBy--btns">                   
                         <input type="submit" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'frecency') ? 'btn__secondary--selected' : ''; ?>" name="frecency" value="Frecency"/>
@@ -330,7 +399,7 @@
                         <input type="submit" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'category') ? 'btn__secondary--selected' : ''; ?>" name="category" value="Category"/>              
                 </div>                
             </div>
-            <div class="list__filterBy" id="js--addItemFilterBy">
+            <div class="list__filterBy" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>" id="js--addItemFilterBy">
                 <div class="list__filterBy--header">View By:</div>
                 <div class="list__filterBy--btns">
                     <input type='submit' class="btn btn__secondary btn__width125 <?php echo ($_SESSION['viewBy'] == 'all') ? 'btn__secondary--selected' : ''; ?>" name="viewAll" value="All"/>
@@ -339,7 +408,7 @@
                 </div>
             </div>
         </form>
-        <div class="list__container" style="display: <?php echo (isset($_POST['editItem'])) ? 'none' : 'block' ?>" id="js--addItemListContainer">
+        <div class="list__container" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>" id="js--addItemListContainer">
             <div class="list__container--headers">
                 <p>Qty</p>
                 <p>Item</p>

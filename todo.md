@@ -5,6 +5,7 @@
 
 ### Low Priority
 - after delete, scroll to location of where deleted item was
+- make id fields in db unique
 
 ### FUTURE FEATURES !!
 

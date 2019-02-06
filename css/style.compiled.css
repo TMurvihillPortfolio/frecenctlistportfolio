@@ -313,7 +313,7 @@ hr {
         color: #FFCE00;
         margin-left: 1rem; }
   .login__form {
-    color: #FFCE00;
+    color: #BCB5D7;
     font-weight: 400; }
     .login__form--username {
       display: flex; }
@@ -347,8 +347,6 @@ hr {
       justify-content: space-between; }
       .login__form--submit > input {
         font-size: 100%; }
-      .login__form--submit > a {
-        margin-right: -170px; }
     .login__form > div > label,
     .login__form > div > input,
     .login__form > div > select {
