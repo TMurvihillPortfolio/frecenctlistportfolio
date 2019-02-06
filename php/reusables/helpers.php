@@ -72,3 +72,20 @@
         if ($frecencyNum > 100) return "100+";
         return round($frecencyNum);
     }
+
+    //Logout
+    function logout(){
+        // NOT YET IMPLEMENTED if(isset($_COOKIE['rememberUserCookie'])){
+        //     uset($_COOKIE['rememberUserCookie']);
+        //     setcookie('rememberUserCookie', null, -1, '/');
+        // }
+        if (isset($_SESSION)) {
+            unset($_SESSION['viewBy']);
+            unset($_SESSION['orderBy']);
+            unset($_SESSION['list']);
+            unset($_SESSION['id']);   
+            session_destroy();
+        }
+        header('Location: index.php');
+    }
+?>

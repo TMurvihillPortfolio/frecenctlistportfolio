@@ -114,13 +114,13 @@ hr {
   margin: 10px;
   display: flex;
   float: right;
-  color: #fcfcfc;
+  color: #4D2D6F;
   list-style: none;
   height: 3.5rem;
   z-index: 1000; }
   .mainNav__nav--item > a {
     margin-right: 2rem;
-    color: #fcfcfc;
+    color: #4D2D6F;
     text-decoration: none;
     padding-bottom: 7px; }
     .mainNav__nav--item > a:link, .mainNav__nav--item > a:visited {

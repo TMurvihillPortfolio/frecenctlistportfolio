@@ -4,18 +4,15 @@
 <?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
 <?php //determine if login window needed
-    $_SESSION['user']="";
+    //$_SESSION['id']="10";
     $loginNeeded = true;
 
-    if (isset($_SESSION['user']) && $_SESSION['user'] !== '') {
-        echo 'imi false';
+    if (isset($_SESSION['id']) && $_SESSION['id'] !== '') {
         $loginNeeded = false;
     }
-    echo $loginNeeded ? 'true' : 'false';
 ?>
 <?php //on login submit button
     if(isset($_POST['submit'])){  
-        echo 'imin submit';  
         $inputPassword = $_POST['password'];
         $inputEmail = $_POST['email'];
         
@@ -25,20 +22,14 @@
             $statement->execute(array(':email'=>$inputEmail));
 
             if($row=$statement->fetch()){
-                echo "imin 28";
                 $id = $row['id'];
                 $hashed_password = $row['password'];
                 $password = $row['password'];
                 $activated = $row['active'];
-                echo '<br>';
-                echo $password.'|';
-                echo $inputPassword.'|';
     
                 //if(password_verify($inputPassword, $hashed_password)){ //NOT YET IMPLEMENTED HASHED PASSWORD
                 if ($password == $inputPassword) {
-                    echo 'imin verigy';
                     if ($activated) {
-                        echo 'imin activated';
                         //clear old session
                         if (isset($_SESSION['id'])) {
                             unset($_SESSION['piggyBankId']);
@@ -51,10 +42,8 @@
                             //     setcookie('rememberUserCookie', null, -1, '/');
                             // } 
                         }
-                        $_SESSION['id'] = $id; 
-                        echo 'imin id';
-                        echo $_SESSION['id'];                        
-                        //header("Location: index.php");
+                        $_SESSION['id'] = $id;                     
+                        header("Location: index.php");
                     }else{
                         $result="Account not activated. Please check your email inbox for a verification email.";
                     }
@@ -282,7 +271,33 @@
     <title>'Frecent' ListMaker</title>
     
 </head>
-<body>   
+<body>
+    <section class="mainNav">
+        <a href="index.html"><img class="mainNav__logo" src="img/logo.gif" alt="Tech Logo"></a>
+        <ul class="mainNav__nav" id="js--mainNav">
+            <li class="mainNav__nav--item">
+                <a href="index.php">Home</a>
+            </li>
+            <li class="mainNav__nav--item">
+                <a href="signup.php">Signup</a>
+            </li>
+            <!-- <?php if(isset($_SESSION['id']) && !$_SESSION['id'] == '') : ?> -->                  
+                <li class="mainNav__nav--item">
+                    <a href="profile.php">View Profile</a>
+                </li>
+                <li class="mainNav__nav--item">
+                    <a href="logout.php">Logout</a>
+                </li>
+            <!-- <?php else : ?> -->
+                <li class="mainNav__nav--item">
+                    <a href="index.php#about">About</a>
+                </li>
+                <li class="mainNav__nav--item">
+                    <a href="login.php">Login</a>
+                </li>
+            <!-- <?php endif; ?> -->
+        </ul>
+    </section>
     <section class="list">      
         <h1>My 'Frecent' List</h1>
         <br> 
@@ -408,7 +423,7 @@
                 </div>
             </div>
         </form>
-        <div class="list__container" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>" id="js--addItemListContainer">
+        <div class="list__container" style="display: <?php echo ($loginNeeded | isset($_POST['edititem'])) ? 'none' : 'block' ?>" id="js--addItemListContainer">
             <div class="list__container--headers">
                 <p>Qty</p>
                 <p>Item</p>

@@ -10,14 +10,14 @@
         margin: 10px;
         display: flex;
         float: right;
-        color: $colorGreyLightPrimary;
+        color: $colorSecondaryDark;
         list-style: none;
         height: 3.5rem;
         z-index: 1000;
         
         &--item>a {
             margin-right: 2rem;
-            color: $colorGreyLightPrimary;
+            color: $colorSecondaryDark;
             text-decoration: none;
             padding-bottom: 7px;
             
