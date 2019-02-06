@@ -5,7 +5,7 @@
 
 html {
   font-size: 62.5%;
-  background-color: #fff;
+  background-color: #F2F2F6;
   color: #555;
   font-family: 'Lato', 'Arial', san-serif;
   font-size: 20px;
@@ -359,3 +359,31 @@ hr {
     .login__form > div > input {
       border-radius: 4px;
       font-size: 20px; }
+
+.signup {
+  width: 80%;
+  max-width: 850px;
+  margin: auto;
+  margin-top: 40px; }
+  .signup__line1 {
+    color: #FFCE00;
+    margin-bottom: 15px;
+    margin-left: 20px; }
+    .signup__line1 > h3 > span {
+      font-style: italic; }
+  .signup__form--email, .signup__form--password, .signup__form--listName {
+    display: flex;
+    margin-bottom: 6px; }
+    .signup__form--email > label, .signup__form--password > label, .signup__form--listName > label {
+      flex: 2;
+      text-align: right;
+      padding-right: 14px; }
+    .signup__form--email > input, .signup__form--password > input, .signup__form--listName > input {
+      flex: 6;
+      font-size: 16px;
+      border-radius: 7px;
+      padding: 3px; }
+  .signup__form--submit > input {
+    display: block;
+    margin: 15px auto;
+    font-size: 20px; }

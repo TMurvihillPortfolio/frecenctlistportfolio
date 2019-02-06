@@ -1,0 +1,141 @@
+<?php include 'php/config/config.php'; ?>
+<?php include 'php/classes/Database.php'; ?>
+<?php include 'php/reusables/helpers.php'; ?>
+<?php 
+    if (isset($_POST['signupBtn'])) {
+        //double-check session variables are cleared
+        if (isset($_SESSION['id'])) {
+            session_start();
+            logout();
+        }
+        //collect form data and store in variables       
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $confirmPassword = $_POST['confirmPassword'];
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $piggyBankName = $_POST['listName'];
+        $isDefault = TRUE;
+        $piggyUserId = NULL;
+      
+        if ($password == $confirmPassword) {
+            //check if email + name exists
+               
+            $sqlQuery = "SELECT * FROM users WHERE email= :email";
+            $statement = $db->prepare($sqlQuery);
+            $statement->execute(array(':email'=> $email));
+            
+            if (!$piggyUserRow = $statement->fetch()) {                   
+                try {               
+                    //insert user
+                    $sqlInsert = "INSERT INTO users (email, password)
+                    VALUES (:email, :password)";
+                    $statement = $db->prepare($sqlInsert);
+                    $statement->execute(array(':email' => $email, ':password' => $hashed_password));                  
+
+                    if($statement->rowCount() == 1){
+                        $listUserId = $db->lastInsertId();
+                        $encodeUserId = base64_encode("encodeuserid{$listUserId}");
+                    
+                        // NOT YET IMPLEMENTED -- INSERT FIRST LIST INTO LIST TABLE
+                        // try {               
+                        //     //insert first piggy bank
+                        //     $sqlInsert = "INSERT INTO piggybanks (piggyUser, piggyBankName, piggyBankOwner, isDefault)
+                        //     VALUES (:piggyUser, :piggyBankName, :piggyBankOwner, :isDefault)";
+                        //     $statement = $db->prepare($sqlInsert);
+                        //     $statement->execute(array(':piggyUser' => $piggyUserId, ':piggyBankName' => $piggyBankName, ':piggyBankOwner' => $piggyBankOwner, ':isDefault' => $isDefault));
+                        //     $result = "Registration Successful";
+    
+                        // } catch (PDOException $ex) {
+                        //     $result = "An error occurred entering your first piggy bank: ".$ex;
+                        // }
+
+                        //prepare email body
+
+                        $mail_body = '<html>
+                            <body style="color:#C76978; font-family: Lato, Arial, Helvetica, sans-serif;
+                                                line-height:1.8em;">
+                            <h2>Message from Frecency<span style="color:#D9AE5C;">List</span></h2>
+                            <p>Dear Frecency List user,<br><br>Thank you for registering, please click on the link below to
+                                confirm your email address</p>
+                            <p style="text-decoration: underline; font-size: 24px;"><a style="color:#D9AE5C;" href='.$rootDirectory.'activate.php?id='.$encodeUserId.'"> Confirm Email</a></p>
+                            <p><strong>&copy;2018 <a href="https://take2tech.ca" style="color:#D9AE5C;text-decoration: underline;">take2tech.ca</strong></p>
+                            </body>
+                            </html>';
+                        
+                        $subject = "Message from 'Frecency' List";
+                        $headers = "From: 'Frecency' List.--User Signup" . "\r\n";
+                        $headers .= "MIME-Version: 1.0" . "\r\n";
+                        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+                        
+                        //Error Handling for PHPMailer
+                        if(!mail($email, $subject, $mail_body, $headers)){
+                            $result = "Email send failed.";
+                        }
+                        else{
+                            $result = "Registration Successful. Please check email for confirmation link.";
+                        }
+                    }
+
+                } catch (PDOException $ex) {
+                    $result = "An error occurred entering a new user: ".$ex;
+                }
+                
+            }else{
+                $result="Account email already exists. Please use another email.";
+            }
+        } else {
+            $result = "Passwords do not match. Please try again.";
+        }
+    }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400" rel="stylesheet">
+    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <title>'Frecent' ListMaker</title>
+    
+</head>
+<body>
+    <?php if (isset($result)) : ?>
+        <div class="signatureBox">
+            <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
+        </div>
+    <?php endif; ?>
+    <div class="signup signatureBox">
+        <div class="signup__line1">
+            <h3>Easy&nbsp;&nbsp;<span>Signup</span>Page
+            </h3>
+        </div>
+        
+        <form action="signup.php" method="post" class="signup__form">
+                             
+            <div class="signup__form--email">
+                <label for="email">Email: </label>
+                <input name="email" type="email" placeholder="A confirmation email will appear in your inbox." required> 
+            </div>                 
+            <div class="signup__form--password">
+                <label for="password">Password: </label>
+                <input name="password" type="password" value='password' required>                
+            </div>
+            <div class="signup__form--password">
+                <label for="confirmPassword">Confirm Password: </label>
+                <input name="confirmPassword" type="password" value='password' required>                
+            </div>
+            <div class="signup__form--listName">
+                <label for="listName">List Name: </label>
+                <input name="listName" type="text" value='Shopping' placeholder="For example 'shopping' or 'What to pack'" >
+            </div>
+            <div class="signup__form--submit">
+                <input type="submit" name="signupBtn" class="btn" value="Submit"/>           
+            </div>
+        </form>
+    </div>
+</body>
+</html>

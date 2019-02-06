@@ -1,4 +1,6 @@
 <?php
+    
+    $rootDirectory = 'https://www.take2tech.ca/TTT/MyProjects/FrecencyListPHP/';
     //for database connection
     $driver = 'mysql';
     $host = 'localhost:3306';

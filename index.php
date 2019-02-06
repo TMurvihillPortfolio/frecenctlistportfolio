@@ -17,7 +17,7 @@
         $inputEmail = $_POST['email'];
         
         try {
-            $splQuery = "SELECT * FROM user WHERE email = :email";
+            $splQuery = "SELECT * FROM users WHERE email = :email";
             $statement = $db->prepare($splQuery);
             $statement->execute(array(':email'=>$inputEmail));
 
