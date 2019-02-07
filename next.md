@@ -4,8 +4,8 @@
 - input validation
 
 - membership login
-    - create new list when user added
     - load user's list
+        - need to add field to listitems and create a query with a join list->listitems
     - delete list when user deleted
 
 ### next

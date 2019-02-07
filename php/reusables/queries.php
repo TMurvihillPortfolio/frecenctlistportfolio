@@ -1,5 +1,5 @@
 <?php 
-    function getList($db, $frecencyInterval) {
+    function getList($db, $list, $frecencyInterval) {
         //Determine list order and create query
         if ($_SESSION['orderBy'] =='frecency') {
             $query = "SELECT *, (numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval as calcfrec FROM ListItems ORDER BY calcfrec DESC";

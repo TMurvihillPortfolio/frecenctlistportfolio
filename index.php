@@ -31,9 +31,9 @@
                     if ($activated) {
                         //clear old session
                         if (isset($_SESSION['id'])) {
-                            unset($_SESSION['piggyBankId']);
-                            unset($_SESSION['piggyBankOwner']);
-                            unset($_SESSION['piggyBankName']);
+                            unset($_SESSION['list']);
+                            unset($_SESSION['orderBy']);
+                            unset($_SESSION['viewBy']);
                             unset($_SESSION['id']);
 
                             // NOT YET IMPLEMENTED if(isset($_COOKIE['rememberUserCookie'])){
@@ -41,8 +41,18 @@
                             //     setcookie('rememberUserCookie', null, -1, '/');
                             // } 
                         }
-                        $_SESSION['id'] = $id;                     
-                        header("Location: index.php");
+                        $_SESSION['id'] = $id;
+                        $splQuery = "SELECT * FROM Lists WHERE id = :id AND isDefault = 1";
+                        $statement = $db->prepare($splQuery);
+                        $statement->execute(array(':email'=>$inputEmail));
+
+                        if($listRow=$statement->fetch()){
+                            $_SESSION['list'] = $listRow['id'];                
+                            header("Location: index.php");
+                        } else {
+                            //NOT YET IMPLEMENTED error handling
+                            $result = "default list not found";
+                        }
                     }else{
                         $result="Account not activated. Please check your email inbox for a verification email.";
                     }
@@ -63,15 +73,15 @@
     
     if (isset($_POST['category'])) {
         $_SESSION['orderBy'] = 'category';
-        $listItems=getList($db, $frecencyInterval);
+        $listItems=getList($db, $_SESSION['list'], $frecencyInterval);
     } else if (isset($_POST['frecency'])) {
         $_SESSION['orderBy'] = 'frecency';
-        $listItems=getList($db, $frecencyInterval);
+        $listItems=getList($db, $_SESSION['list'], $frecencyInterval);
     } else if (isset($_POST['alpha'])) {
         $_SESSION['orderBy'] = 'alpha';
-        $listItems=getList($db, $frecencyInterval);
+        $listItems=getList($db, $_SESSION['list'], $frecencyInterval);
     } else {
-        $listItems=getList($db, $frecencyInterval);
+        $listItems=getList($db, $_SESSION['list'], $frecencyInterval);
     }
     //determine if filter by (un)checked
     if (isset($_POST['checked'])) {

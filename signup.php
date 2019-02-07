@@ -13,18 +13,17 @@
         $password = $_POST['password'];
         $confirmPassword = $_POST['confirmPassword'];
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $piggyBankName = $_POST['listName'];
+        $listName = $_POST['listName'];
         $isDefault = TRUE;
-        $piggyUserId = NULL;
+        $listUserId = NULL;
       
         if ($password == $confirmPassword) {
-            //check if email + name exists
-               
+            //check if email + name exists              
             $sqlQuery = "SELECT * FROM users WHERE email= :email";
             $statement = $db->prepare($sqlQuery);
             $statement->execute(array(':email'=> $email));
             
-            if (!$piggyUserRow = $statement->fetch()) {                   
+            if (!$listUserRow = $statement->fetch()) {                   
                 try {               
                     //insert user
                     $sqlInsert = "INSERT INTO users (email, password)
@@ -37,28 +36,32 @@
                         $encodeUserId = base64_encode("encodeuserid{$listUserId}");
                     
                         // NOT YET IMPLEMENTED -- INSERT FIRST LIST INTO LIST TABLE
-                        // try {               
-                        //     //insert first piggy bank
-                        //     $sqlInsert = "INSERT INTO piggybanks (piggyUser, piggyBankName, piggyBankOwner, isDefault)
-                        //     VALUES (:piggyUser, :piggyBankName, :piggyBankOwner, :isDefault)";
-                        //     $statement = $db->prepare($sqlInsert);
-                        //     $statement->execute(array(':piggyUser' => $piggyUserId, ':piggyBankName' => $piggyBankName, ':piggyBankOwner' => $piggyBankOwner, ':isDefault' => $isDefault));
-                        //     $result = "Registration Successful";
+                        try {               
+                            //insert first list
+                            $sqlInsert = "INSERT INTO Lists (listName, listUserId, isDefault)
+                            VALUES (:listName, :listUserId, :isDefault)";
+                            $statement = $db->prepare($sqlInsert);
+                            $statement->execute(array( ':listName' => $listName, ':listUserId' => $listUserId, ':isDefault' => $isDefault));
+                            if($statement->rowCount() == 1) {
+                                $result = "Registration Successful";
+                            } else {
+                                throw new Exception('Error adding List');
+                            }
     
-                        // } catch (PDOException $ex) {
-                        //     $result = "An error occurred entering your first piggy bank: ".$ex;
-                        // }
+                        } catch (PDOException $ex) {
+                            $result = "An error occurred entering your first list: ".$ex;
+                        }
 
                         //prepare email body
 
                         $mail_body = '<html>
-                            <body style="color:#C76978; font-family: Lato, Arial, Helvetica, sans-serif;
+                            <body style="color:#FFCE00; font-family: Lato, Arial, Helvetica, sans-serif;
                                                 line-height:1.8em;">
-                            <h2>Message from Frecency<span style="color:#D9AE5C;">List</span></h2>
+                            <h2>Message from Frecency<span style="color:#BCB5D7;">List</span></h2>
                             <p>Dear Frecency List user,<br><br>Thank you for registering, please click on the link below to
                                 confirm your email address</p>
-                            <p style="text-decoration: underline; font-size: 24px;"><a style="color:#D9AE5C;" href='.$rootDirectory.'activate.php?id='.$encodeUserId.'"> Confirm Email</a></p>
-                            <p><strong>&copy;2018 <a href="https://take2tech.ca" style="color:#D9AE5C;text-decoration: underline;">take2tech.ca</strong></p>
+                            <p style="text-decoration: underline; font-size: 24px;"><a style="color:#BCB5D7;" href='.$rootDirectory.'activate.php?id='.$encodeUserId.'"> Confirm Email</a></p>
+                            <p><strong>&copy;2018 <a href="https://take2tech.ca" style="color:#BCB5D7;text-decoration: underline;">take2tech.ca</strong></p>
                             </body>
                             </html>';
                         

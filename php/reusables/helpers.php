@@ -95,7 +95,7 @@ function closeAccount($db, $closeAccountEmail) {
 
     // //find Lists associated with user    
     // try {
-    //     $splQuery = "Select * FROM lists WHERE listUser = :id";
+    //     $splQuery = "Select * FROM lists WHERE listUserId= :id";
     //     $statement = $db->prepare($splQuery);
     //     $statement->execute(array(':id'=>$_SESSION['id']));
     // }catch (PDOexception $ex) {
