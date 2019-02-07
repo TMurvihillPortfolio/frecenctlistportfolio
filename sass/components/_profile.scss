@@ -1,0 +1,56 @@
+.profile {
+    padding: 1rem;
+
+    &__line1{
+        
+        &>h2 {
+            padding: 1rem;           
+            color: $colorPrimary;
+            text-align: center;
+            &>span {
+                color: $colorSecondary;
+            }
+        }
+    }
+    &__container {
+        margin: 1rem auto;
+        border: 2px solid #e47587;
+        padding: 0;
+        width: fit-content;
+        &--bottom {
+            padding: 1rem;
+            font-size: 100%;
+
+            & input {
+                width: 100%;
+                border-radius: 7px;
+                margin-bottom: 7px;
+            }
+        }
+    }
+    &__form {
+        &--email {
+            background-color: $colorPrimary;
+            color: #fff;
+            width: 100%;
+            padding: 5px 7px;
+            text-align:center;
+        }
+        &--changeProfileButton {
+            font-size: 100%;
+        }
+        
+        &--changePassword {
+            &>form {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                &>input {
+                    margin: 3px;
+                    border-radius: 7px;
+                }
+            }       
+        }
+    }
+}

@@ -10,7 +10,8 @@ html {
   font-family: 'Lato', 'Arial', san-serif;
   font-size: 20px;
   font-weight: 300;
-  text-rendering: optimizeLegibility; }
+  text-rendering: optimizeLegibility;
+  background-image: url(../img/manArmShoppingList.jpg); }
 
 hr {
   border: 0;
@@ -382,8 +383,48 @@ hr {
       flex: 6;
       font-size: 16px;
       border-radius: 7px;
-      padding: 3px; }
+      padding: 5px; }
   .signup__form--submit > input {
     display: block;
     margin: 15px auto;
     font-size: 20px; }
+
+.activate {
+  font-style: italic;
+  color: colorPrimary; }
+
+.profile {
+  padding: 1rem; }
+  .profile__line1 > h2 {
+    padding: 1rem;
+    color: #FFCE00;
+    text-align: center; }
+    .profile__line1 > h2 > span {
+      color: #BCB5D7; }
+  .profile__container {
+    margin: 1rem auto;
+    border: 2px solid #e47587;
+    padding: 0;
+    width: fit-content; }
+    .profile__container--bottom {
+      padding: 1rem;
+      font-size: 100%; }
+      .profile__container--bottom input {
+        width: 100%;
+        border-radius: 7px;
+        margin-bottom: 7px; }
+  .profile__form--email {
+    background-color: #FFCE00;
+    color: #fff;
+    width: 100%;
+    padding: 5px 7px;
+    text-align: center; }
+  .profile__form--changeProfileButton {
+    font-size: 100%; }
+  .profile__form--changePassword > form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; }
+    .profile__form--changePassword > form > input {
+      margin: 3px;
+      border-radius: 7px; }

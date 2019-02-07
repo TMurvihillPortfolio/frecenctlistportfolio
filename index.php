@@ -27,8 +27,7 @@
                 $password = $row['password'];
                 $activated = $row['active'];
     
-                //if(password_verify($inputPassword, $hashed_password)){ //NOT YET IMPLEMENTED HASHED PASSWORD
-                if ($password == $inputPassword) {
+                if(password_verify($inputPassword, $hashed_password)){
                     if ($activated) {
                         //clear old session
                         if (isset($_SESSION['id'])) {
@@ -259,45 +258,9 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400" rel="stylesheet">
-    <link rel="shortcut icon" href="img/favicon.png">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-
-    <title>'Frecent' ListMaker</title>
-    
-</head>
+<?php include 'php/reusables/head.php'; ?>
 <body>
-    <section class="mainNav">
-        <a href="index.html"><img class="mainNav__logo" src="img/logo.gif" alt="Tech Logo"></a>
-        <ul class="mainNav__nav" id="js--mainNav">
-            <li class="mainNav__nav--item">
-                <a href="index.php">Home</a>
-            </li>
-            <li class="mainNav__nav--item">
-                <a href="signup.php">Signup</a>
-            </li>
-            <!-- <?php if(isset($_SESSION['id']) && !$_SESSION['id'] == '') : ?> -->                  
-                <li class="mainNav__nav--item">
-                    <a href="profile.php">View Profile</a>
-                </li>
-                <li class="mainNav__nav--item">
-                    <a href="logout.php">Logout</a>
-                </li>
-            <!-- <?php else : ?> -->
-                <li class="mainNav__nav--item">
-                    <a href="index.php#about">About</a>
-                </li>
-                <!-- <li class="mainNav__nav--item">
-                    <a href="login.php">Login</a>
-                </li> -->
-            <!-- <?php endif; ?> -->
-        </ul>
-    </section>
+    <?php include 'php/reusables/mainnav.php'; ?>
     <section class="list">      
         <h1><?php echo (isset($_SESSION['id']) && $_SESSION['id'] !== '') ? $_SESSION['id'] : "My"; ?>'s 'Frecent' List</h1>
         <br> 
@@ -320,7 +283,7 @@
                             
                 <div class="login__form--password">
                     <label for="password">Password: </label>
-                    <input name="password" type="password" placeholder="password" value='weSS#4ling' required>                
+                    <input name="password" type="password" placeholder="password" value='password' required>                
                 </div>
             
                 <div class="login__form--submit">
@@ -474,6 +437,7 @@
             </div>                
         </div>        
     </section>
+    <!-- update number of clicks API -->
     <script>
         function updateNumClicks(str, isChecked) {
             console.log(str + '|' + isChecked);
@@ -492,6 +456,5 @@
             xmlhttp.send();         
         }   
     </script>
-    <script type="text/javascript" src="js/script.js?v=6.07"></script>
 </body>
 </html>

@@ -88,4 +88,63 @@
         }
     
     }
+
+//Close Account
+function closeAccount($db, $closeAccountEmail) {
+    $result = '';
+
+    // //find Lists associated with user    
+    // try {
+    //     $splQuery = "Select * FROM lists WHERE listUser = :id";
+    //     $statement = $db->prepare($splQuery);
+    //     $statement->execute(array(':id'=>$_SESSION['id']));
+    // }catch (PDOexception $ex) {
+    //     $result = "An error occurred. Try logging out and logging in again.";
+    // }
+    
+    // //delete listItems, lists and user    
+    // if($lists=$statement->fetchAll()){
+    //     foreach ($lists as $list) {
+           
+    //         //delete tranactions assoc with piggy bank
+    //         try {
+    //             $statement = $db->prepare( "DELETE FROM transactions WHERE listId =:id" );
+    //             $statement->execute(array(':id'=>$list['id']));
+
+    //         }catch (PDOexception $ex) {
+    //             $result = "An error occurred. Try logging out and logging in again.";
+    //         }
+
+    //         //delete list
+    //         try {
+    //             $statement = $db->prepare("DELETE FROM lists WHERE id = :id");
+    //             $statement->execute(array(':id'=>$list['id']));
+
+    //             if (!$statement->rowCount()) {
+    //                 $result = "No list deleted: ".$list['listName'];               
+    //             } 
+    //         }catch (PDOexception $ex) {
+    //             $result = "An error occurred. Try logging out and logging in again.";
+    //         }        
+    //     }
+
+        //delete User
+        try{
+            $statement = $db->prepare("DELETE FROM users WHERE id = :id");
+            $statement->execute(array(':id'=>$_SESSION['id']));
+
+            if (!$statement->rowCount()) {
+               $result = "Close account not successful for user Id#: ".$list['listUser']; 
+
+               //clean up environment
+               logout();             
+            }
+        }catch (PDOexception $ex) {
+            $result = "An error occurred. Try logging out and logging in again.";
+        }            
+        return $result;
+    // }else{
+    //     return "User or lists not found. Please login again.";
+    // }
+}
 ?>

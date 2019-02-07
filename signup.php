@@ -90,19 +90,9 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400" rel="stylesheet">
-    <link rel="shortcut icon" href="img/favicon.png">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-
-    <title>'Frecent' ListMaker</title>
-    
-</head>
+<?php include 'php/reusables/head.php'; ?>
 <body>
+    <?php include 'php/reusables/mainnav.php'; ?>
     <?php if (isset($result)) : ?>
         <div class="signatureBox">
             <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
