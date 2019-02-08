@@ -1,5 +1,9 @@
 # WHAT TO DO NEXT
 
+- Get frecenyc button working again
+- check that session variables with list are being set properly by login
+- check around queries, some may be wrong still from debugging
+
 # BEFORE BETA DIST
 - input validation
 

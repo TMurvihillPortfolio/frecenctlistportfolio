@@ -82,7 +82,7 @@
         if (isset($_SESSION)) {
             unset($_SESSION['viewBy']);
             unset($_SESSION['orderBy']);
-            unset($_SESSION['list']);
+            unset($_SESSION['listId']);
             unset($_SESSION['id']);   
             session_destroy();
         }

@@ -5,8 +5,8 @@
     if (!isset($_SESSION['id'])) {
         $_SESSION['id'] = '';
     }
-    if (!isset($_SESSION['list'])) {
-        $_SESSION['list'] = '';
+    if (!isset($_SESSION['listId'])) {
+        $_SESSION['listId'] = '';
     }
     if (!isset($_SESSION['orderBy'])) {
         $_SESSION['orderBy'] = '';

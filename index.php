@@ -31,7 +31,7 @@
                     if ($activated) {
                         //clear old session
                         if (isset($_SESSION['id'])) {
-                            unset($_SESSION['list']);
+                            unset($_SESSION['listId']);
                             unset($_SESSION['orderBy']);
                             unset($_SESSION['viewBy']);
                             unset($_SESSION['id']);
@@ -42,12 +42,11 @@
                             // } 
                         }
                         $_SESSION['id'] = $id;
-                        $splQuery = "SELECT * FROM Lists WHERE id = :id AND isDefault = 1";
+                        $splQuery = "SELECT * FROM Lists WHERE listUserId = :id AND isDefault = 1";
                         $statement = $db->prepare($splQuery);
-                        $statement->execute(array(':email'=>$inputEmail));
-
+                        $statement->execute(array(':id'=>$id));
                         if($listRow=$statement->fetch()){
-                            $_SESSION['list'] = $listRow['id'];                
+                            $_SESSION['listId'] = $listRow['listId'];                
                             header("Location: index.php");
                         } else {
                             //NOT YET IMPLEMENTED error handling
@@ -73,15 +72,15 @@
     
     if (isset($_POST['category'])) {
         $_SESSION['orderBy'] = 'category';
-        $listItems=getList($db, $_SESSION['list'], $frecencyInterval);
+        $listItems=getList($db, $_SESSION['listId'], $frecencyInterval);
     } else if (isset($_POST['frecency'])) {
         $_SESSION['orderBy'] = 'frecency';
-        $listItems=getList($db, $_SESSION['list'], $frecencyInterval);
+        $listItems=getList($db, $_SESSION['listId'], $frecencyInterval);
     } else if (isset($_POST['alpha'])) {
         $_SESSION['orderBy'] = 'alpha';
-        $listItems=getList($db, $_SESSION['list'], $frecencyInterval);
+        $listItems=getList($db, $_SESSION['listId'], $frecencyInterval);
     } else {
-        $listItems=getList($db, $_SESSION['list'], $frecencyInterval);
+        $listItems=getList($db, $_SESSION['listId'], $frecencyInterval);
     }
     //determine if filter by (un)checked
     if (isset($_POST['checked'])) {
@@ -146,7 +145,7 @@
             //edit the item in db
             try {
                 //Create and execute query
-                $query = "UPDATE  ListItems SET title=:title, 
+                $query = "UPDATE ListItems SET title=:title, 
                                                 category=:category, 
                                                 qty=:qty,
                                                 firstClick=:firstClick,
@@ -213,8 +212,8 @@
             } 
             //Create and execute the query         
             try {
-                $query = "INSERT INTO ListItems (title, category, qty, id,  isChecked, numClicks, firstClick, lastClick)
-                                    VALUES (:title, :category, :qty, :id, :isChecked, :numClicks, :firstClick, :lastClick);";
+                $query = "INSERT INTO ListItems (title, category, qty, id,  isChecked, numClicks, firstClick, lastClick, listId)
+                                    VALUES (:title, :category, :qty, :id, :isChecked, :numClicks, :firstClick, :lastClick, :listId);";
                 $statement = $db->prepare($query);
                 $statement->execute(array(
                                     ':title'=>$title,
@@ -224,28 +223,30 @@
                                     ':isChecked' => $isChecked,
                                     ':numClicks' => $numClicks,
                                     ':firstClick' => $firstClick,
-                                    ':lastClick' => $lastClick
+                                    ':lastClick' => $lastClick,
+                                    ':listId' => $_SESSION['listId']
                 ));
             } catch (Exception $e) {
                 //NOT YET IMPLEMENTED
             }           
         }
-        //restore environment   
+        //restore environment
+        $_POST = []; 
         header("Location: index.php", true, 301);      
     }
 ?>
 <?php //show edit item window
     if (isset($_POST['editItem'])) {
-        $id = '';
+        $editId = '';
         $editFrecency = -1;
         $editQty = 1;
        
         //Get id from form
         if (isset($_POST['editId'])) {
-            $id = $_POST['editId'];
+            $editId = $_POST['editId'];
         } 
         //Get editItem values from db that are not in post variable
-        $editItemObject = getListItemById($db, $id, $frecencyInterval); 
+        $_SESSION['editItemObject'] = getListItemById($db, $editId, $frecencyInterval);
         
         //populate variables for edit form
         if (isset($_POST['editTitle'])) {
@@ -302,9 +303,11 @@
                 </div>
             </form>
         </div>
+        <!-- Search -->
         <div class="list__search" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
             <div class="list__search--input"><input type="text" class="list__search--input-input" placeholder="search list"><img src = "./img/searchIcon.png" class="list__search--input-icon" alt="Search Icon Magnifying glass"></div>
         </div>
+        <!-- Add/Edit Item -->
         <div class="list__addItem" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
             <button class="btn btn__secondary" onClick="prepareEnvironmentAddItemForm();">Add Item</button>
             <div class="list__addItem--addItemForm" style="display: <?php echo (isset($_POST['editItem'])) ? 'block' : 'none' ?>" id="js--addItemForm">                 
@@ -339,7 +342,7 @@
                                 <?php foreach($categories as $row) : ?> 
                                     <?php if (isset($_POST['editItem'])) : ?>
                                         <?php $selected = ""; ?> 
-                                        <?php if(strtolower($row['category'])==strtolower($editItemObject['category'])) {$selected = 'selected';} ?>
+                                        <?php if(strtolower($row['category'])==strtolower($_SESSION['editItemObject']['category'])) {$selected = 'selected';} ?>
                                         <option value="<?php echo $row['category']; ?>" <?php echo $selected; ?>>
                                             <?php echo $row['category']; ?>
                                         </option>
@@ -354,7 +357,7 @@
                         <div class="list__addItem--addItemForm-frecency">
                         <?php if (isset($_POST['editItem'])) : ?>
                             <label for="addFrecency">'Frecency' (80+ often, 21-79 sometimes, 1-20 rarely, 0 one-time purchase)</label>   
-                            <input name="addFrecency" type="text" value="<?php echo calculateFrecency($editItemObject['numClicks'],$editItemObject['firstClick'], $frecencyInterval); ?>"/>
+                            <input name="addFrecency" type="text" value="<?php echo calculateFrecency($_SESSION['editItemObject']['numClicks'],$_SESSION['editItemObject']['firstClick'], $frecencyInterval); ?>"/>
                         <?php else : ?>
                             <label for="addFrecency">Starting 'Frecency'</label>
                             <select name="addFrecency" id="js--addFrecencyRating">
@@ -366,10 +369,10 @@
                         <?php endif; ?>
 
                         </div>
-                        <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecency" value="<?php echo isset($editItemObject) ? $editItemObject['calcfrec'] : ''; ?>"></div>
-                        <div class="" hidden><input id="js--addFirstClickEdit" type="text" name="addItemFirstClickEdit" value="<?php echo isset($editItemObject) ? $editItemObject['firstClick'] : ''; ?>"></div>
-                        <div class="" hidden><input id="js--addLastClickEdit" type="text" name="addItemLastClickEdit" value="<?php echo isset($editItemObject) ? $editItemObject['lastClick'] : ''; ?>"></div>
-                        <div class="" hidden><input id="js--addIdEdit" type="text" name="id" value="<?php echo isset($editItemObject) ? $editItemObject['id'] : ''; ?>"></div>
+                        <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecency" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['calcfrec'] : ''; ?>"></div>
+                        <div class="" hidden><input id="js--addFirstClickEdit" type="text" name="addItemFirstClickEdit" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['firstClick'] : ''; ?>"></div>
+                        <div class="" hidden><input id="js--addLastClickEdit" type="text" name="addItemLastClickEdit" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['lastClick'] : ''; ?>"></div>
+                        <div class="" hidden><input id="js--addIdEdit" type="text" name="id" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['id'] : ''; ?>"></div>
                     </div>
                     <div class="flex list__addItem--addItemForm-submitButtons">  
                         <input type="submit" class="btn btn__primary" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
@@ -377,7 +380,8 @@
                     </div>    
                 </form>  
             </div>
-        </div> 
+        </div>
+        <!-- orderBy and viewBy -->
         <form action="index.php" method="post" name="viewByOrderBy">
             <div class="list__orderBy" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>" id="js--addItemOrderBy">
                 <div class="list__orderBy--header">Order By:</div>
@@ -396,6 +400,7 @@
                 </div>
             </div>
         </form>
+        <!-- List Container -->
         <div class="list__container" style="display: <?php echo ($loginNeeded | isset($_POST['edititem'])) ? 'none' : 'block' ?>" id="js--addItemListContainer">
             <div class="list__container--headers">
                 <p>Qty</p>

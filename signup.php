@@ -1,7 +1,7 @@
 <?php include 'php/config/config.php'; ?>
 <?php include 'php/classes/Database.php'; ?>
 <?php include 'php/reusables/helpers.php'; ?>
-<?php 
+<?php //sign-up
     if (isset($_POST['signupBtn'])) {
         //double-check session variables are cleared
         if (isset($_SESSION['id'])) {
