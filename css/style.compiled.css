@@ -402,8 +402,9 @@ hr {
     .profile__line1 > h2 > span {
       color: #BCB5D7; }
   .profile__container {
+    max-width: 90%;
     margin: 1rem auto;
-    border: 2px solid #e47587;
+    border: 2px solid #FFCE00;
     padding: 0;
     width: fit-content; }
     .profile__container--bottom {

@@ -3,51 +3,59 @@
 <?php include 'php/classes/Database.php'; ?>
 <?php include 'php/reusables/helpers.php'; ?>
 <?php //update email
-    if (isset($_POST['emailSubmit'])) {
-        $email = $_POST['email'];
-        $userId = $_SESSION['userId'];
-        $splQuery = "UPDATE users SET email = :email WHERE userId = :userId";
-        $statement = $db->prepare($splQuery);
-        $statement->execute(array(':userId'=>$userId, 'email'=>$email));
+    try {
+        if (isset($_POST['emailSubmit'])) {
+            $email = $_POST['email'];
+            $userId = $_SESSION['userId'];
+            $splQuery = "UPDATE users SET email = :email WHERE userId = :userId";
+            $statement = $db->prepare($splQuery);
+            $statement->execute(array(':userId'=>$userId, 'email'=>$email));
+        }
+    } catch (Exception $e) {
+        $result = "An error occurred. Email not changed: ".$e;
     }
 ?>
 <?php //update password
-    if (isset($_POST['passwordSubmit'])) {
-        $userId = $_SESSION['userId'];
-        $userInputPassword = $_POST['userInputPassword'];
-        $newPassword = $_POST['newPassword'];
-        $confirmPassword = $_POST['confirmPassword'];
-        
-        if ($newPassword === $confirmPassword) {
-            //Get old hashed password from db
-            $splQuery = "SELECT password FROM users WHERE userId = :userId";
-            $statement = $db->prepare($splQuery);
-            $statement->execute(array(':userId'=>$userId));
-
-            if($row=$statement->fetch()){  
-                $passwordFromDb = $row['password'];
-                
-                if (password_verify($userInputPassword, $passwordFromDb)) {
-                    $result="password is good";
-                    //hash the new password
-                    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                    //update db
-                    $sqlUpdate = "UPDATE users SET password=:password WHERE userId=:userId";
-                                $statement = $db->prepare($sqlUpdate);
-                                $statement->execute(array(':password'=>$hashedPassword, ':userId'=>$userId));
-
-                                if($statement->rowCount()===1){
-                                    $result = "Password reset Successful.";
-                                }else{
-                                    $result = 'Password not updated.';
-                                }
-                } else {
-                    $result="Current password is not correct.";
+    try {
+        if (isset($_POST['passwordSubmit'])) {
+            $userId = $_SESSION['userId'];
+            $userInputPassword = $_POST['userInputPassword'];
+            $newPassword = $_POST['newPassword'];
+            $confirmPassword = $_POST['confirmPassword'];
+            
+            if ($newPassword === $confirmPassword) {
+                //Get old hashed password from db
+                $splQuery = "SELECT password FROM users WHERE userId = :userId";
+                $statement = $db->prepare($splQuery);
+                $statement->execute(array(':userId'=>$userId));
+    
+                if($row=$statement->fetch()){  
+                    $passwordFromDb = $row['password'];
+                    
+                    if (password_verify($userInputPassword, $passwordFromDb)) {
+                        $result="password is good";
+                        //hash the new password
+                        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                        //update db
+                        $sqlUpdate = "UPDATE users SET password=:password WHERE userId=:userId";
+                                    $statement = $db->prepare($sqlUpdate);
+                                    $statement->execute(array(':password'=>$hashedPassword, ':userId'=>$userId));
+    
+                                    if($statement->rowCount()===1){
+                                        $result = "Password reset Successful.";
+                                    }else{
+                                        $result = 'Password not updated.';
+                                    }
+                    } else {
+                        $result="Current password is not correct.";
+                    }
                 }
+            } else {
+                $result = "New password and confirm password do not match.";
             }
-        } else {
-            $result = "New password and confirm password do not match.";
         }
+    } catch (Exception $e) {
+        $result = "An error occurred. Password may not be updated: ".$e;
     }
 ?>
 <?php //close account
@@ -62,20 +70,24 @@
     }
 ?>
 <?php //get profile data for page render
-    if (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') {
-        $userId = $_SESSION['userId'];
-        $splQuery = "SELECT * FROM users WHERE userId = :userId";
-        $statement = $db->prepare($splQuery);
-        $statement->execute(array(':userId'=>$userId));
-
-        if ($row=$statement->fetch()) {  
-            $userId = $row['userId'];
+    try {
+        if (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') {
+            $userId = $_SESSION['userId'];
+            $splQuery = "SELECT * FROM users WHERE userId = :userId";
+            $statement = $db->prepare($splQuery);
+            $statement->execute(array(':userId'=>$userId));
+    
+            if ($row=$statement->fetch()) {  
+                $userId = $row['userId'];
+            } else {
+                $result = 'User not found, please login again or signup for a new account.';
+            }
         } else {
             $result = 'User not found, please login again or signup for a new account.';
         }
-    } else {
-        $result = 'User not found, please login again or signup for a new account.';
-    }   
+    } catch (Exception $e) {
+        $result = "An error occurred. Please try logging out and logging back in.";
+    } 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,7 +116,7 @@
             <form action="profile.php" method="post">
                 <div id="js--emailInput" hidden>
                     <div style="display: flex">
-                        <h3 name="NOT YET IMPLEMENTED" style="color: #D9AE5C"><span style="color: #e47587">Piggy Says: </span>This website is under construction and eventually a verification email will be sent when the account email is changed.</h3>
+                        <h3 name="NOT YET IMPLEMENTED" style="color: #FFCE00"><span style="color: #BCB5D7">'Frecency' List Says: </span>This website is under construction and eventually a verification email will be sent when the account email is changed.</h3>
                     </div>
                     <input name="email" type="email" placeholder="enter new email">
                 </div>
@@ -144,7 +156,7 @@
             </form>
             <br>
             <div class="profile_form">
-                <a class="btn btn__secondary profile__form--addEditPiggyBanks" href="addEditPiggyBanks.php">Add, Edit, or Delete Piggy Banks</a>                
+                <button class="btn btn__secondary profile__form--addEditPiggyBanks">Add, Edit, or Delete Lists (Not yet available)</button>                
             </div>
             <br>
         </div>
