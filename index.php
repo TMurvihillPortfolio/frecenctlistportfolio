@@ -4,10 +4,9 @@
 <?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
 <?php //determine if login window needed
-    //$_SESSION['id']="10";
     $loginNeeded = true;
 
-    if (isset($_SESSION['id']) && $_SESSION['id'] !== '') {
+    if (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') {
         $loginNeeded = false;
     }
 ?>
@@ -22,7 +21,7 @@
             $statement->execute(array(':email'=>$inputEmail));
 
             if($row=$statement->fetch()){
-                $id = $row['id'];
+                $userId = $row['userId'];
                 $hashed_password = $row['password'];
                 $password = $row['password'];
                 $activated = $row['active'];
@@ -30,21 +29,21 @@
                 if(password_verify($inputPassword, $hashed_password)){
                     if ($activated) {
                         //clear old session
-                        if (isset($_SESSION['id'])) {
+                        if (isset($_SESSION['userId'])) {
                             unset($_SESSION['listId']);
                             unset($_SESSION['orderBy']);
                             unset($_SESSION['viewBy']);
-                            unset($_SESSION['id']);
+                            unset($_SESSION['userId']);
 
                             // NOT YET IMPLEMENTED if(isset($_COOKIE['rememberUserCookie'])){
                             //     uset($_COOKIE['rememberUserCookie']);
                             //     setcookie('rememberUserCookie', null, -1, '/');
                             // } 
                         }
-                        $_SESSION['id'] = $id;
-                        $splQuery = "SELECT * FROM Lists WHERE listUserId = :id AND isDefault = 1";
+                        $_SESSION['userId'] = $userId;
+                        $splQuery = "SELECT * FROM Lists WHERE listUserId = :userId AND isDefault = 1";
                         $statement = $db->prepare($splQuery);
-                        $statement->execute(array(':id'=>$id));
+                        $statement->execute(array(':userId'=>$userId));
                         if($listRow=$statement->fetch()){
                             $_SESSION['listId'] = $listRow['listId'];                
                             header("Location: index.php");
@@ -102,9 +101,9 @@
 <?php //add/edit submit button clicked
     if (isset($_POST['addEditSave'])) {
         //EDIT the item
-        if (isset($_POST['id']) && $_POST['id'] !== '') {          
+        if (isset($_POST['listItemId']) && $_POST['listItemId'] !== '') {          
             //initialize data variables
-            $id = '';
+            $listItemId = '';
             $title = '';
             $category = '';
             $frecency = -1;
@@ -115,8 +114,8 @@
             $isChecked = 'off';
 
             //Get user input values from form
-            if (isset($_POST['id'])) {
-                $id = $_POST['id'];
+            if (isset($_POST['listItemId'])) {
+                $listItemId = $_POST['listItemId'];
             }              
             if (isset($_POST['addTitle'])) {
                 $title = $_POST['addTitle'];
@@ -152,7 +151,7 @@
                                                 lastClick=:lastClick,
                                                 numClicks=:numClicks,
                                                 isChecked=:isChecked
-                                            WHERE id=:id";
+                                            WHERE listItemId=:listItemId";
                 $statement = $db->prepare($query);
                 $statement->execute(array(':title' => $title,
                                         ':category' => $category,
@@ -161,7 +160,7 @@
                                         ':lastClick' => $lastClick,
                                         ':numClicks' => $numClicks,
                                         ':isChecked' => $isChecked,
-                                        ':id' => $id
+                                        ':listItemId' => $listItemId
                                     ));
             } catch (Exception $e) {
                 //NOT YET IMPLEMENTED
@@ -171,7 +170,7 @@
         } else {
             
             //initialize data variables
-            $id = time() . mt_rand() . 'tmurv'; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
+            $listItemId = time() . mt_rand() . $_SESSION['userId']; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
             $title = '';
             $category = '';
             $frecency = -1;
@@ -212,14 +211,14 @@
             } 
             //Create and execute the query         
             try {
-                $query = "INSERT INTO ListItems (title, category, qty, id,  isChecked, numClicks, firstClick, lastClick, listId)
-                                    VALUES (:title, :category, :qty, :id, :isChecked, :numClicks, :firstClick, :lastClick, :listId);";
+                $query = "INSERT INTO ListItems (title, category, qty, listItemId,  isChecked, numClicks, firstClick, lastClick, listId)
+                                    VALUES (:title, :category, :qty, :listItemId, :isChecked, :numClicks, :firstClick, :lastClick, :listId);";
                 $statement = $db->prepare($query);
                 $statement->execute(array(
                                     ':title'=>$title,
                                     ':category' => $category, 
                                     ':qty' => $qty, 
-                                    ':id' => $id,                           
+                                    ':listItemId' => $listItemId,                           
                                     ':isChecked' => $isChecked,
                                     ':numClicks' => $numClicks,
                                     ':firstClick' => $firstClick,
@@ -259,11 +258,11 @@
 ?>
 <?php //Delete item
     if (isset($_POST['itemDelete'])) {
-        $id = $_POST['editId'];
-        $query = "DELETE FROM ListItems WHERE id = :id";
+        $listItemId = $_POST['editId'];
+        $query = "DELETE FROM ListItems WHERE listItemId = :listItemId";
         $statement = $db->prepare($query);
-        $statement->execute(array(":id"=>$id));
-        $listItems=getList($db, $frecencyInterval);
+        $statement->execute(array(":listItemId"=>$listItemId));
+        //$listItems=getList($db, $listId, $frecencyInterval);
         header("Location: index.php", true, 301);
     }
 ?>
@@ -273,7 +272,7 @@
 <body>
     <?php include 'php/reusables/mainnav.php'; ?>
     <section class="list">      
-        <h1><?php echo (isset($_SESSION['id']) && $_SESSION['id'] !== '') ? $_SESSION['id'] : "My"; ?>'s 'Frecent' List</h1>
+        <h1><?php echo (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') ? $_SESSION['userId']."'s" : "My"; ?>&nbsp;'Frecent' List</h1>
         <br> 
         <hr>
         <br>
@@ -372,7 +371,7 @@
                         <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecency" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['calcfrec'] : ''; ?>"></div>
                         <div class="" hidden><input id="js--addFirstClickEdit" type="text" name="addItemFirstClickEdit" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['firstClick'] : ''; ?>"></div>
                         <div class="" hidden><input id="js--addLastClickEdit" type="text" name="addItemLastClickEdit" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['lastClick'] : ''; ?>"></div>
-                        <div class="" hidden><input id="js--addIdEdit" type="text" name="id" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['id'] : ''; ?>"></div>
+                        <div class="" hidden><input id="js--addIdEdit" type="text" name="id" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['listItemId'] : ''; ?>"></div>
                     </div>
                     <div class="flex list__addItem--addItemForm-submitButtons">  
                         <input type="submit" class="btn btn__primary" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
@@ -439,11 +438,11 @@
                                     <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" name="editQty" value="<?php echo $item['qty']; ?>"></div>
                                     <div class="list__container--items-itemTitle" id='js--tempId'><input type="text" value="<?php echo $item['title']; ?>"></div>            
                                     <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" name="editTitle" value="<?php echo $item['title']; ?>"></div>            
-                                    <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" data-id="<?php echo $item['id']; ?>" onclick="updateNumClicks(this.dataset.id, this.checked);" <?php echo $checked ?>></div>                                  
+                                    <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" data-itemId="<?php echo $item['listItemId']; ?>" onclick="updateNumClicks(this.dataset.itemId, this.checked);" <?php echo $checked ?>></div>                                  
                                     <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
                                     <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
                                     <div class="list__container--items-frecency" hidden><input type="text" name='frecency' value="<?php echo $item['calcfrec']; ?>"></div>                                                   
-                                    <div class="list__container--items-itemId" hidden><input type="text" name='editId' value="<?php echo $item['id']; ?>"></div>                                                   
+                                    <div class="list__container--items-itemId" hidden><input type="text" name='editId' value="<?php echo $item['listItemId']; ?>"></div>                                                   
                                 </div>    
                             </div>
                         </form>    
@@ -454,8 +453,8 @@
     </section>
     <!-- update number of clicks API -->
     <script>
-        function updateNumClicks(str, isChecked) {
-            console.log(str + '|' + isChecked);
+        function updateNumClicks(listItemId, isChecked) {
+            console.log(listItemId + '|' + isChecked);
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function (){               
                 //NOT YET implemented Message to user box on erro
@@ -467,7 +466,7 @@
                 //     //document.getElementById("js--tempId").innerHTML = this.responseText;
                 // }
             };
-            xmlhttp.open("GET", "php/reusables/updateNumClicksAPI.php?id=" + str + "&ischecked=" + isChecked, true);
+            xmlhttp.open("GET", "php/reusables/updateNumClicksAPI.php?listItemId=" + listItemId + "&ischecked=" + isChecked, true);
             xmlhttp.send();         
         }   
     </script>

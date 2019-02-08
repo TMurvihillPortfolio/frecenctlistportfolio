@@ -83,7 +83,7 @@
             unset($_SESSION['viewBy']);
             unset($_SESSION['orderBy']);
             unset($_SESSION['listId']);
-            unset($_SESSION['id']);   
+            unset($_SESSION['userId']);   
             session_destroy();
         }
     
@@ -95,9 +95,9 @@ function closeAccount($db, $closeAccountEmail) {
 
     // //find Lists associated with user    
     // try {
-    //     $splQuery = "Select * FROM lists WHERE listUserId= :id";
+    //     $splQuery = "Select * FROM lists WHERE listUserId= :listUserId";
     //     $statement = $db->prepare($splQuery);
-    //     $statement->execute(array(':id'=>$_SESSION['id']));
+    //     $statement->execute(array(':listUserId'=>$_SESSION['listUserId']));
     // }catch (PDOexception $ex) {
     //     $result = "An error occurred. Try logging out and logging in again.";
     // }
@@ -108,8 +108,8 @@ function closeAccount($db, $closeAccountEmail) {
            
     //         //delete tranactions assoc with piggy bank
     //         try {
-    //             $statement = $db->prepare( "DELETE FROM transactions WHERE listId =:id" );
-    //             $statement->execute(array(':id'=>$list['id']));
+    //             $statement = $db->prepare( "DELETE FROM transactions WHERE listId =:listId" );
+    //             $statement->execute(array(':listId'=>$list['listId']));
 
     //         }catch (PDOexception $ex) {
     //             $result = "An error occurred. Try logging out and logging in again.";
@@ -117,8 +117,8 @@ function closeAccount($db, $closeAccountEmail) {
 
     //         //delete list
     //         try {
-    //             $statement = $db->prepare("DELETE FROM lists WHERE id = :id");
-    //             $statement->execute(array(':id'=>$list['id']));
+    //             $statement = $db->prepare("DELETE FROM lists WHERE listId = :listId");
+    //             $statement->execute(array(':listId'=>$list['listId']));
 
     //             if (!$statement->rowCount()) {
     //                 $result = "No list deleted: ".$list['listName'];               
@@ -130,11 +130,11 @@ function closeAccount($db, $closeAccountEmail) {
 
         //delete User
         try{
-            $statement = $db->prepare("DELETE FROM users WHERE id = :id");
-            $statement->execute(array(':id'=>$_SESSION['id']));
+            $statement = $db->prepare("DELETE FROM users WHERE userId = :userId");
+            $statement->execute(array(':userId'=>$_SESSION['userId']));
 
             if (!$statement->rowCount()) {
-               $result = "Close account not successful for user Id#: ".$list['listUser']; 
+               $result = "Close account not successful for user Id#: ".$list['listUserId']; 
 
                //clean up environment
                logout();             
@@ -144,7 +144,7 @@ function closeAccount($db, $closeAccountEmail) {
         }            
         return $result;
     // }else{
-    //     return "User or lists not found. Please login again.";
+    //     return "User or lists not found. Try logging out and logging in again.";
     // }
 }
 ?>

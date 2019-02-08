@@ -32,11 +32,11 @@
         return $categories;
     }
 
-    function getListItemById($db, $id, $frecencyInterval) {
-        //$query = "SELECT *, (numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval as calcfrec FROM ListItems WHERE id=:id";
-        $query = "SELECT * FROM ListItems WHERE id=:id";
+    function getListItemById($db, $listItemId, $frecencyInterval) {
+        //$query = "SELECT *, (numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval as calcfrec FROM ListItems WHERE listItemId=:listItemId";
+        $query = "SELECT * FROM ListItems WHERE listItemId=:listItemId";
         $statement = $db->prepare($query);
-        $statement->execute(array(':id'=>$id));
+        $statement->execute(array(':listItemId'=>$listItemId));
         if (!$listItem=$statement->fetch(PDO::FETCH_ASSOC)) {
             echo "List Item not found.";
         }

@@ -4,10 +4,7 @@
         <li class="mainNav__nav--item">
             <a href="index.php">Home</a>
         </li>
-        <li class="mainNav__nav--item">
-            <a href="signup.php">Signup</a>
-        </li>
-        <!-- <?php if(isset($_SESSION['id']) && !$_SESSION['id'] == '') : ?> -->                  
+        <!-- <?php if(isset($_SESSION['userId']) && !$_SESSION['userId'] == '') : ?> -->                  
             <li class="mainNav__nav--item">
                 <a href="profile.php">View Profile</a>
             </li>
@@ -15,6 +12,10 @@
                 <a href="logout.php">Logout</a>
             </li>
         <!-- <?php else : ?> -->
+        
+            <li class="mainNav__nav--item">
+                <a href="signup.php">Signup</a>
+            </li>
             <li class="mainNav__nav--item">
                 <a href="index.php#about">About</a>
             </li>

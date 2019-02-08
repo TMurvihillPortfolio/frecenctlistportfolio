@@ -2,8 +2,8 @@
     //initialize session
     session_start();
     //initialize session variables
-    if (!isset($_SESSION['id'])) {
-        $_SESSION['id'] = '';
+    if (!isset($_SESSION['userId'])) {
+        $_SESSION['userId'] = '';
     }
     if (!isset($_SESSION['listId'])) {
         $_SESSION['listId'] = '';

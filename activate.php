@@ -2,16 +2,16 @@
 <?php include 'php/classes/Database.php'; ?>
 <?php include 'php/reusables/helpers.php' ?>
 <?php
-    if(isset($_GET['id'])) {
-        $encoded_id = $_GET['id'];
+    if(isset($_GET['userId'])) {
+        $encoded_id = $_GET['userId'];
         $decode_id = base64_decode($encoded_id);
         $user_id_array = explode("encodeuserid", $decode_id);
-        $listUserId = $user_id_array[1];
+        $userId = $user_id_array[1];
         
         try {
-            $sql = "UPDATE users SET active =:active WHERE id=:listUserId AND active='0'";       
+            $sql = "UPDATE users SET active =:active WHERE userId=:userId AND active='0'";       
             $statement = $db->prepare($sql);
-            $statement->execute(array(':active' => "1", ':listUserId' => $listUserId));
+            $statement->execute(array(':active' => "1", ':userId' => $userId));
            
             if ($statement->rowCount() == 1) {
                 $result = '<h2>Email Confirmed </h2>

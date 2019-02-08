@@ -5,24 +5,24 @@
 <?php //update email
     if (isset($_POST['emailSubmit'])) {
         $email = $_POST['email'];
-        $id = $_SESSION['id'];
-        $splQuery = "UPDATE users SET email = :email WHERE id = :id";
+        $userId = $_SESSION['userId'];
+        $splQuery = "UPDATE users SET email = :email WHERE userId = :userId";
         $statement = $db->prepare($splQuery);
-        $statement->execute(array(':id'=>$id, 'email'=>$email));
+        $statement->execute(array(':userId'=>$userId, 'email'=>$email));
     }
 ?>
 <?php //update password
     if (isset($_POST['passwordSubmit'])) {
-        $id = $_SESSION['id'];
+        $userId = $_SESSION['userId'];
         $userInputPassword = $_POST['userInputPassword'];
         $newPassword = $_POST['newPassword'];
         $confirmPassword = $_POST['confirmPassword'];
         
         if ($newPassword === $confirmPassword) {
             //Get old hashed password from db
-            $splQuery = "SELECT password FROM users WHERE id = :id";
+            $splQuery = "SELECT password FROM users WHERE userId = :userId";
             $statement = $db->prepare($splQuery);
-            $statement->execute(array(':id'=>$id));
+            $statement->execute(array(':userId'=>$userId));
 
             if($row=$statement->fetch()){  
                 $passwordFromDb = $row['password'];
@@ -32,9 +32,9 @@
                     //hash the new password
                     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
                     //update db
-                    $sqlUpdate = "UPDATE users SET password=:password WHERE id=:id";
+                    $sqlUpdate = "UPDATE users SET password=:password WHERE userId=:userId";
                                 $statement = $db->prepare($sqlUpdate);
-                                $statement->execute(array(':password'=>$hashedPassword, ':id'=>$id));
+                                $statement->execute(array(':password'=>$hashedPassword, ':userId'=>$userId));
 
                                 if($statement->rowCount()===1){
                                     $result = "Password reset Successful.";
@@ -52,15 +52,15 @@
 ?>
 <?php //close account
     if (isset($_POST['closeAccountSubmit'])) {
-        $result = closeAccount($db, $_SESSION['id']);
+        $result = closeAccount($db, $_SESSION['userId']);
         header('Location: index.php');
     }
 ?>
 <?php //get profile data for page render
-    $id = $_SESSION['id'];
-    $splQuery = "SELECT * FROM users WHERE id = :id";
+    $userId = $_SESSION['userId'];
+    $splQuery = "SELECT * FROM users WHERE userId = :userId";
     $statement = $db->prepare($splQuery);
-    $statement->execute(array(':id'=>$id));
+    $statement->execute(array(':userId'=>$userId));
 
     if($row=$statement->fetch()){  
         $email = $row['email'];

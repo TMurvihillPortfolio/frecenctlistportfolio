@@ -34,16 +34,16 @@ try {
 }
 
 //Get posted variables
-$updateClicksId = $_REQUEST['id'];
+$updateClicksId = $_REQUEST['listItemId'];
 ($_REQUEST['ischecked'] === 'true') ? $isChecked = 1 : $isChecked = 0;
 
 //update db number of clicks and isClicked
 if ($isChecked==1) {
-    $query = "UPDATE ListItems SET numClicks = (numClicks + 1), isChecked = 1 WHERE id = :updateClicksId";
+    $query = "UPDATE ListItems SET numClicks = (numClicks + 1), isChecked = 1 WHERE listItemId = :updateClicksId";
     $statement = $db->prepare($query);
     $statement->execute(array(":updateClicksId"=>$updateClicksId));
 } else {
-    $query = "UPDATE ListItems SET isChecked = 0 WHERE id = :updateClicksId";
+    $query = "UPDATE ListItems SET isChecked = 0 WHERE listItemId = :updateClicksId";
     $statement = $db->prepare($query);
     $statement->execute(array(":updateClicksId"=>$updateClicksId));
 }
