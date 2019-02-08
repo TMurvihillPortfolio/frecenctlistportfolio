@@ -11,8 +11,7 @@
             <li class="mainNav__nav--item">
                 <a href="logout.php">Logout</a>
             </li>
-        <!-- <?php else : ?> -->
-        
+        <!-- <?php else : ?> -->     
             <li class="mainNav__nav--item">
                 <a href="signup.php">Signup</a>
             </li>

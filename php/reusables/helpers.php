@@ -90,43 +90,44 @@
     }
 
 //Close Account
-function closeAccount($db, $closeAccountEmail) {
+function closeAccount($db, $closeAccountId) {
     $result = '';
 
-    // //find Lists associated with user    
-    // try {
-    //     $splQuery = "Select * FROM lists WHERE listUserId= :listUserId";
-    //     $statement = $db->prepare($splQuery);
-    //     $statement->execute(array(':listUserId'=>$_SESSION['listUserId']));
-    // }catch (PDOexception $ex) {
-    //     $result = "An error occurred. Try logging out and logging in again.";
-    // }
+    //find Lists associated with user    
+    try {
+        $splQuery = "Select * FROM Lists WHERE listUserId= :listUserId";
+        $statement = $db->prepare($splQuery);
+        $statement->execute(array(':listUserId'=>$_SESSION['userId']));
+    }catch (PDOexception $ex) {
+        $result = "An error occurred. Try logging out and logging in again.";
+    }
     
-    // //delete listItems, lists and user    
-    // if($lists=$statement->fetchAll()){
-    //     foreach ($lists as $list) {
-           
-    //         //delete tranactions assoc with piggy bank
-    //         try {
-    //             $statement = $db->prepare( "DELETE FROM transactions WHERE listId =:listId" );
-    //             $statement->execute(array(':listId'=>$list['listId']));
+    //delete listItems, lists and user    
+    if($lists=$statement->fetchAll()){
+        
+        foreach ($lists as $list) {
+         
+            //delete listItems accociated with list
+            try {
+                $statement = $db->prepare( "DELETE FROM ListItems WHERE listId =:listId" );
+                $statement->execute(array(':listId'=>$list['listId']));
 
-    //         }catch (PDOexception $ex) {
-    //             $result = "An error occurred. Try logging out and logging in again.";
-    //         }
+            }catch (PDOexception $ex) {
+                $result = "An error occurred. Try logging out and logging in again.";
+            }
 
-    //         //delete list
-    //         try {
-    //             $statement = $db->prepare("DELETE FROM lists WHERE listId = :listId");
-    //             $statement->execute(array(':listId'=>$list['listId']));
+            //delete list
+            try {
+                $statement = $db->prepare("DELETE FROM Lists WHERE listId = :listId");
+                $statement->execute(array(':listId'=>$list['listId']));
 
-    //             if (!$statement->rowCount()) {
-    //                 $result = "No list deleted: ".$list['listName'];               
-    //             } 
-    //         }catch (PDOexception $ex) {
-    //             $result = "An error occurred. Try logging out and logging in again.";
-    //         }        
-    //     }
+                if (!$statement->rowCount()) {
+                    $result = "No list deleted: ".$list['listName'];               
+                } 
+            }catch (PDOexception $ex) {
+                $result = "An error occurred. Try logging out and logging in again.";
+            }        
+        }
 
         //delete User
         try{
@@ -138,13 +139,15 @@ function closeAccount($db, $closeAccountEmail) {
 
                //clean up environment
                logout();             
+            } else {
+                return "success";
             }
         }catch (PDOexception $ex) {
             $result = "An error occurred. Try logging out and logging in again.";
-        }            
+        }           
         return $result;
-    // }else{
-    //     return "User or lists not found. Try logging out and logging in again.";
-    // }
+    }else{
+        return "User or lists not found. Try logging out and logging in again.";
+    }
 }
 ?>

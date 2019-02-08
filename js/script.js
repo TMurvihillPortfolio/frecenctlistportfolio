@@ -88,7 +88,7 @@ function startChangePassword(clickedItem) {
 function startCloseAccount(clickedItem, userEmail) {
     //Get customer verification to close the Account   
     if (clickedItem.innerText == "Close Account") { 
-        var yesNo = prompt('Close Account? Are you sure? This will delete your user account and all associated Piggy Banks and transactions. Please type your account email below to close the account.');
+        var yesNo = prompt('Close Account? Are you sure? This will delete your user account and all associated lists and list items. Please type your account email below to close the account.');
         if (!(yesNo == null) && !(yesNo =='')) {
             if (yesNo.toUpperCase() == userEmail.toUpperCase()) {
                 clickedItem.type = 'submit';

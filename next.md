@@ -1,7 +1,5 @@
 # WHAT TO DO NEXT
 
-- edit item adding a new item still
-
 # BEFORE BETA DIST
 - input validation
 

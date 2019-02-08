@@ -230,7 +230,7 @@
             }           
         }
         //restore environment
-        $_POST = []; 
+        $_POST = [];
         header("Location: index.php", true, 301);      
     }
 ?>
@@ -371,7 +371,7 @@
                         <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecency" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['calcfrec'] : ''; ?>"></div>
                         <div class="" hidden><input id="js--addFirstClickEdit" type="text" name="addItemFirstClickEdit" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['firstClick'] : ''; ?>"></div>
                         <div class="" hidden><input id="js--addLastClickEdit" type="text" name="addItemLastClickEdit" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['lastClick'] : ''; ?>"></div>
-                        <div class="" hidden><input id="js--addIdEdit" type="text" name="id" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['listItemId'] : ''; ?>"></div>
+                        <div class="" hidden><input id="js--addIdEdit" type="text" name="listItemId" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['listItemId'] : ''; ?>"></div>
                     </div>
                     <div class="flex list__addItem--addItemForm-submitButtons">  
                         <input type="submit" class="btn btn__primary" name="addEditSave" id="js--saveAddEditItem" value="Save"/>

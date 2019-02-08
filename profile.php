@@ -52,21 +52,30 @@
 ?>
 <?php //close account
     if (isset($_POST['closeAccountSubmit'])) {
+        //delete user
         $result = closeAccount($db, $_SESSION['userId']);
+        //clean up environment
+        if ($result === 'success') {
+            logout();           
+        }
         header('Location: index.php');
     }
 ?>
 <?php //get profile data for page render
-    $userId = $_SESSION['userId'];
-    $splQuery = "SELECT * FROM users WHERE userId = :userId";
-    $statement = $db->prepare($splQuery);
-    $statement->execute(array(':userId'=>$userId));
+    if (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') {
+        $userId = $_SESSION['userId'];
+        $splQuery = "SELECT * FROM users WHERE userId = :userId";
+        $statement = $db->prepare($splQuery);
+        $statement->execute(array(':userId'=>$userId));
 
-    if($row=$statement->fetch()){  
-        $email = $row['email'];
-    }else{
+        if ($row=$statement->fetch()) {  
+            $userId = $row['userId'];
+        } else {
+            $result = 'User not found, please login again or signup for a new account.';
+        }
+    } else {
         $result = 'User not found, please login again or signup for a new account.';
-    }
+    }   
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,10 +93,10 @@
     <div class="profile__container">
         <div class="profile__form profile__form--email" id="js--profileOriginalEmail">
             <?php 
-                if (isset($email)) {
-                    echo $email;
+                if (isset($userId)) {
+                    echo $userId;
                 } else {
-                    echo "no email found";
+                    echo "no id found";
                 }
             ?>
         </div>
