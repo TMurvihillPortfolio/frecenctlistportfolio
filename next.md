@@ -2,6 +2,8 @@
 
 # BEFORE BETA DIST
 - input validation
+    - add/edit item done
+    - profile page needs doing
 
 - find places where error message might appear
 

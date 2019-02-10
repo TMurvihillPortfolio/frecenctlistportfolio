@@ -19,6 +19,7 @@
     try {
         if (isset($_POST['passwordSubmit'])) {
             $userId = $_SESSION['userId'];
+            
             $userInputPassword = $_POST['userInputPassword'];
             $newPassword = $_POST['newPassword'];
             $confirmPassword = $_POST['confirmPassword'];

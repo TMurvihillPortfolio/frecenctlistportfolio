@@ -100,6 +100,7 @@
 ?>
 <?php //add/edit submit button clicked
     if (isset($_POST['addEditSave'])) {
+        
         //EDIT the item
         if (isset($_POST['listItemId']) && $_POST['listItemId'] !== '') {          
             //initialize data variables
@@ -113,31 +114,37 @@
             $numClicks = -1;
             $isChecked = 'off';
 
-            //Get user input values from form
+            //sanitize and assign user input values           
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                if (isset($_POST['addTitle'])) {
+                    $title = test_input($_POST["addTitle"]);
+                }
+                if (isset($_POST['addCategory'])) {
+                    $category = test_input($_POST["addCategory"]);
+                }
+                if (isset($_POST['addFrecency'])) {
+                    $frecency = test_input($_POST["addFrecency"]);
+                }
+                if (isset($_POST["addQty"])) {
+                    $qty = test_input($_POST["addQty"]);
+                }
+                if (isset($_POST["checkBox"])) {
+                    $checkBox = test_input($_POST["checkBox"]);
+                    ($checkBox == 'on') ? $isChecked = 1 : $isChecked = 0;
+                }               
+            }
+
+            //assign values from hidden fields not touch by user
             if (isset($_POST['listItemId'])) {
                 $listItemId = $_POST['listItemId'];
-            }              
-            if (isset($_POST['addTitle'])) {
-                $title = $_POST['addTitle'];
-            }              
-            if (isset($_POST['addCategory'])) {
-                $category = $_POST['addCategory'];
-            } 
-            if (isset($_POST['addFrecency'])) {
-                $frecency = (int)$_POST['addFrecency'];
-            } 
-            if (isset($_POST['addQty'])) {
-                $qty = (int)$_POST['addQty'];
-            }               
+            }                                        
             if (isset($_POST['addItemFirstClickEdit'])) {
                 $firstClick = $_POST['addItemFirstClickEdit'];
             }               
             if (isset($_POST['addItemLastClickEdit'])) {
                 $lastClick = $_POST['addItemLastClickEdit'];
             }               
-            if (isset($_POST['checkBox'])) {
-                $_POST['checkBox'] == 'on' ? $isChecked = 1 : $isChecked = 0;
-            }
+            
             //Calculate num of clicks
             $numClicks = calculateClicks($firstClick, $frecency, $frecencyInterval);
            
@@ -169,46 +176,54 @@
         //ADD Item
         } else {
             
+            
             //initialize data variables
             $listItemId = time() . mt_rand() . $_SESSION['userId']; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
             $title = '';
             $category = '';
-            $frecency = -1;
+            $frecencyWord = '';
             $qty = 1;
-            $isChecked = 'off';
-            $numClicks = 0;
             $firstClick = '';
             $lastClick = '';
+            $numClicks = -1;
+            $isChecked = 'off';
 
-            //Get user input values from form
-            if (isset($_POST['addTitle'])) {
-                $title = $_POST['addTitle'];
-            }              
-            if (isset($_POST['addCategory'])) {
-                $category = $_POST['addCategory'];
-            } 
-            if (isset($_POST['addFrecency'])) {
-                $frecency = getFrecencyNumber($_POST['addFrecency']);
-            } 
-            if (isset($_POST['addQty'])) {
-                $qty = (int)$_POST['addQty'];
-            }        
+            //create new list item id
+            $listItemId = time() . mt_rand() . $_SESSION['userId']; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
 
-            //if item checked, set initial click values
-            if (isset($_POST['checkBox'])) {
-                
-                if ($_POST['checkBox'] == 'on') {
-                    $isChecked = 1;
-                    $firstClick = date('Y-m-d', strtotime("-100 days")); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
-                    $lastClick = date('Y-m-d H:i:s');
-                    $frecencyIntervalsSinceFirstClick = (strtotime("now") - strtotime($firstClick))/86400;
-                    $numClicks = calculateClicks($firstClick, $frecency, $frecencyInterval); //Might be simulated for calculations
-                    
-                } else {
-                    $isChecked = 0;
-                    $numClicks = 0;
+            //sanitize and assign user input values           
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                if (isset($_POST['addTitle'])) {
+                    $title = test_input($_POST["addTitle"]);
+                }
+                if (isset($_POST['addCategory'])) {
+                    $category = test_input($_POST["addCategory"]);
+                }
+                if (isset($_POST['addFrecency'])) {
+                    $frecencyWord = test_input($_POST["addFrecency"]);
+                }
+                if (isset($_POST["addQty"])) {
+                    $qty = test_input($_POST["addQty"]);
+                }
+                if (isset($_POST["checkBox"])) {
+                    $checkBox = test_input($_POST["checkBox"]);
+                    ($checkBox == 'on') ? $isChecked = 1 : $isChecked = 0;
                 }
             } 
+            
+            //set initial click values
+                           
+            if ($isChecked == 1) {
+                //set first and last click (first click simulated)
+                $firstClick = date('Y-m-d', strtotime("-100 days")); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
+                $lastClick = date('Y-m-d H:i:s');
+                //calculate number of clicks to match user frecency word input
+                $frecencyNumber = getFrecencyNumber($frecencyWord);
+                $numClicks = calculateClicks($firstClick, $frecencyNumber, $frecencyInterval); //Might be simulated for calculations              
+            } else {
+                $numClicks = 0;
+            }
+            
             //Create and execute the query         
             try {
                 $query = "INSERT INTO ListItems (title, category, qty, listItemId,  isChecked, numClicks, firstClick, lastClick, listId)
@@ -231,6 +246,7 @@
         }
         //restore environment
         $_POST = [];
+        unset($_SESSION['editItemObject']);
         header("Location: index.php", true, 301);      
     }
 ?>
@@ -284,7 +300,7 @@
                 
             </div>
             <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
-            <form action="index.php" method="post" class="login__form">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="login__form">
                                                 
                 <div class="login__form--email">
                     <label for="email">Email: </label>
@@ -381,7 +397,7 @@
             </div>
         </div>
         <!-- orderBy and viewBy -->
-        <form action="index.php" method="post" name="viewByOrderBy">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" name="viewByOrderBy">
             <div class="list__orderBy" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>" id="js--addItemOrderBy">
                 <div class="list__orderBy--header">Order By:</div>
                 <div class="list__orderBy--btns">                   
@@ -436,7 +452,7 @@
                                 <div class="flex">
                                     <div class="list__container--items-itemQty"><input type="text" value="<?php echo $item['qty']; ?>" disabled></div>
                                     <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" name="editQty" value="<?php echo $item['qty']; ?>"></div>
-                                    <div class="list__container--items-itemTitle" id='js--tempId'><input type="text" value="<?php echo $item['title']; ?>"></div>            
+                                    <div class="list__container--items-itemTitle" id='js--tempId'><input type="text" value="<?php echo $item['title']; ?>" disabled></div>            
                                     <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" name="editTitle" value="<?php echo $item['title']; ?>"></div>            
                                     <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" data-itemId="<?php echo $item['listItemId']; ?>" onclick="updateNumClicks(this.dataset.itemId, this.checked);" <?php echo $checked ?>></div>                                  
                                     <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  

@@ -16,11 +16,11 @@
     function getFrecencyNumber($frecencyWord) {
         switch ($frecencyWord) {
             case 'often' :
-                return 18;
+                return 90;
             case 'sometimes' :
-                return 10;
+                return 50;
             case 'rarely' :
-                return 2;
+                return 10;
             case 'one-time Purchase' :
                 return 0;
             default :
@@ -83,7 +83,8 @@
             unset($_SESSION['viewBy']);
             unset($_SESSION['orderBy']);
             unset($_SESSION['listId']);
-            unset($_SESSION['userId']);   
+            unset($_SESSION['userId']);
+            unset($_SESSION['editItemObject']);  
             session_destroy();
         }
     
@@ -149,5 +150,15 @@ function closeAccount($db, $closeAccountId) {
     }else{
         return "User or lists not found. Try logging out and logging in again.";
     }
+}
+
+/***************
+ * Validate input from W3 schools
+ ***************/
+function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
 }
 ?>
