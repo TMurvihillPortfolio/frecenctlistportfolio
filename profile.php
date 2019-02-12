@@ -3,41 +3,64 @@
 <?php include 'php/classes/Database.php'; ?>
 <?php include 'php/reusables/helpers.php'; ?>
 <?php //update email
-    try {
-        if (isset($_POST['emailSubmit'])) {
-            $email = $_POST['email'];
-            $userId = $_SESSION['userId'];
-            $splQuery = "UPDATE users SET email = :email WHERE userId = :userId";
-            $statement = $db->prepare($splQuery);
-            $statement->execute(array(':userId'=>$userId, 'email'=>$email));
+    if (isset($_POST['emailSubmit'])) {
+        //initialize variables
+        $email = ''; 
+        $userId = '';
+        //sanitize user input
+        if (isset($_POST['email'])) {
+            $email = testInput($_POST['email']);
         }
-    } catch (Exception $e) {
-        $result = "An error occurred. Email not changed: ".$e;
+        //update email
+        if (isset($_SESSION['userId'])) {
+            $userId = $_SESSION['userId'];
+            try {
+                $splQuery = "UPDATE users SET email = :email WHERE userId = :userId";
+                $statement = $db->prepare($splQuery);
+                $statement->execute(array(':userId'=>$userId, 'email'=>$email));
+                if ($statement->rowCount() === 0) {
+                    $result = "Update not successful. Please try logging out and logging in again.";
+                }
+            } catch (Exception $ex) {
+                $result = "An error occurred: ".$ex;
+            }
+        } else {
+            $result = "User not found. Please try logging out and logging in again.";
+        }           
     }
 ?>
 <?php //update password
     try {
         if (isset($_POST['passwordSubmit'])) {
-            $userId = $_SESSION['userId'];
-            
-            $userInputPassword = $_POST['userInputPassword'];
-            $newPassword = $_POST['newPassword'];
-            $confirmPassword = $_POST['confirmPassword'];
-            
+            //initialize variables
+            $userId = $userInputPassword = $newPassword = $confirmPassword = '';
+            //assign variables post and session values
+            if (isset($_SESSION['userId'])) {
+                $userId = $_SESSION['userId'];
+            }
+            if (isset($_POST['userInputPassword'])) {
+                $userInputPassword = testInput($_POST['userInputPassword']);
+            }
+            if (isset($_POST['userInputPassword'])) {
+                $newPassword = testInput($_POST['newPassword']);
+            }
+            if (isset($_POST['userInputPassword'])) {
+                $confirmPassword = testInput($_POST['confirmPassword']);
+            }
+            //verifty that new and confirm new passwords match
             if ($newPassword === $confirmPassword) {
                 //Get old hashed password from db
                 $splQuery = "SELECT password FROM users WHERE userId = :userId";
                 $statement = $db->prepare($splQuery);
                 $statement->execute(array(':userId'=>$userId));
-    
-                if($row=$statement->fetch()){  
-                    $passwordFromDb = $row['password'];
-                    
+                //if user found
+                if($row=$statement->fetch()){ 
+                    //verify that old password matches db 
+                    $passwordFromDb = $row['password'];                   
                     if (password_verify($userInputPassword, $passwordFromDb)) {
-                        $result="password is good";
                         //hash the new password
                         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                        //update db
+                        //update db with new password
                         $sqlUpdate = "UPDATE users SET password=:password WHERE userId=:userId";
                                     $statement = $db->prepare($sqlUpdate);
                                     $statement->execute(array(':password'=>$hashedPassword, ':userId'=>$userId));
@@ -55,19 +78,22 @@
                 $result = "New password and confirm password do not match.";
             }
         }
-    } catch (Exception $e) {
-        $result = "An error occurred. Password may not be updated: ".$e;
+    } catch (Exception $ex) {
+        $result = "An error occurred. Password may not be updated: ".$ex;
     }
 ?>
 <?php //close account
     if (isset($_POST['closeAccountSubmit'])) {
         //delete user
-        $result = closeAccount($db, $_SESSION['userId']);
-        //clean up environment
-        if ($result === 'success') {
-            logout();           
+        if (isset($_SESSION['userId'])) {
+            $result = closeAccount($db, $_SESSION['userId']);
+            //clean up environment
+            if ($result === 'Account has been closed.') {
+                logout();         
+            }
+        } else {
+            $result = "Account not closed. User not found, please try logging in and logging out again.";
         }
-        header('Location: index.php');
     }
 ?>
 <?php //get profile data for page render

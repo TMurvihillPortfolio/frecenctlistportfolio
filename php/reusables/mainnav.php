@@ -16,11 +16,11 @@
                 <a href="signup.php">Signup</a>
             </li>
             <li class="mainNav__nav--item">
-                <a href="index.php#about">About</a>
+                <a href="index.php">Login</a>
             </li>
-            <!-- <li class="mainNav__nav--item">
-                <a href="login.php">Login</a>
-            </li> -->
+            <li class="mainNav__nav--item">
+                <a href="index.php#about">About</a>
+            </li>           
         <!-- <?php endif; ?> -->
     </ul>
 </section>

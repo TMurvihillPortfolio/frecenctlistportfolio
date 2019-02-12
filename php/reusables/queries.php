@@ -12,7 +12,7 @@
                 $statement = $db->prepare($query);
                 $statement->execute(array(':frecencyInterval'=>$frecencyInterval, ':listId'=>$listId));
             } else {            
-                $query = "SELECT * FROM ListItems WHERE listId = :listId ORDER BY title";           
+                $query = "SELECT *, '0' as calcfrec FROM ListItems WHERE listId = :listId ORDER BY title";           
                 $statement = $db->prepare($query);
                 $statement->execute(array(':listId'=>$listId));
             }           

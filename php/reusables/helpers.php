@@ -153,9 +153,14 @@ function closeAccount($db, $closeAccountId) {
 }
 
 /***************
- * Validate input from W3 schools
+ * Validate input
  ***************/
-function test_input($data) {
+//password
+function validatePassword($password) {
+    return strlen($password) >= 8 ? true : false;
+}
+//sanitize input from W3 schools
+function testInput($data) {
   $data = trim($data);
   $data = stripslashes($data);
   $data = htmlspecialchars($data);

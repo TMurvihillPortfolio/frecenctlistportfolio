@@ -11,10 +11,9 @@
     }
 ?>
 <?php //on login submit button
-    if(isset($_POST['submit'])){  
-        $inputPassword = $_POST['password'];
-        $inputEmail = $_POST['email'];
-        
+    if(isset($_POST['submitLogin'])){  
+        $inputPassword = $_POST['password']; 
+        $inputEmail = $_POST['email'];       
         try {
             $splQuery = "SELECT * FROM users WHERE email = :email";
             $statement = $db->prepare($splQuery);
@@ -117,19 +116,19 @@
             //sanitize and assign user input values           
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (isset($_POST['addTitle'])) {
-                    $title = test_input($_POST["addTitle"]);
+                    $title = testInput($_POST["addTitle"]);
                 }
                 if (isset($_POST['addCategory'])) {
-                    $category = test_input($_POST["addCategory"]);
+                    $category = testInput($_POST["addCategory"]);
                 }
                 if (isset($_POST['addFrecency'])) {
-                    $frecency = test_input($_POST["addFrecency"]);
+                    $frecency = testInput($_POST["addFrecency"]);
                 }
                 if (isset($_POST["addQty"])) {
-                    $qty = test_input($_POST["addQty"]);
+                    $qty = testInput($_POST["addQty"]);
                 }
                 if (isset($_POST["checkBox"])) {
-                    $checkBox = test_input($_POST["checkBox"]);
+                    $checkBox = testInput($_POST["checkBox"]);
                     ($checkBox == 'on') ? $isChecked = 1 : $isChecked = 0;
                 }               
             }
@@ -194,19 +193,19 @@
             //sanitize and assign user input values           
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (isset($_POST['addTitle'])) {
-                    $title = test_input($_POST["addTitle"]);
+                    $title = testInput($_POST["addTitle"]);
                 }
                 if (isset($_POST['addCategory'])) {
-                    $category = test_input($_POST["addCategory"]);
+                    $category = testInput($_POST["addCategory"]);
                 }
                 if (isset($_POST['addFrecency'])) {
-                    $frecencyWord = test_input($_POST["addFrecency"]);
+                    $frecencyWord = testInput($_POST["addFrecency"]);
                 }
                 if (isset($_POST["addQty"])) {
-                    $qty = test_input($_POST["addQty"]);
+                    $qty = testInput($_POST["addQty"]);
                 }
                 if (isset($_POST["checkBox"])) {
-                    $checkBox = test_input($_POST["checkBox"]);
+                    $checkBox = testInput($_POST["checkBox"]);
                     ($checkBox == 'on') ? $isChecked = 1 : $isChecked = 0;
                 }
             } 
@@ -313,7 +312,7 @@
                 </div>
             
                 <div class="login__form--submit">
-                    <input type="submit" name="submit" class="btn" value="Submit"/>           
+                    <input type="submit" name="submitLogin" class="btn" value="Submit"/>           
                     <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up<a></h4>
                 </div>
             </form>
@@ -454,7 +453,7 @@
                                     <div class="list__container--items-itemQtyPreEdit" hidden><input type="text" name="editQty" value="<?php echo $item['qty']; ?>"></div>
                                     <div class="list__container--items-itemTitle" id='js--tempId'><input type="text" value="<?php echo $item['title']; ?>" disabled></div>            
                                     <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" name="editTitle" value="<?php echo $item['title']; ?>"></div>            
-                                    <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" data-itemId="<?php echo $item['listItemId']; ?>" onclick="updateNumClicks(this.dataset.itemId, this.checked);" <?php echo $checked ?>></div>                                  
+                                    <div class="list__container--items-itemCheckBox"><input type="checkbox" name="checkBox" data-itemid="<?php echo $item['listItemId']; ?>" data-name="name" onclick="updateNumClicks(this.dataset.itemid, this.checked);" <?php echo $checked ?>></div>                                  
                                     <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                  
                                     <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
                                     <div class="list__container--items-frecency" hidden><input type="text" name='frecency' value="<?php echo $item['calcfrec']; ?>"></div>                                                   
