@@ -409,8 +409,8 @@
                 <div class="list__filterBy--header">View By:</div>
                 <div class="list__filterBy--btns">
                     <input type='submit' class="btn btn__secondary btn__width125 <?php echo ($_SESSION['viewBy'] == 'all') ? 'btn__secondary--selected' : ''; ?>" name="viewAll" value="All"/>
-                    <input type='submit' class="btn btn__secondary btn__width125 <?php echo ($_SESSION['viewBy'] == 'checked') ? 'btn__secondary--selected' : ''; ?>" name="checked" value="Checked"/>
-                    <input type='submit' class="btn btn__secondary btn__width125 <?php echo ($_SESSION['viewBy'] == 'unChecked') ? 'btn__secondary--selected' : ''; ?>" name="unChecked" value="Unchecked"/>               
+                    <input type='submit' id='js--filterByChecked' class="btn btn__secondary btn__width125 <?php echo ($_SESSION['viewBy'] == 'checked') ? 'btn__secondary--selected' : ''; ?>" name="checked" value="Checked"/>
+                    <input type='submit' id='js--filterByUnchecked' class="btn btn__secondary btn__width125 <?php echo ($_SESSION['viewBy'] == 'unChecked') ? 'btn__secondary--selected' : ''; ?>" name="unChecked" value="Unchecked"/>               
                 </div>
             </div>
         </form>
@@ -469,7 +469,16 @@
     <!-- update number of clicks API -->
     <script>
         function updateNumClicks(listItemId, isChecked) {
-            console.log(listItemId + '|' + isChecked);
+            const checkedElement = document.querySelector(`[data-itemid="${listItemId}"]`);
+            const filterByChecked = document.querySelector('#js--filterByChecked');
+            const filterByUnchecked = document.querySelector('#js--filterByUnchecked');
+
+            if (filterByChecked.classList.contains('btn__secondary--selected')) {
+                isChecked ? '' : checkedElement.parentElement.parentElement.parentElement.style.display = 'none';            
+            } else if (filterByUnchecked.classList.contains('btn__secondary--selected')) {
+                !isChecked ? '' : checkedElement.parentElement.parentElement.parentElement.style.display = 'none';                       
+            }
+            //isChecked ? '' : console.log('isChecked false'); 
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function (){               
                 //NOT YET implemented Message to user box on erro
@@ -482,7 +491,7 @@
                 // }
             };
             xmlhttp.open("GET", "php/reusables/updateNumClicksAPI.php?listItemId=" + listItemId + "&ischecked=" + isChecked, true);
-            xmlhttp.send();         
+            xmlhttp.send();       
         }   
     </script>
 </body>

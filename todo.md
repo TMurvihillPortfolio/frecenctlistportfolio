@@ -1,5 +1,6 @@
 # TODO
 
+- frecency not entering correctly on add
 - implement error messages
 - frecency calc does not work when you change the dates, frecency order goes wacky
 
