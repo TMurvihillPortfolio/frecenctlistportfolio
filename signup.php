@@ -105,38 +105,40 @@
 <html lang="en">
 <?php include 'php/reusables/head.php'; ?>
 <body>
-    <?php include 'php/reusables/mainnav.php'; ?>
-    <?php if (isset($result)) : ?>
-        <div class="signatureBox">
-            <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
+    <div class="outer">
+        <?php include 'php/reusables/mainnav.php'; ?>
+        <?php if (isset($result)) : ?>
+            <div class="signatureBox">
+                <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
+            </div>
+        <?php endif; ?>
+        <div class="signup signatureBox">
+            <div class="signup__line1">
+                <h3>Easy&nbsp;&nbsp;<span>Signup</span>Page
+                </h3>
+            </div>        
+            <form action="signup.php" method="post" class="signup__form">                            
+                <div class="signup__form--email">
+                    <label for="email">Email: </label>
+                    <input name="email" type="email" placeholder="A confirmation email will appear in your inbox." required> 
+                </div>                 
+                <div class="signup__form--password">
+                    <label for="password">Password: </label>
+                    <input name="password" type="password" value='password' required>                
+                </div>
+                <div class="signup__form--password">
+                    <label for="confirmPassword">Confirm Password: </label>
+                    <input name="confirmPassword" type="password" value='password' required>                
+                </div>
+                <div class="signup__form--listName">
+                    <label for="listName">List Name: </label>
+                    <input name="listName" type="text" value='My List' placeholder="For example 'shopping' or 'todo'" >
+                </div>
+                <div class="signup__form--submit">
+                    <input type="submit" name="signupBtn" class="btn" value="Submit"/>
+                </div>
+            </form>
         </div>
-    <?php endif; ?>
-    <div class="signup signatureBox">
-        <div class="signup__line1">
-            <h3>Easy&nbsp;&nbsp;<span>Signup</span>Page
-            </h3>
-        </div>        
-        <form action="signup.php" method="post" class="signup__form">                            
-            <div class="signup__form--email">
-                <label for="email">Email: </label>
-                <input name="email" type="email" placeholder="A confirmation email will appear in your inbox." required> 
-            </div>                 
-            <div class="signup__form--password">
-                <label for="password">Password: </label>
-                <input name="password" type="password" value='password' required>                
-            </div>
-            <div class="signup__form--password">
-                <label for="confirmPassword">Confirm Password: </label>
-                <input name="confirmPassword" type="password" value='password' required>                
-            </div>
-            <div class="signup__form--listName">
-                <label for="listName">List Name: </label>
-                <input name="listName" type="text" value='My List' placeholder="For example 'shopping' or 'todo'" >
-            </div>
-            <div class="signup__form--submit">
-                <input type="submit" name="signupBtn" class="btn" value="Submit"/>
-            </div>
-        </form>
     </div>
 </body>
 </html>

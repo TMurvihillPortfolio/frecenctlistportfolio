@@ -5,7 +5,7 @@
 
 html {
   font-size: 62.5%;
-  background-color: #F2F2F6;
+  background-color: #f2f8f2;
   color: #555;
   font-family: 'Lato', 'Arial', san-serif;
   font-size: 20px;
@@ -16,12 +16,13 @@ hr {
   border: 0;
   height: 1.1px;
   color: #666;
-  background-image: -moz-linear-gradient(left, rgba(255, 206, 0, 0), rgba(255, 206, 0, 0.8), rgba(255, 206, 0, 0));
-  background-image: -ms-linear-gradient(left, rgba(255, 206, 0, 0), rgba(255, 206, 0, 0.8), rgba(255, 206, 0, 0));
-  background-image: -o-linear-gradient(left, rgba(255, 206, 0, 0), rgba(255, 206, 0, 0.8), rgba(255, 206, 0, 0));
-  background-image: -webkit-linear-gradient(left, rgba(255, 206, 0, 0), rgba(255, 206, 0, 0.8), rgba(255, 206, 0, 0)); }
+  background-image: -moz-linear-gradient(left, rgba(8, 58, 8, 0), rgba(8, 58, 8, 0.8), rgba(8, 58, 8, 0));
+  background-image: -ms-linear-gradient(left, rgba(8, 58, 8, 0), rgba(8, 58, 8, 0.8), rgba(8, 58, 8, 0));
+  background-image: -o-linear-gradient(left, rgba(8, 58, 8, 0), rgba(8, 58, 8, 0.8), rgba(8, 58, 8, 0));
+  background-image: -webkit-linear-gradient(left, rgba(8, 58, 8, 0), rgba(8, 58, 8, 0.8), rgba(8, 58, 8, 0)); }
 
 .outer {
+  min-height: 100vh;
   background: linear-gradient(to right, rgba(255, 255, 255, 0.6), #fffae8, rgba(255, 255, 255, 0.6)), url(../img/storeaisle.jpg) no-repeat center center fixed;
   background-size: cover; }
 
@@ -53,30 +54,30 @@ hr {
   padding: 7px 10px;
   font-size: 16px; }
   .btn__primary {
-    background-color: #BCB5D7; }
+    background-color: #f0f34a; }
   .btn__secondary {
-    background-color: #FFCE00; }
+    background-color: #0d530d;
+    color: #f2f8f2; }
     .btn__secondary--selected {
-      color: #BCB5D7;
-      background-color: #b89301;
-      outline: 2px solid #FFCE00;
+      background-color: #083a08;
+      outline: 2px solid #0d530d;
       border-radius: unset; }
   .btn__secondaryDark {
-    background-color: #b89301; }
+    background-color: #083a08; }
   .btn__width125 {
     width: 125px; }
 
 .signatureBox {
   display: block;
   margin: 25px auto;
-  border: 2px solid #889D38;
-  border-top: 30px solid #889D38;
+  border: 2px solid #3C7496;
+  border-top: 30px solid #3C7496;
   padding: 1rem;
   width: fit-content; }
   .signatureBox h4 {
-    color: #BCB5D7; }
+    color: #f0f34a; }
   .signatureBox span {
-    color: #FFCE00; }
+    color: #0d530d; }
 
 .header {
   width: 100%;
@@ -97,15 +98,15 @@ hr {
       letter-spacing: 3px;
       margin-bottom: 25px;
       font-size: 60px;
-      color: #fcfcfc; }
+      color: #fdfdf6; }
     .header__text--subTitle {
       font-weight: 300;
       letter-spacing: 3px;
-      color: #fcfcfc; }
+      color: #fdfdf6; }
       .header__text--subTitle > span {
         display: inline-block;
         transform: scale(1.5, 1.5);
-        color: #BCB5D7;
+        color: #f0f34a;
         font-style: italic;
         vertical-align: 10%; }
 
@@ -115,33 +116,35 @@ hr {
   border-radius: 6px; }
 
 .mainNav__nav {
+  font-weight: 500;
   margin: 10px;
   display: flex;
   float: right;
-  color: #b89301;
+  color: #083a08;
   list-style: none;
   height: 3.5rem;
   z-index: 1000; }
   .mainNav__nav--item > a {
     margin-right: 2rem;
-    color: #b89301;
+    color: #083a08;
     text-decoration: none;
     padding-bottom: 7px; }
     .mainNav__nav--item > a:link, .mainNav__nav--item > a:visited {
       border-bottom: 1px solid transparent;
       transition: border-bottom .4s; }
     .mainNav__nav--item > a:hover, .mainNav__nav--item > a:active {
-      border-bottom: 1.5px solid #fcfcfc; }
+      border-bottom: 1.5px solid #fdfdf6; }
 
 .list {
   padding: 50px;
   width: 85%;
   margin: 50px auto;
+  border: 13px double #083a08;
   border-radius: 7px; }
   .list__search {
     display: none; }
     .list__search--input {
-      background-color: #fcfcfc;
+      background-color: #fdfdf6;
       width: 350px;
       height: 40px;
       display: flex;
@@ -165,7 +168,7 @@ hr {
       height: 25px;
       cursor: pointer; }
     .list__addItem--addItemForm {
-      border: 7px double #FFCE00;
+      border: 7px double #0d530d;
       padding: 15px;
       margin-top: 25px;
       line-height: 2;
@@ -174,12 +177,12 @@ hr {
         width: 80px; }
       .list__addItem--addItemForm-frecency > input {
         width: 80px !important;
-        background-color: #D8DAEB;
+        background-color: #f8f8d5;
         margin-left: 15px;
         margin-top: 10px; }
       .list__addItem--addItemForm label,
       .list__addItem--addItemForm h3 {
-        color: #FFCE00; }
+        color: #0d530d; }
       .list__addItem--addItemForm h3 {
         margin-bottom: 15px; }
       .list__addItem--addItemForm input,
@@ -198,7 +201,7 @@ hr {
         width: 6rem; }
   .list > h1 {
     text-align: center;
-    color: #0d530d;
+    color: #083a08;
     letter-spacing: 4px;
     word-spacing: 9px;
     font-weight: 500; }
@@ -206,7 +209,7 @@ hr {
     display: none;
     margin: 30px 0; }
     .list__orderBy--header {
-      color: #0d530d;
+      color: #3C7496;
       font-style: italic;
       font-size: 20px;
       margin-bottom: 15px;
@@ -221,7 +224,7 @@ hr {
     display: none;
     margin: 30px 0; }
     .list__filterBy--header {
-      color: #0d530d;
+      color: #3C7496;
       font-style: italic;
       font-size: 20px;
       margin-bottom: 15px;
@@ -236,20 +239,20 @@ hr {
     display: flex;
     justify-content: space-between;
     text-align: center;
-    border: 7px double #0d530d;
+    border: 7px double #083a08;
     padding: 7px 15px;
-    color: #0d530d; }
+    color: #3C7496; }
   .list__container--items {
     margin-bottom: 25px; }
     .list__container--items-orderByHeading {
-      color: #ffe47d;
+      color: #b5f3b5;
       font-style: italic;
       text-align: center; }
     .list__container--items-item {
-      border: 1px solid #0d530d;
+      border: 1px solid #083a08;
       padding: 15px 5px 15px 25px; }
       .list__container--items-itemHeader {
-        color: #ffe47d;
+        color: #b5f3b5;
         text-align: center;
         font-size: 24px;
         margin: 20px;
@@ -258,13 +261,14 @@ hr {
         letter-spacing: 3px;
         word-spacing: 3px; }
       .list__container--items-item input {
+        color: #153a52;
         font-size: 18px;
         letter-spacing: 1px;
         word-spacing: 2px;
         width: 100%;
         border-radius: 3px;
         padding: 6px 9px;
-        background-color: #fcfcfc; }
+        background-color: #fdfdf6; }
       .list__container--items-itemQty, .list__container--items-itemCheckBox {
         text-align: center;
         flex: 2; }
@@ -286,13 +290,13 @@ hr {
         height: 25px;
         margin: 0 3px; }
       .list__container--items-itemFrecency p {
-        color: #ffe47d;
+        color: #b5f3b5;
         font-size: 16px;
         padding-top: 12px;
         text-align: right; }
         .list__container--items-itemFrecency p input {
           width: 50px;
-          background-color: #D8DAEB;
+          background-color: #f8f8d5;
           font-size: 14px;
           padding: 2px; }
 
@@ -303,19 +307,19 @@ hr {
     justify-content: space-between; }
     .login__line1 > h3 {
       font-size: 200%;
-      color: #FFCE00;
+      color: #0d530d;
       margin-bottom: 2rem;
       margin-top: 1rem; }
       .login__line1 > h3 > span {
-        color: #0d530d; }
+        color: #6e6e03; }
     .login__line1--signup {
       padding-top: 1rem; }
       .login__line1--signup > a {
         font-style: italic;
-        color: #0d530d;
+        color: #6e6e03;
         margin-left: 1rem; }
   .login__form {
-    color: #FFCE00;
+    color: #0d530d;
     font-weight: 400; }
     .login__form--username {
       display: flex; }
@@ -368,7 +372,7 @@ hr {
   margin: auto;
   margin-top: 40px; }
   .signup__line1 {
-    color: #0d530d;
+    color: #6e6e03;
     margin-bottom: 15px;
     margin-left: 20px; }
     .signup__line1 > h3 > span {
@@ -398,10 +402,10 @@ hr {
   padding: 1rem; }
   .profile__line1 > h2 {
     padding: 1rem;
-    color: #0d530d;
+    color: #6e6e03;
     text-align: center; }
     .profile__line1 > h2 > span {
-      color: #FFCE00; }
+      color: #0d530d; }
   .profile__container {
     max-width: 90%;
     margin: 1rem auto;
@@ -416,7 +420,7 @@ hr {
         border-radius: 7px;
         margin-bottom: 7px; }
   .profile__form--email {
-    background-color: #0d530d;
+    background-color: #6e6e03;
     color: #fff;
     width: 100%;
     padding: 5px 7px;

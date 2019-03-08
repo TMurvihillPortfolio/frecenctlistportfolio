@@ -2,6 +2,7 @@
     padding: 50px;
     width: 85%;
     margin: 50px auto;
+    border: 11px double $colorSecondaryDark;
     border-radius: 7px;
     // background-color: $colorSecondaryDark;
     // border: 1px solid $colorSecondaryDark;
@@ -85,7 +86,7 @@
     }
     &>h1 {
         text-align:center;  
-        color: $colorPrimaryDark;
+        color: $colorSecondaryDark;
         letter-spacing: 4px;
         word-spacing: 9px;
         font-weight: 500;        
@@ -94,7 +95,7 @@
         display: none;
         margin: 30px 0;
         &--header {
-            color: $colorPrimaryDark;
+            color: $colorTertiary;
             font-style: italic;
             font-size: 20px;
             margin-bottom: 15px;
@@ -112,7 +113,7 @@
         display: none;
         margin: 30px 0;
         &--header {
-            color: $colorPrimaryDark;
+            color: $colorTertiary;
             font-style: italic;
             font-size: 20px;
             margin-bottom: 15px;
@@ -132,9 +133,9 @@
             display: flex;   
             justify-content: space-between;
             text-align: center;
-            border: 7px double $colorPrimaryDark;
+            border: 7px double $colorSecondaryDark;
             padding: 7px 15px;
-            color: $colorPrimaryDark;
+            color: $colorTertiary;
         }
         &--items {
             margin-bottom: 25px;
@@ -144,7 +145,7 @@
                 text-align: center;
             }
             &-item {
-                border: 1px solid $colorPrimaryDark;  
+                border: 1px solid $colorSecondaryDark;  
                 padding: 15px 5px 15px 25px;  
                 
                 &Header {
@@ -158,6 +159,7 @@
                     word-spacing: 3px;
                 }
                 & input {
+                    color: $colorTertiaryDark;
                     font-size: 18px;
                     letter-spacing: 1px;
                     word-spacing: 2px;

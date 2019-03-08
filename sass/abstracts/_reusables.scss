@@ -7,8 +7,8 @@
     }
     &__secondary {
         background-color: $colorSecondary;
+        color: $colorGreyLightSecondary;
         &--selected {
-            color: $colorPrimary;
             background-color: $colorSecondaryDark;           
             outline: 2px solid $colorSecondary;
             border-radius: unset;           
