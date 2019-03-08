@@ -285,6 +285,7 @@
 <html lang="en">
 <?php include 'php/reusables/head.php'; ?>
 <body>
+    <div class="outer">
     <?php include 'php/reusables/mainnav.php'; ?>
     <section class="list">      
         <h1><?php echo (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') ? $_SESSION['userId']."'s" : "My"; ?>&nbsp;'Frecent' List</h1>
@@ -466,6 +467,7 @@
             </div>                
         </div>        
     </section>
+    </div>
     <!-- update number of clicks API -->
     <script>
         function updateNumClicks(listItemId, isChecked) {

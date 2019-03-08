@@ -3,8 +3,8 @@
     width: 85%;
     margin: 50px auto;
     border-radius: 7px;
-    background-color: $colorSecondaryDark;
-    border: 1px solid $colorSecondaryDark;
+    // background-color: $colorSecondaryDark;
+    // border: 1px solid $colorSecondaryDark;
    
     &__search { 
         display: none;
@@ -85,7 +85,7 @@
     }
     &>h1 {
         text-align:center;  
-        color: $colorPrimary;
+        color: $colorPrimaryDark;
         letter-spacing: 4px;
         word-spacing: 9px;
         font-weight: 500;        
@@ -94,7 +94,7 @@
         display: none;
         margin: 30px 0;
         &--header {
-            color: $colorPrimary;
+            color: $colorPrimaryDark;
             font-style: italic;
             font-size: 20px;
             margin-bottom: 15px;
@@ -112,7 +112,7 @@
         display: none;
         margin: 30px 0;
         &--header {
-            color: $colorPrimary;
+            color: $colorPrimaryDark;
             font-style: italic;
             font-size: 20px;
             margin-bottom: 15px;
@@ -132,9 +132,9 @@
             display: flex;   
             justify-content: space-between;
             text-align: center;
-            border: 7px double $colorPrimary;
+            border: 7px double $colorPrimaryDark;
             padding: 7px 15px;
-            color: $colorPrimary;
+            color: $colorPrimaryDark;
         }
         &--items {
             margin-bottom: 25px;
@@ -144,7 +144,7 @@
                 text-align: center;
             }
             &-item {
-                border: 1px solid $colorPrimary;  
+                border: 1px solid $colorPrimaryDark;  
                 padding: 15px 5px 15px 25px;  
                 
                 &Header {

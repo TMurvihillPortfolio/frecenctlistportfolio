@@ -5,7 +5,7 @@
         
         &>h2 {
             padding: 1rem;           
-            color: $colorPrimary;
+            color: $colorPrimaryDark;
             text-align: center;
             &>span {
                 color: $colorSecondary;
@@ -31,7 +31,7 @@
     }
     &__form {
         &--email {
-            background-color: $colorPrimary;
+            background-color: $colorPrimaryDark;
             color: #fff;
             width: 100%;
             padding: 5px 7px;
