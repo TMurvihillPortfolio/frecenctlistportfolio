@@ -288,7 +288,7 @@
     <div class="outer">
     <?php include 'php/reusables/mainnav.php'; ?>
     <section class="list">      
-        <h1><?php echo (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') ? $_SESSION['userId']."'s" : "My"; ?>&nbsp;'Frecent' List</h1>
+        <h1>My 'Frecent' List</h1>
         <br> 
         <hr>
         <br>
@@ -319,9 +319,9 @@
             </form>
         </div>
         <!-- Search -->
-        <div class="list__search" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
+        <!-- <div class="list__search" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
             <div class="list__search--input"><input type="text" class="list__search--input-input" placeholder="search list"><img src = "./img/searchIcon.png" class="list__search--input-icon" alt="Search Icon Magnifying glass"></div>
-        </div>
+        </div> -->
         <!-- Add/Edit Item -->
         <div class="list__addItem" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
             <button class="btn btn__secondary" onClick="prepareEnvironmentAddItemForm();">Add Item</button>

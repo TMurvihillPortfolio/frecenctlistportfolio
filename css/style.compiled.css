@@ -10,7 +10,8 @@ html {
   font-family: 'Lato', 'Arial', san-serif;
   font-size: 20px;
   font-weight: 300;
-  text-rendering: optimizeLegibility; }
+  text-rendering: optimizeLegibility;
+  background-image: linear-gradient(to right, rgba(152, 152, 152, 0.6) -13%, #fffae8, rgba(152, 152, 152, 0.6) 112%); }
 
 hr {
   border: 0;
@@ -23,8 +24,10 @@ hr {
 
 .outer {
   min-height: 100vh;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.6), #fffae8, rgba(255, 255, 255, 0.6)), url(../img/storeaisle.jpg) no-repeat center center fixed;
-  background-size: cover; }
+  max-height: 100vh;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.6), #fffae8, rgba(255, 255, 255, 0.6)), url(../img/storeAisleSmall.jpg) no-repeat center center fixed;
+  background-size: cover;
+  background-attachment: scroll; }
 
 .flex {
   width: 100%;
@@ -139,7 +142,7 @@ hr {
   padding: 50px;
   width: 85%;
   margin: 50px auto;
-  border: 13px double #083a08;
+  border: 11px double #083a08;
   border-radius: 7px; }
   .list__search {
     display: none; }
@@ -252,7 +255,7 @@ hr {
       border: 1px solid #083a08;
       padding: 15px 5px 15px 25px; }
       .list__container--items-itemHeader {
-        color: #b5f3b5;
+        color: #0d530d;
         text-align: center;
         font-size: 24px;
         margin: 20px;

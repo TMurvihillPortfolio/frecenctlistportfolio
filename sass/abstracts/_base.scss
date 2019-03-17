@@ -14,7 +14,7 @@ html {
     font-size: 20px;
     font-weight: 300;
     text-rendering: optimizeLegibility;
-    //background-image: linear-gradient(#ffffff, #d6cfef);
+    background-image: linear-gradient(to right, rgba(152, 152, 152, 0.6) -13%, #fffae8, rgba(152, 152, 152, 0.6) 112%);
 }
 
 hr {
@@ -30,8 +30,11 @@ hr {
 .outer {
      //background-image: linear-gradient( rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url(img/listOnPhoneFridgeSmall.jpg);
      min-height: 100vh;
-     background: linear-gradient(to right, rgba(255,255,255,0.6), #fffae8, rgba(255,255,255,0.6)),url(../img/storeaisle.jpg) no-repeat center center fixed;
+     max-height: 100vh;
+     background: linear-gradient(to right, rgba(255,255,255,0.6), #fffae8, rgba(255,255,255,0.6)),url(../img/storeAisleSmall.jpg) no-repeat center center fixed;
      background-size: cover;
+     //height: auto;
+     background-attachment:scroll;
 }
 .flex {
     width: 100%;
