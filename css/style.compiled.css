@@ -214,13 +214,14 @@ hr {
       height: 25px;
       cursor: pointer; }
     .list__addItem--addItemForm {
-      border: 7px double #0d530d;
       padding: 15px;
       margin-top: 25px;
       line-height: 2;
       width: 100%; }
       .list__addItem--addItemForm-qty {
         width: 80px; }
+      .list__addItem--addItemForm-checkBox > input {
+        transform: scale(2.5); }
       .list__addItem--addItemForm-frecency > input {
         width: 80px !important;
         background-color: #f8f8d5;
@@ -243,8 +244,11 @@ hr {
       .list__addItem--addItemForm-submitButtons > input {
         display: block;
         margin: auto;
-        margin-top: 15px;
+        margin-top: 50px;
         width: 6rem; }
+        @media only screen and (max-width: 37.5em) {
+          .list__addItem--addItemForm-submitButtons > input {
+            margin-top: 20px; } }
   .list > h1 {
     text-align: center;
     color: #083a08;

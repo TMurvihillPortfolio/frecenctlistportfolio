@@ -323,7 +323,7 @@
         </div> -->
         <!-- Add/Edit Item -->
         <div class="list__addItem" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
-            <button class="btn btn__secondary" onClick="prepareEnvironmentAddItemForm();">Add Item</button>
+            <button class="btn btn__secondary" id="js--addItemButton" onClick="prepareEnvironmentAddItemForm();">Add Item</button>
             <div class="list__addItem--addItemForm" style="display: <?php echo (isset($_POST['editItem'])) ? 'block' : 'none' ?>" id="js--addItemForm">                 
                 <!-- Add/Edit Item Form Headers -->
                 <div>
@@ -334,7 +334,7 @@
                 <form name="addItem" action="" method="post">                               
                     <div class="flexWrap">
                         <div class="list__addItem--addItemForm-qty"><label for="addQty">Qty</label><input name="addQty" type="text" value="<?php echo (isset($_POST['editItem'])) ? $_POST['editQty'] : 1 ?>"></div>
-                        <div class="list__container--items-itemCheckBox" checked>
+                        <div class="list__addItem--addItemForm-checkBox" checked>
                             <label for="checkBox">Check Item?</label>
                             <input type="checkbox" name="checkBox" 
                                 <?php 
@@ -346,7 +346,7 @@
                                         echo 'checked'; 
                                     } 
                                 ?>
-                            >
+                            />
                         </div>
                         <div class="list__addItem--addItemForm-title"><label for="addTitle">Item Name</label><input name="addTitle" type="text" value="<?php echo (isset($_POST['editItem'])) ? $_POST['editTitle'] : '' ?>"></div>
                         <!-- <div class="showAddItemCategory"><label for="addCategory">Category</label><input name="addCategory" type="text" id="js--addCategory" placeholder="produce dairy etc"></div> -->
@@ -389,8 +389,8 @@
                         <div class="" hidden><input id="js--addIdEdit" type="text" name="listItemId" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['listItemId'] : ''; ?>"></div>
                     </div>
                     <div class="flex list__addItem--addItemForm-submitButtons">  
-                        <input type="submit" class="btn btn__primary" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
-                        <input type="submit" class="btn btn__secondary" name="addEditCancel" id="js--cancelEditAddItem" onClick="restoreEnvironmentAddItemForm();" value="Cancel"/>
+                        <input type="submit" class="btn btn__secondary" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
+                        <input type="submit" class="btn btn__primary" name="addEditCancel" id="js--cancelEditAddItem" onClick="restoreEnvironmentAddItemForm();" value="Cancel"/>
                     </div>    
                 </form>  
             </div>

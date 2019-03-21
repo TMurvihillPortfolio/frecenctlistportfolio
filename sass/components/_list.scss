@@ -57,8 +57,7 @@
             cursor: pointer; 
         }
         &--addItemForm {
-            //display: none;
-            border: 7px double $colorSecondary;
+            
             padding: 15px;
             margin-top: 25px;
             line-height: 2;
@@ -67,6 +66,10 @@
             &-qty {
                 width: 80px;
             }
+            &-checkBox>input {
+                transform: scale(2.5);
+            }
+
             &-frecency>input {
                 width: 80px !important;
                 background-color: $colorPrimaryLight;
@@ -95,7 +98,10 @@
             &-submitButtons>input {
                 display: block;                    
                 margin: auto;
-                margin-top: 15px;
+                margin-top: 50px;
+                @include respond(phone) {
+                    margin-top: 20px;
+                }
                 width: 6rem;               
             }
         }  
