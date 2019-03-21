@@ -323,7 +323,7 @@
         </div> -->
         <!-- Add/Edit Item -->
         <div class="list__addItem" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
-            <button class="btn btn__secondary" id="js--addItemButton" onClick="prepareEnvironmentAddItemForm();">Add Item</button>
+            <button class="btn btn__secondary" id="js--addItemButton" style="display: <?php echo (isset($_POST['editItem'])) ? 'none' : 'block' ?>" onClick="prepareEnvironmentAddItemForm();">Add Item</button>
             <div class="list__addItem--addItemForm" style="display: <?php echo (isset($_POST['editItem'])) ? 'block' : 'none' ?>" id="js--addItemForm">                 
                 <!-- Add/Edit Item Form Headers -->
                 <div>
@@ -370,7 +370,7 @@
                         </div>
                         <div class="list__addItem--addItemForm-frecency">
                         <?php if (isset($_POST['editItem'])) : ?>
-                            <label for="addFrecency">'Frecency' (80+ often, 21-79 sometimes, 1-20 rarely, 0 one-time purchase)</label>   
+                            <label for="addFrecency">'Frecency' (1-100*):</label>   
                             <input name="addFrecency" type="text" value="<?php echo calculateFrecency($_SESSION['editItemObject']['numClicks'],$_SESSION['editItemObject']['firstClick'], $frecencyInterval); ?>"/>
                         <?php else : ?>
                             <label for="addFrecency">Starting 'Frecency'</label>
@@ -391,13 +391,15 @@
                     <div class="flex list__addItem--addItemForm-submitButtons">  
                         <input type="submit" class="btn btn__secondary" name="addEditSave" id="js--saveAddEditItem" value="Save"/>
                         <input type="submit" class="btn btn__primary" name="addEditCancel" id="js--cancelEditAddItem" onClick="restoreEnvironmentAddItemForm();" value="Cancel"/>
-                    </div>    
+                    </div>
+                    <br>
+                    <p style="font-size: 14px;">* 80+ often, 21-79 sometimes, 1-20 rarely, 0 one-time purchase</p>
                 </form>  
             </div>
         </div>
         <!-- orderBy and viewBy -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" name="viewByOrderBy">
-            <div class="list__orderBy" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>" id="js--addItemOrderBy">
+            <div class="list__orderBy" style="display: <?php echo $loginNeeded || isset($_POST['editItem']) ? 'none' : 'block' ?>" id="js--addItemOrderBy">
                 <div class="list__orderBy--header">Order By:</div>
                 <div class="list__orderBy--btns">                   
                         <input type="submit" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'frecency') ? 'btn__secondary--selected' : ''; ?>" name="frecency" value="Frecency"/>
@@ -405,7 +407,7 @@
                         <input type="submit" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'category') ? 'btn__secondary--selected' : ''; ?>" name="category" value="Category"/>              
                 </div>                
             </div>
-            <div class="list__filterBy" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>" id="js--addItemFilterBy">
+            <div class="list__filterBy" style="display: <?php echo $loginNeeded || isset($_POST['editItem'])? 'none' : 'block' ?>" id="js--addItemFilterBy">
                 <div class="list__filterBy--header">View By:</div>
                 <div class="list__filterBy--btns">
                     <input type='submit' class="btn btn__secondary btn__width125 <?php echo ($_SESSION['viewBy'] == 'all') ? 'btn__secondary--selected' : ''; ?>" name="viewAll" value="All"/>
@@ -415,7 +417,7 @@
             </div>
         </form>
         <!-- List Container -->
-        <div class="list__container" style="display: <?php echo ($loginNeeded | isset($_POST['edititem'])) ? 'none' : 'block' ?>" id="js--addItemListContainer">
+        <div class="list__container" style="display: <?php echo ($loginNeeded || isset($_POST['editItem'])) ? 'none' : 'block' ?>" id="js--addItemListContainer">
             <div class="list__container--headers">
                 <p>Qty</p>
                 <p>Item</p>
@@ -459,7 +461,7 @@
                                         <!-- <div class="list__container--items-itemCheckBox"> -->
                                             <!-- </div> -->
                                         <input type="checkbox" name="checkBox" data-itemid="<?php echo $item['listItemId']; ?>" data-name="name" onclick="updateNumClicks(this.dataset.itemid, this.checked);" <?php echo $checked ?>>                                  
-                                        <button type='submit' class="list__container--items-itemEdit js--editItem"  name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                                                         
+                                        <button type='submit' class="list__container--items-itemEdit js--editItem" name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                                                         
                                         <button type='submit' class="list__container--items-itemDelete" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
                                         <div class="list__container--items-frecency" hidden><input type="text" name='frecency' value="<?php echo $item['calcfrec']; ?>"></div>                                                   
                                         <div class="list__container--items-itemId" hidden><input type="text" name='editId' value="<?php echo $item['listItemId']; ?>"></div>
