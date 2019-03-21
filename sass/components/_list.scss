@@ -4,6 +4,19 @@
     margin: 50px auto;
     border: 11px double $colorSecondaryDark;
     border-radius: 7px;
+    max-width: 820px;
+
+    @include respond(portrait) {
+        padding: 25px;
+        width: auto;
+        margin: 20px;
+    }
+    @include respond(phone) {
+        padding: 10px;
+        margin: 5px;
+        border:none;
+    }
+    
     // background-color: $colorSecondaryDark;
     // border: 1px solid $colorSecondaryDark;
    
@@ -34,7 +47,10 @@
         &>button {
             width: 40%;  
             margin-left: 30%;
-            margin-top: 25px;  
+            margin-top: 25px; 
+            @include respond(phone) {
+                margin-top: 10px;
+            }
         }
         & img {
             height: 25px;
@@ -98,6 +114,9 @@
             color: $colorTertiary;
             font-style: italic;
             font-size: 20px;
+            @include respond(phone) {
+                font-size: 16px;
+            }
             margin-bottom: 15px;
             letter-spacing: 3px;
             word-spacing: 6px;
@@ -116,6 +135,9 @@
             color: $colorTertiary;
             font-style: italic;
             font-size: 20px;
+            @include respond(phone) {
+                font-size: 16px;
+            }
             margin-bottom: 15px;
             letter-spacing: 3px;
             word-spacing: 6px;
@@ -147,18 +169,24 @@
             &-item {
                 border: 1px solid $colorSecondaryDark;  
                 padding: 15px 5px 15px 25px;  
+                @include respond(phone) {
+                    padding: 15px 5px;
+                }
                 
                 &Header {
                     color: $colorSecondary;
                     text-align: center;
                     font-size: 24px;
+                    @include respond(phone) {
+                        font-size: 16px;
+                    }
                     margin: 20px;
                     font-style: italic;
                     font-weight: 600;
                     letter-spacing: 3px;
                     word-spacing: 3px;
                 }
-                & input {
+                & input:not([type]), input[type="text"] {
                     color: $colorTertiaryDark;
                     font-size: 18px;
                     letter-spacing: 1px;
@@ -166,24 +194,46 @@
                     width: 100%;
                     border-radius: 3px;
                     padding: 6px 9px;
-                    background-color: $colorGreyLightPrimary;                              
-                }               
-                &Qty,
-                &CheckBox {
+                    background-color: $colorGreyLightPrimary; 
+                    
+                    @include respond(phone) {
+                        font-size: 12px;
+                    }
+                } 
+                
+                & input[type="checkbox"] {                  
+                    margin-top: 12.5px;
+                    transform: scale(2.5);  
+                    width: fit-content;
+                    margin-right: 12px;
+                    @include respond(phone) {
+                        margin: 4px 81% 0 4px;   
+                        transform: scale(1.5);                    
+                    }
+                       
+                }
+
+                &Qty {
                     text-align: center;
-                    flex: 2;                  
+                    flex: 2;                                   
                 }
                 &Title {
                     flex: 16;
                     margin-left: 30px;
+                    @include respond(phone) {
+                        flex: 10;
+                        margin-left: 5px;
+                    }
                 }
-                &CheckBox>input {                  
-                    margin-top: 12.5px;
-                    transform: scale(2.5);
-                    justify-content: center;  
-                    width: fit-content;
-                    margin-right: 0;   
-                } 
+                
+                &CheckBox {
+                    text-align: center;
+                    flex: 2; 
+                    @include respond(phone) {
+                        flex: none;
+                    }                 
+                }
+                 
                 &Edit,
                 &Delete {
                     z-index: 2000;
@@ -193,7 +243,10 @@
                 &Edit>img,
                 &Delete>img {
                     height: 25px;
-                    margin: 0 3px;                  
+                    margin: 0 3px; 
+                    @include respond(phone) {
+                        height: 15px;
+                    }                 
                 }
                 &Frecency {                
                     & p {

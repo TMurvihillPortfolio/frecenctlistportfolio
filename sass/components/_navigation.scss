@@ -1,6 +1,5 @@
-
-
 .mainNav {
+    position: relative;
     &__logo {       
         height: 60px;
         opacity: .15;
@@ -15,9 +14,20 @@
         list-style: none;
         height: 3.5rem;
         z-index: 1000;
+
+        @include respond(phone) {
+            font-size: 14px;
+            float:none;
+            margin: 3px;
+            height: 1rem;
+            position: absolute;
+            top: 0;
+            right: 0;
+            
+        }
         
         &--item>a {
-            margin-right: 2rem;
+            margin-left: 1rem;
             color: $colorSecondaryDark;
             text-decoration: none;
             padding-bottom: 7px;

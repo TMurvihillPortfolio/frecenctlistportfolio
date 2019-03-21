@@ -36,17 +36,6 @@ hr {
      //height: auto;
      background-attachment:scroll;
 }
-.flex {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-.flexWrap {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
 //BTW Media queries do not refer to the rem size we defined above.
 //We use ems in the mixin in order to get user changes in default settings into scope. 
 

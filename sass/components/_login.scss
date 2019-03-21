@@ -4,11 +4,21 @@
     &__line1 {
         display: flex;
         justify-content: space-between;
+        @include respond(phone) {
+            display:block;
+        }
         &>h3 {
             font-size: 200%;
             color: $colorSecondary;
             margin-bottom: 2rem;
+            @include respond(phone) {
+                margin-bottom: 0;
+                margin-left: 10px;
+            }
             margin-top: 1rem;
+            @include respond(phone) {
+                margin-top: 0;
+            }
             &>span {
                 color: $colorPrimaryDark;
             }
@@ -16,6 +26,10 @@
 
         &--signup {
             padding-top: 1rem;
+            @include respond(phone) {
+                padding-top: 0;
+                padding-bottom: 2rem;
+            }
             >a {
                 font-style: italic;
                 color: $colorPrimaryDark;
@@ -47,6 +61,9 @@
             &>input {
                 padding-left: 5px;
                 width: 14rem;
+                @include respond(phone) {
+                    width: 12rem;
+                }
                 flex: 6;
             }
             @include respond(phone) {
