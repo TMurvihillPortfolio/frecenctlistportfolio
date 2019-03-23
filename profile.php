@@ -7,12 +7,14 @@
         //initialize variables
         $email = ''; 
         $userId = '';
+        $success = false;
         //sanitize user input
-        if (isset($_POST['email'])) {
+        if (isset($_POST['email']) && $_POST['email'] !=='') {
             $email = testInput($_POST['email']);
+            $success = true;
         }
         //update email
-        if (isset($_SESSION['userId'])) {
+        if (isset($_SESSION['userId']) && $success === true) {
             $userId = $_SESSION['userId'];
             try {
                 $splQuery = "UPDATE users SET email = :email WHERE userId = :userId";
@@ -25,7 +27,7 @@
                 $result = "An error occurred: ".$ex;
             }
         } else {
-            $result = "User not found. Please try logging out and logging in again.";
+            $result = "User not found or invalid email. Please try logging out and logging in again.";
         }           
     }
 ?>
@@ -141,10 +143,18 @@
                 ?>
             </div>
             <div class="profile__container--bottom">
+                <div class="profile_form profile__form--changeProfileButton">
+                    <button class="btn btn__secondary profile__form--changeProfileButton">Add/Edit Categories (Premium)</button>                
+                </div>
+                <br>
+                <div class="profile_form profile__form--changeProfileButton">
+                    <button class="btn btn__secondary profile__form--changeProfileButton">Add, Edit, or Delete Lists (Premium)</button>                
+                </div>
+                <br>
                 <form action="profile.php" method="post">
                     <div id="js--emailInput" hidden>
                         <div style="display: flex">
-                            <h3 name="NOT YET IMPLEMENTED" style="color: #FFCE00"><span style="color: #BCB5D7">'Frecency' List Says: </span>This website is under construction and eventually a verification email will be sent when the account email is changed.</h3>
+                            <h3 name="NOT YET IMPLEMENTED">Change Email:</h3>
                         </div>
                         <input name="email" type="email" placeholder="enter new email">
                     </div>
@@ -155,7 +165,7 @@
                 </form> 
                 <br>                                         
                                 
-                <div class="profile__form--changePassword">
+                <div class="profile__form--changePassword profile__form--changeProfileButton">
                     <form action="profile.php" method="post">
                         <div id="js--profileChangePassword" hidden>
                             <input type="password" placeholder="enter current password" name="userInputPassword">
@@ -182,11 +192,8 @@
                         <button name="closeAccountSubmit" type="button" class="btn btn__secondary profile__form--changeProfileButton" onClick="startCloseAccount(this, '<?php echo $row['email']; ?>')" id="js--profileCloseAccount">Close Account</button>
                     </div>
                 </form>
-                <br>
-                <div class="profile_form">
-                    <button class="btn btn__secondary profile__form--addEditPiggyBanks">Add, Edit, or Delete Lists (Premium)</button>                
-                </div>
-                <br>
+                
+                
             </div>
         </div>
     </div>

@@ -4,8 +4,6 @@
 
 - find places where error message might appear
 
-- try background photo with transparent background
-
 - improve profile page formatting (password, email)
 
 ### next

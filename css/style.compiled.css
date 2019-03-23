@@ -403,7 +403,7 @@ hr {
         .login__line1 > h3 {
           margin-top: 0; } }
       .login__line1 > h3 > span {
-        color: #6e6e03; }
+        color: #22220a; }
     .login__line1--signup {
       padding-top: 1rem; }
       @media only screen and (max-width: 37.5em) {
@@ -412,7 +412,7 @@ hr {
           padding-bottom: 2rem; } }
       .login__line1--signup > a {
         font-style: italic;
-        color: #6e6e03;
+        color: #22220a;
         margin-left: 1rem; }
   .login__form {
     color: #0d530d;
@@ -471,7 +471,7 @@ hr {
   margin: auto;
   margin-top: 40px; }
   .signup__line1 {
-    color: #6e6e03;
+    color: #22220a;
     margin-bottom: 15px;
     margin-left: 20px; }
     .signup__line1 > h3 > span {
@@ -499,33 +499,41 @@ hr {
 
 .profile {
   padding: 1rem; }
+  @media only screen and (max-width: 37.5em) {
+    .profile {
+      padding: 1rem; } }
   .profile__line1 > h2 {
     padding: 1rem;
-    color: #6e6e03;
+    color: #153a52;
     text-align: center; }
     .profile__line1 > h2 > span {
       color: #0d530d; }
   .profile__container {
-    max-width: 90%;
+    max-width: 500px;
+    width: 90%;
     margin: 1rem auto;
-    border: 2px solid #FFCE00;
-    padding: 0;
-    width: fit-content; }
+    border: 2px solid #153a52;
+    padding: 0; }
     .profile__container--bottom {
-      padding: 1rem;
+      padding: 2rem;
       font-size: 100%; }
+      @media only screen and (max-width: 37.5em) {
+        .profile__container--bottom {
+          padding: 1rem; } }
       .profile__container--bottom input {
         width: 100%;
         border-radius: 7px;
-        margin-bottom: 7px; }
+        margin-bottom: 7px;
+        padding: 7px; }
   .profile__form--email {
-    background-color: #6e6e03;
+    background-color: #153a52;
     color: #fff;
     width: 100%;
-    padding: 5px 7px;
-    text-align: center; }
+    padding: 5px 7px; }
   .profile__form--changeProfileButton {
-    font-size: 100%; }
+    font-size: 100%;
+    margin: auto;
+    text-align: center; }
   .profile__form--changePassword > form {
     display: flex;
     flex-direction: column;

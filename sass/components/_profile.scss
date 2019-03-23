@@ -1,11 +1,15 @@
 .profile {
     padding: 1rem;
 
+    @include respond(phone) {
+        padding: 1rem;
+    }
+
     &__line1{
         
         &>h2 {
             padding: 1rem;           
-            color: $colorPrimaryDark;
+            color: $colorTertiaryDark;
             text-align: center;
             &>span {
                 color: $colorSecondary;
@@ -13,32 +17,39 @@
         }
     }
     &__container {
-        max-width: 90%;
+        max-width: 500px;
+        width: 90%;
         margin: 1rem auto;
-        border: 2px solid #FFCE00;
+        border: 2px solid $colorTertiaryDark;
         padding: 0;
-        width: fit-content;
+        
         &--bottom {
-            padding: 1rem;
+            padding: 2rem;
+            @include respond(phone) {
+                padding: 1rem;
+            }
             font-size: 100%;
 
             & input {
                 width: 100%;
                 border-radius: 7px;
                 margin-bottom: 7px;
+                padding: 7px;
             }
         }
     }
     &__form {
         &--email {
-            background-color: $colorPrimaryDark;
+            background-color: $colorTertiaryDark;
             color: #fff;
             width: 100%;
             padding: 5px 7px;
-            text-align:center;
+            
         }
         &--changeProfileButton {
             font-size: 100%;
+            margin: auto;
+            text-align:center;
         }
         
         &--changePassword {
