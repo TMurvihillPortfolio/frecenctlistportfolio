@@ -46,6 +46,7 @@
                         if($listRow=$statement->fetch()){
                             $_SESSION['listId'] = $listRow['listId'];                
                             header("Location: index.php");
+                            exit;
                         } else {
                             //NOT YET IMPLEMENTED error handling
                             $result = "default list not found";
@@ -246,7 +247,8 @@
         //restore environment
         $_POST = [];
         unset($_SESSION['editItemObject']);
-        header("Location: index.php", true, 301);      
+        header("Location: index.php", true, 301);
+        exit;   
     }
 ?>
 <?php //show edit item window
@@ -279,6 +281,7 @@
         $statement->execute(array(":listItemId"=>$listItemId));
         //$listItems=getList($db, $listId, $frecencyInterval);
         header("Location: index.php", true, 301);
+        exit;
     }
 ?>
 <!DOCTYPE html>

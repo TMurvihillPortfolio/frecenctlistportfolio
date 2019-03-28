@@ -33,7 +33,7 @@
         // //restore environment
         // $_POST = [];
         // header("Location: index.php", true, 301);
-
+        // exit;
 
 <div class="list__container--items-frecency" style="width: 50px;"><input type="text" name='editId' value="<?php echo calculateFrecency($item['numClicks'], $item['firstClick'], $item['lastClick'], $frecencyInterval); ?>"></div>                                                   
 <div class="list__container--items-frecency" style="width: 50px;"><input type="text" name='editId' value="<?php echo ($item['numClicks']) / $item['frecency']; ?>"></div>                                                   
