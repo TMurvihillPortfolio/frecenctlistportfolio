@@ -220,8 +220,6 @@ hr {
       width: 100%; }
       .list__addItem--addItemForm-qty {
         width: 80px; }
-      .list__addItem--addItemForm-checkBox > input {
-        transform: scale(2.5); }
       .list__addItem--addItemForm-frecency > input {
         width: 80px !important;
         background-color: #f8f8d5;
@@ -241,6 +239,11 @@ hr {
         width: 100%;
         border-radius: 3px;
         padding: 6px 9px; }
+      .list__addItem--addItemForm input[type='checkbox'] {
+        transform: scale(2.5);
+        margin-top: 16px;
+        width: auto;
+        margin-left: 45px; }
       .list__addItem--addItemForm-submitButtons > input {
         display: block;
         margin: auto;

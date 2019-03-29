@@ -66,9 +66,6 @@
             &-qty {
                 width: 80px;
             }
-            &-checkBox>input {
-                transform: scale(2.5);
-            }
 
             &-frecency>input {
                 width: 80px !important;
@@ -94,7 +91,13 @@
                 width: 100%;
                 border-radius: 3px;
                 padding: 6px 9px;
-            }            
+            } 
+            & input[type='checkbox'] {
+                transform: scale(2.5);
+                margin-top: 16px;
+                width: auto;
+                margin-left: 45px;
+            }           
             &-submitButtons>input {
                 display: block;                    
                 margin: auto;

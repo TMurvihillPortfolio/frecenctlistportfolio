@@ -260,7 +260,6 @@
 ?>
 <?php //show edit item window
     if (isset($_POST['editItem'])) {
-        echo $_SESSION['orderBy'].'inshow';
         $editId = '';
         $editFrecency = -1;
         $editQty = 1;
@@ -278,8 +277,7 @@
         }                      
         if (isset($_POST['editQty'])) {
             $editQty = (int)$_POST['editQty'];
-        } 
-            
+        }            
     }
 ?>
 <?php //Delete item
@@ -330,9 +328,9 @@
             </form>
         </div>
         <!-- Search -->
-        <!-- <div class="list__search" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
-            <div class="list__search--input"><input type="text" class="list__search--input-input" placeholder="search list"><img src = "./img/searchIcon.png" class="list__search--input-icon" alt="Search Icon Magnifying glass"></div>
-        </div> -->
+            <!-- <div class="list__search" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
+                <div class="list__search--input"><input type="text" class="list__search--input-input" placeholder="search list"><img src = "./img/searchIcon.png" class="list__search--input-icon" alt="Search Icon Magnifying glass"></div>
+            </div> -->
         <!-- Add/Edit Item -->
         <div class="list__addItem" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
             <button class="btn btn__secondary" id="js--addItemButton" style="display: <?php echo (isset($_POST['editItem'])) ? 'none' : 'block' ?>" onClick="prepareEnvironmentAddItemForm();">Add Item</button>
@@ -347,7 +345,8 @@
                     <div class="flexWrap">
                         <div class="list__addItem--addItemForm-qty"><label for="addQty">Qty</label><input name="addQty" type="text" value="<?php echo (isset($_POST['editItem'])) ? $_POST['editQty'] : 1 ?>"></div>
                         <div class="list__addItem--addItemForm-checkBox" checked>
-                            <label for="checkBox">Check Item?</label>
+                            <!-- <label for="checkBox">Check Item?</label> -->
+                            <p>Check Item?</p>
                             <input type="checkbox" name="checkBox" 
                                 <?php 
                                     if (isset($_POST['editItem'])) {
