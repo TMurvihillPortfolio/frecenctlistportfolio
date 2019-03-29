@@ -12,6 +12,7 @@
 ?>
 <?php //on login submit button
     if(isset($_POST['submitLogin'])){  
+        
         $inputPassword = $_POST['password']; 
         $inputEmail = $_POST['email'];       
         try {
@@ -26,6 +27,7 @@
                 $activated = $row['active'];
     
                 if(password_verify($inputPassword, $hashed_password)){
+                    //echo "did we visit";
                     if ($activated) {
                         //clear old session
                         if (isset($_SESSION['userId'])) {
@@ -68,15 +70,18 @@
     }
 ?>
 <?php //get list and categories
-    
+    if (!isset($_SESSION['orderBy']) || $_SESSION['orderBy'] == '') $_SESSION['orderBy'] = 'alpha';
     if (isset($_POST['category'])) {
         $_SESSION['orderBy'] = 'category';
+        unset($_POST['category']);
         $listItems=getList($db, $_SESSION['listId'], $frecencyInterval);
-    } else if (isset($_POST['frecency'])) {
-        $_SESSION['orderBy'] = 'frecency';
+    } else if (isset($_POST['frecencyOrder'])) {
+        $_SESSION['orderBy'] = 'frecency';      
+        unset($_POST['frecencyOrder']);
         $listItems=getList($db, $_SESSION['listId'], $frecencyInterval);
     } else if (isset($_POST['alpha'])) {
         $_SESSION['orderBy'] = 'alpha';
+        unset($_POST['alpha']);
         $listItems=getList($db, $_SESSION['listId'], $frecencyInterval);
     } else {
         $listItems=getList($db, $_SESSION['listId'], $frecencyInterval);
@@ -84,19 +89,23 @@
     //determine if filter by (un)checked
     if (isset($_POST['checked'])) {
         $_SESSION['viewBy'] = 'checked';
+        unset($_POST['checked']);
     } else if (isset($_POST['unChecked'])) {
         $_SESSION['viewBy'] = 'unChecked';
+        unset($_POST['unChecked']);
     } else if (isset($_POST['viewAll'])) {
         $_SESSION['viewBy'] = 'all';
+        unset($_POST['viewAll']);
     }
     //Get Categories Query dependency: php/reusables/queries.php
-    $categories=getCategories($db);
+    $categories=getCategories($db);    
 ?>
 <?php //restore environment
     if (isset($_POST['addEditCancel'])) {
         unset($_POST['editItem']);
         unset($_POST['addEditCancel']);
     }
+    
 ?>
 <?php //add/edit submit button clicked
     if (isset($_POST['addEditSave'])) {
@@ -174,9 +183,7 @@
             } 
             
         //ADD Item
-        } else {
-            
-            
+        } else {           
             //initialize data variables
             $listItemId = time() . mt_rand() . $_SESSION['userId']; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
             $title = '';
@@ -246,13 +253,14 @@
         }
         //restore environment
         $_POST = [];
-        unset($_SESSION['editItemObject']);
+        unset($_SESSION['editItemObject']); 
         header("Location: index.php", true, 301);
         exit;   
     }
 ?>
 <?php //show edit item window
     if (isset($_POST['editItem'])) {
+        echo $_SESSION['orderBy'].'inshow';
         $editId = '';
         $editFrecency = -1;
         $editQty = 1;
@@ -270,7 +278,8 @@
         }                      
         if (isset($_POST['editQty'])) {
             $editQty = (int)$_POST['editQty'];
-        }      
+        } 
+            
     }
 ?>
 <?php //Delete item
@@ -404,10 +413,10 @@
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" name="viewByOrderBy">
             <div class="list__orderBy" style="display: <?php echo $loginNeeded || isset($_POST['editItem']) ? 'none' : 'block' ?>" id="js--addItemOrderBy">
                 <div class="list__orderBy--header">Order By:</div>
-                <div class="list__orderBy--btns">                   
-                        <input type="submit" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'frecency') ? 'btn__secondary--selected' : ''; ?>" name="frecency" value="Frecency"/>
-                        <input type="submit" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'alpha') ? 'btn__secondary--selected' : ''; ?>" name="alpha" value="Alphabetical"/>
-                        <input type="submit" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'category') ? 'btn__secondary--selected' : ''; ?>" name="category" value="Category"/>              
+                <div class="list__orderBy--btns">     
+                    <input type="submit" name="frecencyOrder" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'frecency') ? 'btn__secondary--selected' : ''; ?>" value="Frecency"/>                         
+                    <input type="submit" name="alpha" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'alpha') ? 'btn__secondary--selected' : ''; ?>" value="Alphabetical"/>
+                    <input type="submit" name="category" class="btn btn__secondary btn__width125 <?php echo ($_SESSION['orderBy'] == 'category') ? 'btn__secondary--selected' : ''; ?>" value="Category"/>      
                 </div>                
             </div>
             <div class="list__filterBy" style="display: <?php echo $loginNeeded || isset($_POST['editItem'])? 'none' : 'block' ?>" id="js--addItemFilterBy">
