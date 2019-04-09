@@ -29,40 +29,75 @@
     }
 
     //Calculate the number of click for a given frecency. Master formula = numClicks * currentClickPeriod (from config file) /timeSinceFirstClick
-    function calculateClicks($firstClick, $frecency=0, $frecencyInterval) {
-        
+    function calculateClicks($firstClick, $frecency=0, $frecencyInterval) {       
         //return 0 if no frecency number
-        if ($frecency == 0 || $frecency == '') {
+        if ($frecency <= 0 || $frecency == '') {
             return 0;
         } 
-        //get time in days since first click
-        $frecencyIntervalsSinceFirstClick = ((strtotime(Date("Y-m-d")) - strtotime($firstClick))/86400)/100                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ;
+        //get time in seconds since first click
+        $timeSinceFirstClick = time() - strtotime($firstClick);
+        $numIntervals = round($timeSinceFirstClick / $frecencyInterval);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ;
 
-        if ($frecencyIntervalsSinceFirstClick == 0 || $frecencyIntervalsSinceFirstClick == '') {
+        //NOT YET IMPLEMENTED -- validate $timeSinceFirstClick
+        if (!$numIntervals || $numIntervals < 1) {
+            //NOT YET IMPLEMENTED error message that first date needs to be updated or was updated "error encountered, please edit item and reenter frecency"
             return 0;
         }
+        $numClicks = $numIntervals * ($frecency/100);
+
         //return number of clicks for the given frecency
-        return round($frecencyIntervalsSinceFirstClick*($frecency / $frecencyInterval));   //frecencyInterval can be found in config file    
+        return $numClicks;   //frecencyInterval can be found in config file    
     }
     //Calculate the frecency for a given numClicks and timePeriod. Master formula = numClicks * currentClickPeriod (from config file) /timeSinceFirstClick
     function calculateFrecency($numClicks, $firstClick, $frecencyInterval) {
-        //get time in days since first click
-        $frecencyIntervalsSinceFirstClick = (((strtotime(date("Y-m-d"))-strtotime($firstClick))/86400)/100);
-        $clicksPerInterval = $numClicks/$frecencyIntervalsSinceFirstClick;
-        
-        //return 0 if no frecency number
+        //return 0 if no clicks
         if ($numClicks == 0 || $numClicks == '') {
             return 0;
         }
+        //caluclate number of intervals
+        $timeSinceFirstClick = time() - strtotime($firstClick);
+       
         //return 0 if no time since first and lastClick
-        if ($frecencyIntervalsSinceFirstClick == 0 || $frecencyIntervalsSinceFirstClick == '') {
+        if (!$timeSinceFirstClick || $timeSinceFirstClick == '') {
             return 0;
         }
-            
-        //return number of clicks for the given frecency
-        //sql version  of calculation for queries: frecency = ((numClicks/((DATE()-firstClick)/86400))/100)*5 
-        return round($clicksPerInterval*$frecencyInterval); //frecencyInterval can be found in config file   
-        //return 24;          
+
+        $numIntervals = $timeSinceFirstClick / $frecencyInterval;
+        
+        //calculate frecency
+        $frecency = round(($numClicks / $numIntervals)*100);
+                
+        return $frecency;
+
+
+
+
+
+
+
+
+
+
+
+        
+        // //get time in days since first click
+        // $frecencyIntervalsSinceFirstClick = round(((strtotime(date("Y-m-d"))-strtotime($firstClick))/86400)/$frecencyInterval);
+        // //$clicksPerInterval = $numClicks/$frecencyIntervalsSinceFirstClick;
+        
+        // //return 0 if no frecency number
+        // if ($numClicks == 0 || $numClicks == '') {
+        //     return 0;
+        // }
+        // //return 0 if no time since first and lastClick
+        // if ($frecencyIntervalsSinceFirstClick == 0 || $frecencyIntervalsSinceFirstClick == '') {
+        //     return 0;
+        // }
+        
+        // //return frecency
+        // return $frecencyIntervalsSinceFirstClick;
+        // //sql version  of calculation for queries: frecency = ROUND((numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval) 
+        // //return round($clicksPerInterval*$frecencyInterval); //frecencyInterval can be found in config file   
+        return 50000; 
     }
 
     //adjust frecency number for display for very large and very small numbers

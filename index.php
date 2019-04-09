@@ -222,7 +222,7 @@
                            
             if ($isChecked == 1) {
                 //set first and last click (first click simulated)
-                $firstClick = date('Y-m-d', strtotime("-100 days")); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
+                $firstClick = date("Y-m-d H:i:s", time() - ($frecencyInterval*$minimumIntervals)); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
                 $lastClick = date('Y-m-d H:i:s');
                 //calculate number of clicks to match user frecency word input
                 $frecencyNumber = getFrecencyNumber($frecencyWord);
@@ -270,11 +270,15 @@
         } 
         //Get editItem values from db that are not in post variable
         $_SESSION['editItemObject'] = getListItemById($db, $editId, $frecencyInterval);
+        $editFrecency = calculateFrecency($_SESSION['editItemObject']['numClicks'], $_SESSION['editItemObject']['firstClick'], $frecencyInterval);
         
         //populate variables for edit form
         if (isset($_POST['editTitle'])) {
             $editTitle = $_POST['editTitle'];
         }                      
+        if (isset($_POST['editQty'])) {
+            $editQty = (int)$_POST['editQty'];
+        }            
         if (isset($_POST['editQty'])) {
             $editQty = (int)$_POST['editQty'];
         }            
@@ -382,7 +386,7 @@
                         <div class="list__addItem--addItemForm-frecency">
                         <?php if (isset($_POST['editItem'])) : ?>
                             <label for="addFrecency">'Frecency' (1-100*):</label>   
-                            <input name="addFrecency" type="text" value="<?php echo calculateFrecency($_SESSION['editItemObject']['numClicks'],$_SESSION['editItemObject']['firstClick'], $frecencyInterval); ?>"/>
+                            <input name="addFrecency" type="text" value="<?php echo $editFrecency; ?>"/>
                         <?php else : ?>
                             <label for="addFrecency">Starting 'Frecency'</label>
                             <select name="addFrecency" id="js--addFrecencyRating">
@@ -394,7 +398,7 @@
                         <?php endif; ?>
 
                         </div>
-                        <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecency" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['calcfrec'] : ''; ?>"></div>
+                        <div class="" hidden><input id="js--addFrecencyEdit" type="text" name="addItemFrecency" value="<?php echo isset($_SESSION['editItemObject']) ? calculateFrecency($_SESSION['editItemObject']['numClicks'], $_SESSION['editItemObject']['firstClick'], $frecencyInterval) : ''; ?>"></div>
                         <div class="" hidden><input id="js--addFirstClickEdit" type="text" name="addItemFirstClickEdit" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['firstClick'] : ''; ?>"></div>
                         <div class="" hidden><input id="js--addLastClickEdit" type="text" name="addItemLastClickEdit" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['lastClick'] : ''; ?>"></div>
                         <div class="" hidden><input id="js--addIdEdit" type="text" name="listItemId" value="<?php echo isset($_SESSION['editItemObject']) ? $_SESSION['editItemObject']['listItemId'] : ''; ?>"></div>
@@ -450,7 +454,9 @@
                                     $displayHeader = $item['category'];
                                 }
                             } else if ($_SESSION['orderBy']=='frecency') {
+                                // $frecencyWord = getFrecencyWord(calculateFrecency($item['numClicks'], $item['firstClick'], $frecencyInterval));
                                 $frecencyWord = getFrecencyWord(calculateFrecency($item['numClicks'], $item['firstClick'], $frecencyInterval));
+                                
                                 if ($displayHeader !== $frecencyWord) {
                                     echo '<div class="list__container--items-itemHeader">'.$frecencyWord.'</div>';
                                     $displayHeader = $frecencyWord;

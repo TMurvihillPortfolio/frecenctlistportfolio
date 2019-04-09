@@ -3,6 +3,7 @@
 - frecency not entering correctly on add
 - implement error messages
 - frecency calc does not work when you change the dates, frecency order goes wacky
+- if you add an item with no click, 00-00-00 date wrecks calculation
 
 ### Low Priority
 - after delete, scroll to location of where deleted item was

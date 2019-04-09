@@ -4,11 +4,11 @@
         try {
             //Determine list order and create query
             if ($_SESSION['orderBy'] =='frecency') {
-                $query = "SELECT *, (numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval as calcfrec FROM ListItems WHERE listId = :listId ORDER BY calcfrec DESC";
+                $query = "SELECT *, ROUND(numClicks/((CURRENT_DATE-firstClick)/ :frecencyInterval)) as calcfrec FROM ListItems WHERE listId = :listId ORDER BY calcfrec DESC";
                 $statement = $db->prepare($query);
                 $statement->execute(array(':frecencyInterval'=>$frecencyInterval, ':listId'=>$listId));
             } else if ($_SESSION['orderBy'] == 'category') {
-                $query = "SELECT *, (numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval as calcfrec FROM ListItems JOIN Categories on ListItems.category = Categories.category WHERE listId = :listId ORDER BY Categories.viewOrder ASC, calcfrec DESC";
+                $query = "SELECT *, ROUND((numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval) as calcfrec FROM ListItems JOIN Categories on ListItems.category = Categories.category WHERE listId = :listId ORDER BY Categories.viewOrder ASC, calcfrec DESC";
                 $statement = $db->prepare($query);
                 $statement->execute(array(':frecencyInterval'=>$frecencyInterval, ':listId'=>$listId));
             } else {            
@@ -38,7 +38,9 @@
         $statement = $db->prepare($query);
         $statement->execute(array(':listItemId'=>$listItemId));
         if (!$listItem=$statement->fetch(PDO::FETCH_ASSOC)) {
+            //NOT YET IMPLEMENTED error
             echo "List Item not found.";
+            return;
         }
         return $listItem;
     }
