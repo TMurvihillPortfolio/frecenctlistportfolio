@@ -8,6 +8,8 @@
 ### Low Priority
 - after delete, scroll to location of where deleted item was
 - make id fields in db unique
+- add email to top box border of profile page
+- response message after delete account does not make sense
 
 ### FUTURE FEATURES !!
 

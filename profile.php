@@ -5,29 +5,52 @@
 <?php //update email
     if (isset($_POST['emailSubmit'])) {
         //initialize variables
-        $email = ''; 
+        $newEmail = '';
         $userId = '';
         $success = false;
+
+        //double check and set user id
+        if (isset($_SESSION['userId'])) {
+            $userId = $_SESSION['userId'];
+        } else {
+            $result = "Session user Id was lost. Please logout and login again.";
+            exit();
+        }
+
         //sanitize user input
         if (isset($_POST['email']) && $_POST['email'] !=='') {
-            $email = testInput($_POST['email']);
+            $newEmail = testInput($_POST['email']);
             $success = true;
         }
-        //update email
-        if (isset($_SESSION['userId']) && $success === true) {
-            $userId = $_SESSION['userId'];
-            try {
-                $splQuery = "UPDATE users SET email = :email WHERE userId = :userId";
-                $statement = $db->prepare($splQuery);
-                $statement->execute(array(':userId'=>$userId, 'email'=>$email));
-                if ($statement->rowCount() === 0) {
-                    $result = "Update not successful. Please try logging out and logging in again.";
-                }
-            } catch (Exception $ex) {
-                $result = "An error occurred: ".$ex;
-            }
-        } else {
-            $result = "User not found or invalid email. Please try logging out and logging in again.";
+
+        //encode user id and email
+        $encodeUserId = base64_encode("encodeuserid{$userId}");
+        $encodeNewEmail = base64_encode("encodenewemail{$newEmail}");
+
+        //prepare email body
+
+        $mail_body = '<html>
+        <body style="color:#FFCE00; font-family: Lato, Arial, Helvetica, sans-serif;
+                            line-height:1.8em;">
+        <h2>Message from Frecency<span style="color:#BCB5D7;">List</span></h2>
+        <p>Dear Frecency List user,<br><br>Thank you for registering, please click on the link below to
+            confirm your email address</p>
+        <p style="text-decoration: underline; font-size: 24px;"><a style="color:#BCB5D7;" href='.$rootDirectory.'verifyEmailUpdate.php?userId='.$encodeUserId.'&newEmail='.$encodeNewEmail.'"> Confirm Email</a></p>
+        <p><strong>&copy;2018 <a href="https://take2tech.ca" style="color:#BCB5D7;text-decoration: underline;">take2tech.ca</strong></p>
+        </body>
+        </html>';
+
+        $subject = "Message from 'Frecency' List";
+        $headers = "From: 'Frecency' List.--User Signup" . "\r\n";
+        $headers .= "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+        //Error Handling for PHPMailer
+        if(!mail($newEmail, $subject, $mail_body, $headers)){
+            $result = "Email confirmation send failed.";
+        }
+        else{
+            $result = "Email update pending confirmation. Please check new email for confirmation link.";
         }           
     }
 ?>
