@@ -70,13 +70,13 @@
                     //prepare email body
 
                     $mail_body = '<html>
-                        <body style="color:#FFCE00; font-family: Lato, Arial, Helvetica, sans-serif;
+                        <body style="color:#083a08; font-family: Lato, Arial, Helvetica, sans-serif;
                                             line-height:1.8em;">
-                        <h2>Message from Frecency<span style="color:#BCB5D7;">List</span></h2>
+                        <h2>Message from Frecency<span style="color:#3C7496;">List</span></h2>
                         <p>Dear Frecency List user,<br><br>Thank you for registering, please click on the link below to
                             confirm your email address</p>
-                        <p style="text-decoration: underline; font-size: 24px;"><a style="color:#BCB5D7;" href='.$rootDirectory.'activate.php?userId='.$encodeUserId.'"> Confirm Email</a></p>
-                        <p><strong>&copy;2018 <a href="https://take2tech.ca" style="color:#BCB5D7;text-decoration: underline;">take2tech.ca</strong></p>
+                        <p style="text-decoration: underline; font-size: 24px;"><a style="color:#3C7496;" href='.$rootDirectory.'activateOrChangeEmail.php?userId='.$encodeUserId.'"> Confirm Email</a></p>
+                        <p><strong>&copy;2018 <a href="https://take2tech.ca" style="color:#3C7496;text-decoration: underline;">take2tech.ca</strong></p>
                         </body>
                         </html>';
                     
