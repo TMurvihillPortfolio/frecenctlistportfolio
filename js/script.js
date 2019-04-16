@@ -15,6 +15,13 @@ function restoreEnvironmentAddItemForm() {
     document.getElementById('js--addItemFilterBy').style.display = 'block';
     document.getElementById('js--addItemListContainer').style.display = 'block';
 }
+function verifyDeleteItem(item) {
+    
+    console.log(item.parentElement.previousElementSibling.children[2].children[0].value);
+    const listItem = item.parentElement.previousElementSibling.children[2].children[0].value;
+    const yesNo = confirm(`Delete item: ${listItem}?`);
+    if (yesNo) item.type = 'submit';
+}
 
 /***********************
  * CRUD operations on profiles

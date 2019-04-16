@@ -11,7 +11,7 @@ html {
   font-size: 20px;
   font-weight: 300;
   text-rendering: optimizeLegibility;
-  background-image: linear-gradient(to right, rgba(152, 152, 152, 0.6) -13%, #fffae8, rgba(152, 152, 152, 0.6) 112%); }
+  background-image: linear-gradient(to right, rgba(186, 186, 186, 0.6) -13%, #fffefb, rgba(181, 180, 180, 0.6) 112%); }
 
 hr {
   border: 0;
@@ -25,7 +25,7 @@ hr {
 .outer {
   min-height: 100vh;
   max-height: 100vh;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.6), #fffae8, rgba(255, 255, 255, 0.6)), url(../img/storeAisleSmall.jpg) no-repeat center center fixed;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.6), #fffefb, rgba(255, 255, 255, 0.6)), url(../img/storeAisleSmall.jpg) no-repeat center center fixed;
   background-size: cover;
   background-attachment: scroll; }
 
@@ -165,7 +165,7 @@ hr {
         border-bottom: 1px solid transparent;
         transition: border-bottom .4s; }
       .mainNav__nav--item > a:hover, .mainNav__nav--item > a:active {
-        border-bottom: 1.5px solid #fdfdf6; }
+        border-bottom: 1.5px solid #083a08; }
 
 .list {
   padding: 50px;

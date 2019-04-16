@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="img/favicon.png">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
-    <script type="text/javascript" src="js/script.js?v=6.11"></script>
+    <script type="text/javascript" src="js/script.js?v=6.12"></script>
 
     <title>'Frecent' ListMaker</title>
 </head>

@@ -1,8 +1,6 @@
 # TODO
 
-- frecency not entering correctly on add
 - implement error messages
-- frecency calc does not work when you change the dates, frecency order goes wacky
 - if you add an item with no click, 00-00-00 date wrecks calculation
 
 ### Low Priority
@@ -14,4 +12,6 @@
 ### FUTURE FEATURES !!
 
 - up/down arrows to adjust quantities with possible increment field
+- add/edit/reorder categories
+- add/edit lists
 - allow user to adjust frecency periord, currently 100 days

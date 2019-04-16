@@ -22,8 +22,7 @@
             height: 1rem;
             position: absolute;
             top: 0;
-            right: 0;
-            
+            right: 0;           
         }
         
         &--item>a {
@@ -39,7 +38,7 @@
             }
             &:hover,
             &:active {
-                border-bottom: 1.5px solid $colorGreyLightPrimary;          
+                border-bottom: 1.5px solid $colorSecondaryDark;          
             }
         }
     }
