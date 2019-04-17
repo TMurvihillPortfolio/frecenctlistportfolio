@@ -1,11 +1,8 @@
 # TODO
 
 - implement error messages
-- if you add an item with no click, 00-00-00 date wrecks calculation
 
 ### Low Priority
-- after delete, scroll to location of where deleted item was
-- make id fields in db unique
 - add email to top box border of profile page
 - response message after delete account does not make sense
 

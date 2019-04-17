@@ -3,6 +3,9 @@
 <?php include_once 'php/classes/Database.php'; ?>
 <?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
+<?php 
+    
+?>
 <?php //determine if login window needed
     $loginNeeded = true;
 
@@ -104,10 +107,16 @@
     if (isset($_POST['addEditCancel'])) {
         unset($_POST['editItem']);
         unset($_POST['addEditCancel']);
-    }
+    }        
     
+    if (isset($_POST['scrollPosition'])) {
+        $_SESSION['scrollPosition'] = $_POST['scrollPosition'];       
+        unset($_POST['scrollPosition']);
+        
+    }
 ?>
 <?php //add/edit submit button clicked
+
     if (isset($_POST['addEditSave'])) {
         
         //EDIT the item
@@ -220,16 +229,16 @@
             
             //set initial click values
                            
-            if ($isChecked == 1) {
+            //if ($isChecked == 1) {
                 //set first and last click (first click simulated)
                 $firstClick = date("Y-m-d H:i:s", time() - ($frecencyInterval*$minimumIntervals)); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
                 $lastClick = date('Y-m-d H:i:s');
                 //calculate number of clicks to match user frecency word input
                 $frecencyNumber = getFrecencyNumber($frecencyWord);
                 $numClicks = calculateClicks($firstClick, $frecencyNumber, $frecencyInterval); //Might be simulated for calculations              
-            } else {
-                $numClicks = 0;
-            }
+            //} else {
+            //    $numClicks = 0;
+            //}
             
             //Create and execute the query         
             try {
@@ -253,7 +262,6 @@
         }
         //restore environment
         $_POST = [];
-        unset($_SESSION['editItemObject']); 
         header("Location: index.php", true, 301);
         exit;   
     }
@@ -285,8 +293,9 @@
     }
 ?>
 <?php //Delete item
+
     if (isset($_POST['itemDelete'])) {
-        $listItemId = $_POST['editId'];
+        if (isset($_POST['editId'])) $listItemId = $_POST['editId'];
         $query = "DELETE FROM ListItems WHERE listItemId = :listItemId";
         $statement = $db->prepare($query);
         $statement->execute(array(":listItemId"=>$listItemId));
@@ -299,7 +308,8 @@
 <html lang="en">
 <?php include 'php/reusables/head.php'; ?>
 <body>
-    <div class="outer">
+<div class="outer">   
+    <div id="js--scrollPositionDiv" hidden><?php if (isset($_SESSION['scrollPosition'])) {echo $_SESSION['scrollPosition']; $_SESSION['scrollPosition']= '0';} ?></div>
     <?php include 'php/reusables/mainnav.php'; ?>
     <section class="list">      
         <h1>My 'Frecent' List</h1>
@@ -478,8 +488,9 @@
                                         <!-- <div class="list__container--items-itemCheckBox"> -->
                                             <!-- </div> -->
                                         <input type="checkbox" name="checkBox" data-itemid="<?php echo $item['listItemId']; ?>" data-name="name" onclick="updateNumClicks(this.dataset.itemid, this.checked);" <?php echo $checked ?>>                                  
-                                        <button type='submit' class="list__container--items-itemEdit js--editItem" name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                                                         
+                                        <button type='submit' class="list__container--items-itemEdit js--editItem" name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                                                                                         
                                         <button type='button' class="list__container--items-itemDelete" onClick="verifyDeleteItem(this);" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
+                                        <input name='scrollPosition' hidden>
                                         <div class="list__container--items-frecency" hidden><input type="text" name='frecency' value="<?php echo $item['calcfrec']; ?>"></div>                                                   
                                         <div class="list__container--items-itemId" hidden><input type="text" name='editId' value="<?php echo $item['listItemId']; ?>"></div>
                                     </div>                                                   
@@ -491,7 +502,7 @@
             </div>                
         </div>        
     </section>
-    </div>
+</div>
     <!-- update number of clicks API -->
     <script>
         function updateNumClicks(listItemId, isChecked) {

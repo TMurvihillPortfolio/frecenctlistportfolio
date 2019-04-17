@@ -1,5 +1,10 @@
 window.onload = () => {
-    
+    //scroll down to a location if necessary
+    const scrollPositionDiv = document.querySelector('#js--scrollPositionDiv');
+    if (scrollPositionDiv && parseInt(scrollPositionDiv.innerText) > 0) {
+        window.scrollTo(0, parseInt(scrollPositionDiv.innerText));
+        scrollPositionDiv.innerText = "0";
+    }
 }
 function prepareEnvironmentAddItemForm() {
     document.getElementById('js--addItemButton').style.display ='none';
@@ -16,11 +21,13 @@ function restoreEnvironmentAddItemForm() {
     document.getElementById('js--addItemListContainer').style.display = 'block';
 }
 function verifyDeleteItem(item) {
-    
-    console.log(item.parentElement.previousElementSibling.children[2].children[0].value);
     const listItem = item.parentElement.previousElementSibling.children[2].children[0].value;
     const yesNo = confirm(`Delete item: ${listItem}?`);
-    if (yesNo) item.type = 'submit';
+    if (yesNo) {
+        const scrollPositionInput = item.nextElementSibling;
+        scrollPositionInput.value = parseInt(window.pageYOffset).toString();
+        item.type = 'submit';
+    }
 }
 
 /***********************

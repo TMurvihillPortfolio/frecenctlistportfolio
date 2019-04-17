@@ -14,4 +14,7 @@
     if (!isset($_SESSION['viewBy'])) {
         $_SESSION['viewBy'] = '';
     }
+    if (!isset($_SESSION['scrollPosition'])) {
+        $_SESSION['scrollPosition'] = '';
+    }
 
