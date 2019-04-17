@@ -11,4 +11,4 @@
 - up/down arrows to adjust quantities with possible increment field
 - add/edit/reorder categories
 - add/edit lists
-- allow user to adjust frecency periord, currently 100 days
+- allow user to adjust frecency period, currently 100 days

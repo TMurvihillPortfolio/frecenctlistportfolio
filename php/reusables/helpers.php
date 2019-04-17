@@ -122,8 +122,7 @@
             unset($_SESSION['userId']);
             unset($_SESSION['editItemObject']);  
             session_destroy();
-        }
-    
+        }   
     }
 
 //Close Account
@@ -172,12 +171,11 @@ function closeAccount($db, $closeAccountId) {
             $statement->execute(array(':userId'=>$_SESSION['userId']));
 
             if (!$statement->rowCount()) {
-               $result = "Close account not successful for user Id#: ".$list['listUserId']; 
-
+               $result = "Close account not successful for user Id#: ".$list['listUserId']."Try logging in again."; 
                //clean up environment
-               logout();             
+               header('Location: logout.php');             
             } else {
-                return "success";
+                header('Location: logout.php');
             }
         }catch (PDOexception $ex) {
             $result = "An error occurred. Try logging out and logging in again.";

@@ -159,7 +159,7 @@
             <div class="profile__form profile__form--email" id="js--profileOriginalEmail">
                 <?php 
                     if (isset($userId)) {
-                        echo "My Profile";
+                        echo $row['email'];
                     } else {
                         echo "no user found";
                     }
