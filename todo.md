@@ -1,14 +1,14 @@
 # TODO
 
-- implement error messages
+- finish with subscription functionality
 
 ### Low Priority
-- add email to top box border of profile page
-- response message after delete account does not make sense
+- get background image fed from Cloudinary
 
 ### FUTURE FEATURES !!
 
 - up/down arrows to adjust quantities with possible increment field
 - add/edit/reorder categories
 - add/edit lists
-- allow user to adjust frecency period, currently 100 days
+- allow multiple users
+- allow user to adjust frecency parameters

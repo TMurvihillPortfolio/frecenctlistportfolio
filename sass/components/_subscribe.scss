@@ -1,0 +1,36 @@
+.subscribe {
+    width: 80%;
+    max-width: 850px;
+    margin: auto;
+    margin-top: 40px;
+    &__line1 {
+        color: $colorPrimaryDark;
+        margin: 50px;
+        text-align: center;
+
+        &>h2>span {
+            font-style: italic;
+            color: $colorSecondary;
+        }
+        &>ul {
+            list-style: none;
+        }
+        &>ul>li {
+            margin-bottom: 10px;
+        }
+        &>ul>li>img {
+            height: 30px;
+            margin-bottom: -5px;
+            margin-right: 5px;
+        }
+        &>h3 {
+            margin-top: 8px;
+        }
+        &>h4 {
+            color: $colorSecondary;
+        }
+        &>form {
+            text-align:center;
+        }
+    }   
+}

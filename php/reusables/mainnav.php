@@ -9,6 +9,12 @@
                 <a href="profile.php">View Profile</a>
             </li>
             <li class="mainNav__nav--item">
+                <a href="subscribe.php">Go Premium!</a>
+            </li>
+            <li class="mainNav__nav--item">
+                <a href="about.php">About</a>
+            </li>
+            <li class="mainNav__nav--item">
                 <a href="logout.php">Logout</a>
             </li>
         <?php else : ?>     
@@ -17,6 +23,9 @@
             </li>
             <li class="mainNav__nav--item">
                 <a href="index.php">Login</a>
+            </li>
+            <li class="mainNav__nav--item">
+                <a href="subscribe.php">Go Premium!</a>
             </li>
             <li class="mainNav__nav--item">
                 <a href="about.php">About</a>

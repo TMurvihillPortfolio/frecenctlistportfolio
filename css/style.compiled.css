@@ -544,3 +544,30 @@ hr {
     .profile__form--changePassword > form > input {
       margin: 3px;
       border-radius: 7px; }
+
+.subscribe {
+  width: 80%;
+  max-width: 850px;
+  margin: auto;
+  margin-top: 40px; }
+  .subscribe__line1 {
+    color: #22220a;
+    margin: 50px;
+    text-align: center; }
+    .subscribe__line1 > h2 > span {
+      font-style: italic;
+      color: #0d530d; }
+    .subscribe__line1 > ul {
+      list-style: none; }
+    .subscribe__line1 > ul > li {
+      margin-bottom: 10px; }
+    .subscribe__line1 > ul > li > img {
+      height: 30px;
+      margin-bottom: -5px;
+      margin-right: 5px; }
+    .subscribe__line1 > h3 {
+      margin-top: 8px; }
+    .subscribe__line1 > h4 {
+      color: #0d530d; }
+    .subscribe__line1 > form {
+      text-align: center; }
