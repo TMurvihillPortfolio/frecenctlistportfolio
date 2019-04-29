@@ -515,6 +515,10 @@
             } else if (filterByUnchecked.classList.contains('btn__secondary--selected')) {
                 !isChecked ? '' : checkedElement.parentElement.parentElement.parentElement.style.display = 'none';                       
             }
+
+            //if last element in grouping, remove header
+            removeHeader(checkedElement.parentElement.parentElement.parentElement.parentElement);
+            
             //isChecked ? '' : console.log('isChecked false'); 
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function (){               

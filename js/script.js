@@ -133,3 +133,45 @@ function mobileNav() {
     } 
 } 
 
+/***********************
+ * MISC Utilities
+ ***********************/
+
+ //Remove frecency or category header after last item checked or unchecked
+
+function removeHeader(formElement) {
+    //Find previous element to item checked or unchecked
+    isItItemHeaderElement=formElement.previousElementSibling;
+    
+    //check if this element is a header
+    if (isItItemHeaderElement) {
+        if (isItItemHeaderElement.classList.contains('list__container--items-itemHeader')) {
+            //If element is a header, check if any children are displayed
+            let nextItem = isItItemHeaderElement.nextElementSibling;
+            while (nextItem) {
+                //check if more items to check
+                if (nextItem.children[0]) {
+                    //if item not displayed, check next item
+                    if(nextItem.children[0].style.display=="none") {
+                        nextItem=nextItem.nextElementSibling;
+                        continue;
+                    }else{
+                        //if item displayed, exit function without removing heading
+                        return;
+                    }
+                //if no more items in grouping, exit checking if item is displayed
+                }else{
+                    break;
+                }              
+            }
+            //if this line reached, means no displayed items in grouping, so remove header
+            isItItemHeaderElement.innerText="";
+        }else{
+            //continue searching for header of this grouping
+            removeHeader(isItItemHeaderElement);
+        }
+    }else{
+        //top of list reached without finding a header class element, so exit function
+        return;
+    }
+}
