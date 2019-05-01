@@ -16,10 +16,35 @@
         margin: 5px;
         border:none;
     }
+
     
-    // background-color: $colorSecondaryDark;
-    // border: 1px solid $colorSecondaryDark;
    
+    &__selectList {
+        display: none;
+        text-align: center;
+
+        &--text {
+            font-size: 16px;
+            font-style: italic;
+            letter-spacing: normal;
+            word-spacing: normal;
+            margin-left: -15px;
+            cursor: pointer;
+        }
+        
+        &--active {
+            display: block;
+            &>select {
+                padding: 5px 10px;
+                border-radius: 5px;
+                background-color: $colorGreyLightPrimary;
+                width: fit-content;
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+        }
+        
+    }
     &__search { 
         display: none;
         &--input {

@@ -23,6 +23,7 @@
         border: 2px solid $colorTertiaryDark;
         padding: 0;
         
+        
         &--bottom {
             padding: 2rem;
             @include respond(phone) {
@@ -39,17 +40,25 @@
         }
     }
     &__form {
+        
         &--email {
             background-color: $colorTertiaryDark;
             color: #fff;
             width: 100%;
-            padding: 5px 7px;
-            
+            padding: 5px 7px;           
         }
         &--changeProfileButton {
             font-size: 100%;
             margin: auto;
             text-align:center;
+            & a {
+                text-decoration: none;
+                color: white;
+            }
+            & span {
+                font-size: 65%;
+                font-style: italic;
+            }
         }
         
         &--changePassword {

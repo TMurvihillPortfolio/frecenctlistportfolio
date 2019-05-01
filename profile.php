@@ -167,17 +167,17 @@
             </div>
             <div class="profile__container--bottom">
                 <div class="profile_form profile__form--changeProfileButton">
-                    <button class="btn btn__secondary profile__form--changeProfileButton">Add/Edit Categories (Premium)</button>                
+                    <button class="btn btn__secondary profile__form--changeProfileButton">Add/Edit Categories <span>(Premium)</span></button>                
                 </div>
                 <br>
                 <div class="profile_form profile__form--changeProfileButton">
-                    <button class="btn btn__secondary profile__form--changeProfileButton">Add, Edit, or Delete Lists (Premium)</button>                
+                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href="addEditLists.php">Add, Edit, or Delete Lists <span>(Premium)</span><a></button>                
                 </div>
                 <br>
                 <form action="profile.php" method="post">
                     <div id="js--emailInput" hidden>
                         <div style="display: flex">
-                            <h3 name="NOT YET IMPLEMENTED">Change Email:</h3>
+                            <h3>Change Email:</h3>
                         </div>
                         <input name="email" type="email" placeholder="enter new email">
                     </div>

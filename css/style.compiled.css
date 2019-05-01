@@ -184,6 +184,25 @@ hr {
       padding: 10px;
       margin: 5px;
       border: none; } }
+  .list__selectList {
+    display: none;
+    text-align: center; }
+    .list__selectList--text {
+      font-size: 16px;
+      font-style: italic;
+      letter-spacing: normal;
+      word-spacing: normal;
+      margin-left: -15px;
+      cursor: pointer; }
+    .list__selectList--active {
+      display: block; }
+      .list__selectList--active > select {
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: #fdfdf6;
+        width: fit-content;
+        margin-top: 15px;
+        margin-bottom: 15px; }
   .list__search {
     display: none; }
     .list__search--input {
@@ -537,6 +556,12 @@ hr {
     font-size: 100%;
     margin: auto;
     text-align: center; }
+    .profile__form--changeProfileButton a {
+      text-decoration: none;
+      color: white; }
+    .profile__form--changeProfileButton span {
+      font-size: 65%;
+      font-style: italic; }
   .profile__form--changePassword > form {
     display: flex;
     flex-direction: column;
@@ -571,3 +596,54 @@ hr {
       color: #0d530d; }
     .subscribe__line1 > form {
       text-align: center; }
+
+.addEditLists__addArea > form {
+  line-height: 2;
+  margin-top: 10px; }
+  .addEditLists__addArea > form input[type=text] {
+    font-size: 20px;
+    margin: 10px;
+    border-radius: 5px; }
+  .addEditLists__addArea > form input[type=checkbox] {
+    transform: scale(1.5);
+    margin: 10px; }
+
+.addEditLists__addArea--submit {
+  text-align: center;
+  margin-top: 17.5px; }
+
+.addEditLists__editArea {
+  width: 80%;
+  margin: 60px auto; }
+  .addEditLists__editArea--title {
+    margin-bottom: 25px; }
+    .addEditLists__editArea--title > h3 {
+      color: #0d530d; }
+      .addEditLists__editArea--title > h3 > span {
+        color: #f0f34a; }
+
+.addEditLists__piggy--lineItem {
+  display: flex;
+  justify-content: space-between; }
+  .addEditLists__piggy--lineItem-headings {
+    margin-bottom: 10px; }
+    .addEditLists__piggy--lineItem-headings > * {
+      text-decoration: underline; }
+  @media only screen and (max-width: 75em) {
+    .addEditLists__piggy--lineItem {
+      display: block; } }
+  .addEditLists__piggy--lineItem > hr {
+    visibility: hidden;
+    opacity: 0; }
+    @media only screen and (max-width: 75em) {
+      .addEditLists__piggy--lineItem > hr {
+        visibility: visible;
+        opacity: 1; } }
+  .addEditLists__piggy--lineItem-piggyBankName {
+    flex: 4; }
+  .addEditLists__piggy--lineItem-piggyBankOwner {
+    flex: 2; }
+  .addEditLists__piggy--lineItem-isDefault {
+    flex: 1; }
+  .addEditLists__piggy--lineItem-editDelete {
+    flex: 1; }

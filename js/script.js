@@ -116,6 +116,27 @@ function startCloseAccount(clickedItem, userEmail) {
 }
 
 /***********************
+ * CRUD operations on lists
+ ***********************/
+
+ function startAddList(clickedItem) {
+
+    // if (clickedItem.innerText == "Add List") {
+    //     emailInput.hidden = true;
+    //     cancelChangeEmailButton.hidden = true;
+    //     clickedItem.innerText = "Change Email";
+    //     originalEmail.innerText=emailInput.children[1].value;
+    //     changeSaveEmailButton.type = 'Submit';
+        
+    if (clickedItem.innerText == "Cancel") {
+        clickedItem.parentElement.previousElementSibling.children[1].checked = false;
+        clickedItem.parentElement.previousElementSibling.previousElementSibling.children[1].value = "";   
+        return;
+    }
+ }
+
+
+/***********************
  * Mobile Navigation
  * ********************/
 function mobileNav() {

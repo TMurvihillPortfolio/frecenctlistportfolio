@@ -3,9 +3,6 @@
 <?php include_once 'php/classes/Database.php'; ?>
 <?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
-<?php 
-    
-?>
 <?php //determine if login window needed
     $loginNeeded = true;
 
@@ -44,18 +41,34 @@
                             //     setcookie('rememberUserCookie', null, -1, '/');
                             // } 
                         }
-                        $_SESSION['userId'] = $userId;
-                        $splQuery = "SELECT * FROM Lists WHERE listUserId = :userId AND isDefault = 1";
-                        $statement = $db->prepare($splQuery);
-                        $statement->execute(array(':userId'=>$userId));
-                        if($listRow=$statement->fetch()){
-                            $_SESSION['listId'] = $listRow['listId'];                
-                            header("Location: index.php");
-                            exit;
-                        } else {
-                            //NOT YET IMPLEMENTED error handling
-                            $result = "default list not found";
+                        $_SESSION['userId'] = $userId;               
+
+                        if (isset($_POST['listSelect'])) {
+                            $splQuery = "SELECT * FROM Lists WHERE listId = :listId";
+                            $statement = $db->prepare($splQuery);
+                            $statement->execute(array(':listId'=>$_SESSION['listId']));
+                            if($listRow=$statement->fetch()){              
+                                header("Location: index.php");
+                                exit;
+                            } else {
+                                //NOT YET IMPLEMENTED error handling
+                                $result = "list not found";
+                            }
+                        }else{
+                            $splQuery = "SELECT * FROM Lists WHERE listUserId = :userId AND isDefault = 1";
+                            $statement = $db->prepare($splQuery);
+                            $statement->execute(array(':userId'=>$userId));
+                            if($listRow=$statement->fetch()){
+                                $_SESSION['listId'] = $listRow['listId'];                
+                                header("Location: index.php");
+                                exit;
+                            } else {
+                                //NOT YET IMPLEMENTED error handling
+                                $result = "default list not found";
+                            }
                         }
+                        
+                        
                     }else{
                         $result="Account not activated. Please check your email inbox for a verification email.";
                     }
@@ -72,7 +85,14 @@
         }  
     }
 ?>
+<?php //change list submit clicked
+        if (isset($_POST['selectList'])) {
+            $_SESSION['listId'] = (int)$_POST['selectList'];
+            unset($_POST['selectList']);
+        }
+?>
 <?php //get list and categories
+    
     if (!isset($_SESSION['orderBy']) || $_SESSION['orderBy'] == '') $_SESSION['orderBy'] = 'alpha';
     if (isset($_POST['category'])) {
         $_SESSION['orderBy'] = 'category';
@@ -100,8 +120,14 @@
         $_SESSION['viewBy'] = 'all';
         unset($_POST['viewAll']);
     }
-    //Get Categories Query dependency: php/reusables/queries.php
-    $categories=getCategories($db);    
+    //Get Categories - Query dependency: php/reusables/queries.php
+    $categories=getCategories($db);
+    
+    //Get List Info for List Name - Query dependency: php/reusables/queries.php
+    $listInfo=getListInfo($db);
+
+    //Get all lists from user - Query dependency: php/reusables/queries.php
+    $userLists=getAllUserLists($db);
 ?>
 <?php //restore environment
     if (isset($_POST['addEditCancel'])) {
@@ -312,8 +338,21 @@
     <div id="js--scrollPositionDiv" hidden><?php if (isset($_SESSION['scrollPosition'])) {echo $_SESSION['scrollPosition']; $_SESSION['scrollPosition']= '0';} ?></div>
     <?php include 'php/reusables/mainnav.php'; ?>
     <section class="list">      
-        <h1>My 'Frecent' List</h1>
-        <br> 
+        <h1><?php echo (isset($listInfo['listName'])) ? $listInfo['listName'] : "My 'Frecent' List"; ?> <span class="list__selectList--text" onClick="this.style.display='none';this.parentElement.nextElementSibling.classList.add('list__selectList--active');console.log('clicked');">Change List</span></h1>
+        <form action="index.php" name="listForm" class='list__selectList' method='post'>
+            <select name="selectList" onChange="this.classList.remove('list__selectList--active'); this.parentElement.previousElementSibling.children[0].style.display='inline-block'; console.log('selected'); this.form.submit();">
+                <?php foreach($userLists as $row) : ?>                     
+                    <?php $selected = ""; ?> 
+                    <?php if(strtolower($row['listId'])==strtolower($_SESSION['listId'])) {$selected = 'selected';} ?>
+                    <option value="<?php echo $row['listId']; ?>" <?php echo $selected; ?>>
+                        <?php echo $row['listName']; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <input type="submit" value="Submit" hidden>
+        </form>
+        
+        <br>
         <hr>
         <br>
         <!-- Login -->
@@ -506,17 +545,19 @@
     <!-- update number of clicks API -->
     <script>
         function updateNumClicks(listItemId, isChecked) {
+            //intialize variables
             const checkedElement = document.querySelector(`[data-itemid="${listItemId}"]`);
             const filterByChecked = document.querySelector('#js--filterByChecked');
             const filterByUnchecked = document.querySelector('#js--filterByUnchecked');
 
+            // remove item from list if checked/unchecked does not matched list state
             if (filterByChecked.classList.contains('btn__secondary--selected')) {
                 isChecked ? '' : checkedElement.parentElement.parentElement.parentElement.style.display = 'none';            
             } else if (filterByUnchecked.classList.contains('btn__secondary--selected')) {
                 !isChecked ? '' : checkedElement.parentElement.parentElement.parentElement.style.display = 'none';                       
             }
 
-            //if last element in grouping, remove header
+            //if last element, in displayed grouping in list, remove header from list
             removeHeader(checkedElement.parentElement.parentElement.parentElement.parentElement);
             
             //isChecked ? '' : console.log('isChecked false'); 

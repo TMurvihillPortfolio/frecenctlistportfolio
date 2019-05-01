@@ -1,21 +1,13 @@
 # TODO
 
-- delete category name after unclick if none left
-    1. pass in category to javascript
-    2. after display none check to see if any of that category are displayed
-        - from div = cat or fre header 
-            -> next element sibling (the item form) -> 
-            IF has children -> 
-                foreach child 
-                    IF (!display none) return true, 
-                    ELSE -> 
-                        get rid of cat or fre header
-                        return
-            ELSE -> get rid of cat or fre header
-    3. if no clicks display category title
+- move change list to next line
+- make 'change list' only show up if premium customer
+- set as default functionality
+- go through each page and get the correct nav in
 
 ### Low Priority
 - get background image fed from Cloudinary
+- ListItem categories in db should be by category id, not word
 
 ### FUTURE FEATURES !!
 

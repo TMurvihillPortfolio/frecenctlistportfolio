@@ -1,0 +1,100 @@
+.addEditLists {
+    &__addArea {
+    //     width: 60%;
+    //     &--title {
+    //         >h3 {
+    //             color: $colorSecondary;
+    //             &>span {
+    //                 color: $colorTertiary;
+    //             }
+    //         }
+    //     } 
+        &>form {
+            line-height: 2;
+            margin-top: 10px;
+    //         display: -webkit-flex; /* Safari */
+    //         -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+    //         display: flex;
+    //         justify-content: space-between;
+    //         flex-wrap: wrap;
+    //         margin: 0 auto;
+    //         width: 100%;
+
+    //         @include respond(phone) {
+    //             display: block;
+    //         }
+
+    //         & input,
+    //         & select {
+    //             font-size: 20px;
+    //             margin: 25px 25px 25px 10px;
+    //         }
+            
+            & input[type=text] {
+                font-size: 20px;
+                margin: 10px;
+                border-radius: 5px;
+            }
+            & input[type=checkbox] {
+                transform: scale(1.5);
+                margin: 10px;
+            }
+        }
+        &--submit {
+            text-align: center;
+            margin-top: 17.5px;
+        }
+    }
+    &__editArea {
+        width: 80%;
+        margin: 60px auto;
+
+        &--title {
+            margin-bottom:25px;
+            >h3 {
+                color: $colorSecondary;
+                &>span {
+                    color: $colorPrimary;
+                }
+            }
+        }
+    }
+    &__piggy--lineItem {
+        &-headings {
+            margin-bottom:10px;
+       
+            &>* {
+                text-decoration: underline;
+            }
+        }
+        display: flex;
+        justify-content: space-between;
+
+        @include respond(landscape) {
+            display: block;
+        }
+
+        &>hr {
+            visibility: hidden;
+            opacity: 0;
+
+            @include respond(landscape) {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+
+        &-piggyBankName {
+            flex: 4;
+        }
+        &-piggyBankOwner {
+            flex: 2;
+        }
+        &-isDefault {
+            flex: 1;
+        }
+        &-editDelete {
+            flex: 1;
+        }
+    }
+}
