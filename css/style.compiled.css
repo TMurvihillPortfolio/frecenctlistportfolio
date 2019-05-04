@@ -596,6 +596,9 @@ hr {
       color: #0d530d; }
     .subscribe__line1 > form {
       text-align: center; }
+    .subscribe__line1 button {
+      color: #f2f8f2;
+      font-size: 16px; }
 
 .addEditLists__addArea > form {
   line-height: 2;

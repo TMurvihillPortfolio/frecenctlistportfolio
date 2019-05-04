@@ -32,5 +32,10 @@
         &>form {
             text-align:center;
         }
+        & button { //on subscribeSuccess.php page
+            color: $colorGreyLightSecondary;
+            font-size: 16px;
+
+        }
     }   
 }

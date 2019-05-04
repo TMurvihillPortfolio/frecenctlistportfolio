@@ -91,7 +91,7 @@
             unset($_POST['selectList']);
         }
 ?>
-<?php //get list and categories
+<?php //get userInfo, lists and categories
     
     if (!isset($_SESSION['orderBy']) || $_SESSION['orderBy'] == '') $_SESSION['orderBy'] = 'alpha';
     if (isset($_POST['category'])) {
@@ -122,6 +122,10 @@
     }
     //Get Categories - Query dependency: php/reusables/queries.php
     $categories=getCategories($db);
+
+    //Get user info
+    $userInfo=getUserInfo($db);
+    $_SESSION['userInfo'] = $userInfo;
     
     //Get List Info for List Name - Query dependency: php/reusables/queries.php
     $listInfo=getListInfo($db);
@@ -338,7 +342,7 @@
     <div id="js--scrollPositionDiv" hidden><?php if (isset($_SESSION['scrollPosition'])) {echo $_SESSION['scrollPosition']; $_SESSION['scrollPosition']= '0';} ?></div>
     <?php include 'php/reusables/mainnav.php'; ?>
     <section class="list">      
-        <h1><?php echo (isset($listInfo['listName'])) ? $listInfo['listName'] : "My 'Frecent' List"; ?> <span class="list__selectList--text" onClick="this.style.display='none';this.parentElement.nextElementSibling.classList.add('list__selectList--active');console.log('clicked');">Change List</span></h1>
+        <h1><?php echo (isset($listInfo['listName'])) ? $listInfo['listName'] : "My 'Frecent' List"; ?> <?php if ($userInfo['premium']) {echo "<span id='js--changeListButton' class='list__selectList--text' onClick='premiumView()'>Change List</span>";} ?></h1>
         <form action="index.php" name="listForm" class='list__selectList' method='post'>
             <select name="selectList" onChange="this.classList.remove('list__selectList--active'); this.parentElement.previousElementSibling.children[0].style.display='inline-block'; console.log('selected'); this.form.submit();">
                 <?php foreach($userLists as $row) : ?>                     

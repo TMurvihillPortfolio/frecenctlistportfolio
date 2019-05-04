@@ -8,9 +8,11 @@
             <li class="mainNav__nav--item">
                 <a href="profile.php">View Profile</a>
             </li>
-            <li class="mainNav__nav--item">
-                <a href="subscribe.php">Go Premium!</a>
-            </li>
+            <?php if (!$_SESSION['userInfo']['premium']) : ?>
+                <li class="mainNav__nav--item">
+                    <a href="subscribe.php">Go Premium!</a>
+                </li>
+            <?php endif; ?>
             <li class="mainNav__nav--item">
                 <a href="about.php">About</a>
             </li>

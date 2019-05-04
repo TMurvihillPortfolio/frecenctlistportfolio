@@ -129,13 +129,33 @@
                 <h4>(83¢ a month!)
                 <h3>$10.00US per year</h3>
                 <br>
-                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+
+                <div class='subscription__invoice--text'>Subscribe with automatic renewal via PayPal (requires a Paypal account).</div>
+                <br>
+                <!-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="hosted_button_id" value="WFTRSFHYYQH4A">
+                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                    <img alt="Credit Card Symbols" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form> -->
+                <form action="subscribeSuccessBackend.php" method="post" target="_top">
                     <input type="hidden" name="cmd" value="_s-xclick">
                     <input type="hidden" name="hosted_button_id" value="WFTRSFHYYQH4A">
                     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
                     <img alt="Credit Card Symbols" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                 </form>
-            </div>             
+                <br>
+                <hr>
+                <br>
+                <div class='subscription__invoice--text'>Subscribe without a PayPal account. You will be invoiced yearly by 'Frecency' List.<br><a href="frecencyInvoice.php">Click here</a></div>
+                <br>
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="hosted_button_id" value="CYCC9YVMBWSTC">
+                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form>
+            </div>
         </div>
     </div>
 </body>

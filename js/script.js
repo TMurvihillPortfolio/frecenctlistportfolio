@@ -101,6 +101,13 @@ function startChangePassword(clickedItem) {
         return;
     }
 }
+function cancelPremium(email) {
+    const cancelPremiumButton = document.querySelector('#js--cancelPremium');
+    const confirmEmail = prompt('Cancel Premuim Subscription? Are you sure? This will delete all your lists except your default list. Only one user will be able to access your list. Please confirm by typing in your account email address below:');
+    if (confirmEmail==email) {
+        cancelPremiumButton.type="submit";
+    }
+}
 function startCloseAccount(clickedItem, userEmail) {
     //Get customer verification to close the Account   
     if (clickedItem.innerText == "Close Account") { 
@@ -129,6 +136,7 @@ function startCloseAccount(clickedItem, userEmail) {
     //     changeSaveEmailButton.type = 'Submit';
         
     if (clickedItem.innerText == "Cancel") {
+        console.log(clickedItem);
         clickedItem.parentElement.previousElementSibling.children[1].checked = false;
         clickedItem.parentElement.previousElementSibling.previousElementSibling.children[1].value = "";   
         return;
@@ -195,4 +203,10 @@ function removeHeader(formElement) {
         //top of list reached without finding a header class element, so exit function
         return;
     }
+}
+function premiumView(object) {
+    const changeListButton = document.querySelector('#js--changeListButton');
+    changeListButton.style.display="none";
+    changeListButton.parentElement.nextElementSibling.classList.add("list__selectList--active");
+    console.log("clicked");
 }

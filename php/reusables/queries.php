@@ -51,7 +51,7 @@
         $statement->execute(array(':listId'=>$_SESSION['listId']));
         if (!$listInfo=$statement->fetch(PDO::FETCH_ASSOC)) {
             //NOT YET IMPLEMENTED error
-            echo "List not found.";
+            $result = "List not found.";
             return;
         }
         return $listInfo;
@@ -67,5 +67,17 @@
             return;
         }
         return $allUserLists;
+    }
+    function getUserInfo($db) {
+        //$query = "SELECT *, (numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval as calcfrec FROM ListItems WHERE listItemId=:listItemId";
+        $query = "SELECT * FROM users WHERE userId=:userId";
+        $statement = $db->prepare($query);
+        $statement->execute(array(':userId'=>$_SESSION['userId']));
+        if (!$userInfo=$statement->fetch(PDO::FETCH_ASSOC)) {
+            //NOT YET IMPLEMENTED error
+            $result = "User info not found.";
+            return;           
+        }
+        return $userInfo;
     }
 ?>

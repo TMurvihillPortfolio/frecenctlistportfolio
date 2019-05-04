@@ -4,6 +4,10 @@
 <?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
 <?php
+    if (isset($_POST['addListCancel'])) {
+        header('Location: profile.php');
+        exit();
+    }
     if (isset($_POST['addListSubmit'])) {
         $success=false;
         if (isset($_POST['addListName'])) {
@@ -92,9 +96,10 @@
                 </div>
                 <div class="addEditLists__addArea--submit">                             
                     <button name="addListSubmit" type="submit" class="btn btn__secondary profile__form--changeProfileButton">Add List</button>
-                    <button name="addListCancel" type="button" class="btn btn__primaryVeryDark profile__form--changeProfileButton" onClick="startAddList(this)" id="js--addListCancel">Cancel</button>                 
+                    <button name="addListCancel" type="cancel" class="btn btn__primaryVeryDark profile__form--changeProfileButton"><a href='index.php' class='btn btn__primaryVeryDark profile__form--changeProfileButton'>Cancel</a></button>                 
+            </form>   
                 </div>
-            </form>
+            
         </div>
     </div>
 

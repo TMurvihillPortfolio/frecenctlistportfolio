@@ -1,4 +1,5 @@
 <?php include 'php/config/config.php'; ?>
+<?php include 'php/config/session.php'; ?>
 <?php include 'php/classes/Database.php'; ?>
 <?php include 'php/reusables/helpers.php'; ?>
 

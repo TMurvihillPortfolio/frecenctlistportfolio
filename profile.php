@@ -1,5 +1,5 @@
-<?php session_start(); ?>
 <?php include 'php/config/config.php'; ?>
+<?php include 'php/config/session.php'; ?>
 <?php include 'php/classes/Database.php'; ?>
 <?php include 'php/reusables/helpers.php'; ?>
 <?php //update email
@@ -107,6 +107,25 @@
         $result = "An error occurred. Password may not be updated: ".$ex;
     }
 ?>
+<?php //cancel premium subscription
+    if (isset($_POST['cancelPremiumSubscription'])) {
+        //delete user
+        if (isset($_SESSION['userInfo'])) {
+            try {
+                $query = 'UPDATE users SET premium = false WHERE userId = :userId';
+                $statement = $db->prepare($query);
+                $statement->execute(array(':userId'=>$_SESSION['userInfo']['userId']));
+                $result = "Your premium subscription has been cancelled. You may still use the Frecency List at the basic level.";
+    
+            } catch (Exception $e) {
+                //NOT YET IMPLEMENTED
+                $result = 'Cancel subscription failed. Please try logging out and logging in again.';
+            }
+        } else {
+            $result = "Subscription not cancelled. User not found, please try logging out and logging in again.";
+        }
+    }
+?>
 <?php //close account
     if (isset($_POST['closeAccountSubmit'])) {
         //delete user
@@ -117,7 +136,7 @@
                 logout();         
             }
         } else {
-            $result = "Account not closed. User not found, please try logging in and logging out again.";
+            $result = "Account not closed. User not found, please try logging out and logging in again.";
         }
     }
 ?>
@@ -167,11 +186,11 @@
             </div>
             <div class="profile__container--bottom">
                 <div class="profile_form profile__form--changeProfileButton">
-                    <button class="btn btn__secondary profile__form--changeProfileButton">Add/Edit Categories <span>(Premium)</span></button>                
+                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href='<?php echo ($_SESSION['userInfo']['premium']) ? 'editCategories.php' : ''; ?>'>Add/Edit Categories <span>(Premium)</span></a></button>                
                 </div>
                 <br>
                 <div class="profile_form profile__form--changeProfileButton">
-                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href="addEditLists.php">Add, Edit, or Delete Lists <span>(Premium)</span><a></button>                
+                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href=" <?php echo ($_SESSION['userInfo']['premium']) ? 'addEditLists.php' : ''; ?>">Add, Edit, or Delete Lists <span>(Premium)</span><a></button>                
                 </div>
                 <br>
                 <form action="profile.php" method="post">
@@ -211,12 +230,16 @@
                 </div>    
                 <br>
                 <form action="profile.php" method="post">              
+                    <div class="profile_form profile__form--changeProfileButton">                            
+                        <button name="cancelPremiumSubscription" type="button" class="btn btn__secondary profile__form--changeProfileButton" id='js--cancelPremium' onClick="cancelPremium('<?php echo $_SESSION["userInfo"]["email"]; ?>');">Cancel Premium Subscription</button>
+                    </div>
+                </form>
+                <br>
+                <form action="profile.php" method="post">              
                     <div class="profile_form profile__form--changeProfileButton">                             
                         <button name="closeAccountSubmit" type="button" class="btn btn__secondary profile__form--changeProfileButton" onClick="startCloseAccount(this, '<?php echo $row['email']; ?>')" id="js--profileCloseAccount">Close Account</button>
                     </div>
-                </form>
-                
-                
+                </form>               
             </div>
         </div>
     </div>
