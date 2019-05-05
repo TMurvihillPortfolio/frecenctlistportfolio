@@ -1,6 +1,16 @@
 .login {
     display: block;
+    padding: 0.5rem 1rem 1rem;
+    width: 80%;
+    margin: 0 auto;
 
+    &__whatIsFrecency {
+        text-align: center;
+        margin: auto;
+        width: 80%;
+        font-weight: 400;
+        font-size: 16px;
+    }
     &__line1 {
         display: flex;
         justify-content: space-between;
@@ -107,7 +117,8 @@
         }
         &>div>input {
             border-radius: 4px;
-            font-size: 20px;
+            font-size: 16px;
+            padding: 3px;
         }
     }
 }

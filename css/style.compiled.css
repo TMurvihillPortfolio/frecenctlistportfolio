@@ -68,7 +68,8 @@ hr {
   border: 2px solid #3C7496;
   border-top: 30px solid #3C7496;
   padding: 1rem;
-  width: fit-content; }
+  width: fit-content;
+  max-width: 80%; }
   @media only screen and (max-width: 37.5em) {
     .signatureBox {
       border: none;
@@ -184,6 +185,21 @@ hr {
       padding: 10px;
       margin: 5px;
       border: none; } }
+  .list__superHeading {
+    margin: 10px 10px 20px;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    font-style: italic;
+    border: none; }
+    .list__superHeading > span {
+      font-size: 30px;
+      display: inline-block;
+      margin-left: 16px;
+      margin-right: 16px;
+      color: #3C7496;
+      transform: skew(-20deg); }
   .list__selectList {
     display: none;
     text-align: center; }
@@ -203,22 +219,6 @@ hr {
         width: fit-content;
         margin-top: 15px;
         margin-bottom: 15px; }
-  .list__search {
-    display: none; }
-    .list__search--input {
-      background-color: #fdfdf6;
-      width: 350px;
-      height: 40px;
-      display: flex;
-      margin: auto;
-      border-radius: 7px; }
-      .list__search--input > input {
-        font-size: 24px;
-        width: 100%;
-        border-radius: 3px;
-        padding: 2px; }
-      .list__search--input > img {
-        height: 30px; }
   .list__addItem {
     display: none;
     margin: auto; }
@@ -405,7 +405,16 @@ hr {
           padding: 2px; }
 
 .login {
-  display: block; }
+  display: block;
+  padding: 0.5rem 1rem 1rem;
+  width: 80%;
+  margin: 0 auto; }
+  .login__whatIsFrecency {
+    text-align: center;
+    margin: auto;
+    width: 80%;
+    font-weight: 400;
+    font-size: 16px; }
   .login__line1 {
     display: flex;
     justify-content: space-between; }
@@ -485,7 +494,8 @@ hr {
         font-size: 100%; } }
     .login__form > div > input {
       border-radius: 4px;
-      font-size: 20px; }
+      font-size: 16px;
+      padding: 3px; }
 
 .signup {
   width: 80%;

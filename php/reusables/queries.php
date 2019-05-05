@@ -68,6 +68,8 @@
         }
         return $allUserLists;
     }
+
+    //currently not in use, replaced with setting session variables on login instead
     function getUserInfo($db) {
         //$query = "SELECT *, (numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval as calcfrec FROM ListItems WHERE listItemId=:listItemId";
         $query = "SELECT * FROM users WHERE userId=:userId";

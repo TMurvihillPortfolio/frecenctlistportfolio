@@ -17,7 +17,23 @@
         border:none;
     }
 
-    
+    &__superHeading {
+        margin: 10px 10px 20px;
+        padding: 0;
+        width: 100%;
+        text-align: center;
+        font-weight: 600;
+        font-style: italic;
+        border: none;
+        &>span {
+            font-size: 30px;
+            display: inline-block;
+            margin-left: 16px;
+            margin-right: 16px;
+            color: $colorTertiary;
+            transform: skew(-20deg);   
+        }
+    }
    
     &__selectList {
         display: none;
@@ -42,28 +58,7 @@
                 margin-top: 15px;
                 margin-bottom: 15px;
             }
-        }
-        
-    }
-    &__search { 
-        display: none;
-        &--input {
-            background-color: $colorGreyLightPrimary;
-            width: 350px;
-            height: 40px;
-            display:flex;
-            margin: auto;   
-            border-radius: 7px;        
-            &>input {
-                font-size: 24px;
-                width: 100%;
-                border-radius: 3px;
-                padding: 2px; 
-            }
-            &>img {          
-                height: 30px;  
-            }
-        }
+        }       
     } 
     &__addItem{ 
         display: none;

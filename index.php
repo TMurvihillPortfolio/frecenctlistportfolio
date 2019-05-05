@@ -41,7 +41,11 @@
                             //     setcookie('rememberUserCookie', null, -1, '/');
                             // } 
                         }
-                        $_SESSION['userId'] = $userId;               
+                        //Not yet implemented, use session userInfo instead of user id 
+                        $_SESSION['userId'] = $userId;
+
+                        //store user info in session
+                        $_SESSION['userInfo'] = $row;             
 
                         if (isset($_POST['listSelect'])) {
                             $splQuery = "SELECT * FROM Lists WHERE listId = :listId";
@@ -85,6 +89,7 @@
         }  
     }
 ?>
+    
 <?php //change list submit clicked
         if (isset($_POST['selectList'])) {
             $_SESSION['listId'] = (int)$_POST['selectList'];
@@ -122,10 +127,6 @@
     }
     //Get Categories - Query dependency: php/reusables/queries.php
     $categories=getCategories($db);
-
-    //Get user info
-    $userInfo=getUserInfo($db);
-    $_SESSION['userInfo'] = $userInfo;
     
     //Get List Info for List Name - Query dependency: php/reusables/queries.php
     $listInfo=getListInfo($db);
@@ -338,12 +339,17 @@
 <html lang="en">
 <?php include 'php/reusables/head.php'; ?>
 <body>
-<div class="outer">   
-    <div id="js--scrollPositionDiv" hidden><?php if (isset($_SESSION['scrollPosition'])) {echo $_SESSION['scrollPosition']; $_SESSION['scrollPosition']= '0';} ?></div>
+<div class="outer">
+    <!-- store scroll position variable for repositioning after edit/delete -->
+    <div id="js--scrollPositionDiv" hidden><?php if (isset($_SESSION['scrollPosition'])) {echo $_SESSION['scrollPosition']; $_SESSION['scrollPosition'] = '0';} ?></div>
+    <!-- display main navigation -->
     <?php include 'php/reusables/mainnav.php'; ?>
-    <section class="list">      
-        <h1><?php echo (isset($listInfo['listName'])) ? $listInfo['listName'] : "My 'Frecent' List"; ?> <?php if ($userInfo['premium']) {echo "<span id='js--changeListButton' class='list__selectList--text' onClick='premiumView()'>Change List</span>";} ?></h1>
-        <form action="index.php" name="listForm" class='list__selectList' method='post'>
+    <!-- login, add/edit list, and main list section -->
+    <section class="list">
+        <div class="list list__superHeading">What do you buy frequently? <span>plus</span> What have you bought recently?</div>
+        <h1><?php echo (isset($listInfo['listName'])) ? $listInfo['listName'] : "My 'Frecent' List"; ?> <?php if (isset($_SESSION['userInfo']['premium']) && $_SESSION['userInfo']['premium']) {echo "<span id='js--changeListButton' class='list__selectList--text' onClick='premiumView()'>Change List</span>";} ?></h1>
+        <!-- if change list selected, display list choices -->
+        <form action="index.php" name="changeListSelectBox" class='list__selectList' method='post'>
             <select name="selectList" onChange="this.classList.remove('list__selectList--active'); this.parentElement.previousElementSibling.children[0].style.display='inline-block'; console.log('selected'); this.form.submit();">
                 <?php foreach($userLists as $row) : ?>                     
                     <?php $selected = ""; ?> 
@@ -354,13 +360,13 @@
                 <?php endforeach; ?>
             </select>
             <input type="submit" value="Submit" hidden>
-        </form>
-        
+        </form>      
         <br>
         <hr>
         <br>
-        <!-- Login -->
-        <div class="login signatureBox" style="display: <?php echo $loginNeeded ? 'block' : 'none' ?>">
+        <div class="login login__whatIsFrecency" style="display: <?php echo $loginNeeded ? 'block' : 'none' ?>">"We can select what we use the most right at the top of the list and then easily reorder the list by category when it is time to shop. It's so convenient!"</div>
+        <!-- Login Window -->
+        <div class="login" style="display: <?php echo $loginNeeded ? 'block' : 'none' ?>">
             <div class="login__line1">
                 <h3>Login<span> Page</span> </h3>
                 <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up</a></h4>              
@@ -370,25 +376,21 @@
                                                 
                 <div class="login__form--email">
                     <label for="email">Email: </label>
-                    <input name="email" type="email" value='tmurv@shaw.ca' required>                                           
+                    <input name="email" type="email" required>                                           
                 </div>
                             
                 <div class="login__form--password">
                     <label for="password">Password: </label>
-                    <input name="password" type="password" placeholder="password" value='password' required>                
+                    <input name="password" type="password" placeholder="password" required>                
                 </div>
             
                 <div class="login__form--submit">
                     <input type="submit" name="submitLogin" class="btn" value="Submit"/>           
-                    <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up<a></h4>
+                    <!-- <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up<a></h4> -->
                 </div>
             </form>
         </div>
-        <!-- Search -->
-            <!-- <div class="list__search" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
-                <div class="list__search--input"><input type="text" class="list__search--input-input" placeholder="search list"><img src = "./img/searchIcon.png" class="list__search--input-icon" alt="Search Icon Magnifying glass"></div>
-            </div> -->
-        <!-- Add/Edit Item -->
+        <!-- Add/Edit Item Window -->
         <div class="list__addItem" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
             <button class="btn btn__secondary" id="js--addItemButton" style="display: <?php echo (isset($_POST['editItem'])) ? 'none' : 'block' ?>" onClick="prepareEnvironmentAddItemForm();">Add Item</button>
             <div class="list__addItem--addItemForm" style="display: <?php echo (isset($_POST['editItem'])) ? 'block' : 'none' ?>" id="js--addItemForm">                 
@@ -465,7 +467,7 @@
                 </form>  
             </div>
         </div>
-        <!-- orderBy and viewBy -->
+        <!-- orderBy and viewBy buttons-->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" name="viewByOrderBy">
             <div class="list__orderBy" style="display: <?php echo $loginNeeded || isset($_POST['editItem']) ? 'none' : 'block' ?>" id="js--addItemOrderBy">
                 <div class="list__orderBy--header">Order By:</div>
@@ -492,10 +494,11 @@
                 <p>Checked</p>
             </div>           
             <div class="list__container--items">
-                <div class="list__container--items-item">
+                <div class="list__container--items-item">                   
                     <?php $displayHeader = ''; ?>
                     <?php foreach($listItems as $item) : ?>
                         <?php
+                            //prepare list item environment and variables
                             //filter by viewChecked
                             if ($_SESSION['viewBy'] == 'checked' && $item['isChecked'] == false) continue;
                             if ($_SESSION['viewBy'] == 'unChecked' && $item['isChecked'] == true) continue;
@@ -507,7 +510,6 @@
                                     $displayHeader = $item['category'];
                                 }
                             } else if ($_SESSION['orderBy']=='frecency') {
-                                // $frecencyWord = getFrecencyWord(calculateFrecency($item['numClicks'], $item['firstClick'], $frecencyInterval));
                                 $frecencyWord = getFrecencyWord(calculateFrecency($item['numClicks'], $item['firstClick'], $frecencyInterval));
                                 
                                 if ($displayHeader !== $frecencyWord) {
@@ -515,9 +517,8 @@
                                     $displayHeader = $frecencyWord;
                                 }
                             }                                                 
-                            //set is checkbox checked variable
-                            $item['isChecked'] ? $checked = 'checked': $checked = '';
                         ?>
+                        <!-- display list item -->
                         <form method='post'>               
                             <div class="list__container--items-item">
                                 <div class="flex">
@@ -528,9 +529,7 @@
                                         <div class="list__container--items-itemTitlePreEdit" hidden><input type="text" name="editTitle" value="<?php echo $item['title']; ?>"></div>            
                                     </div>
                                     <div class="flex__line2">
-                                        <!-- <div class="list__container--items-itemCheckBox"> -->
-                                            <!-- </div> -->
-                                        <input type="checkbox" name="checkBox" data-itemid="<?php echo $item['listItemId']; ?>" data-name="name" onclick="updateNumClicks(this.dataset.itemid, this.checked);" <?php echo $checked ?>>                                  
+                                        <input type="checkbox" name="checkBox" data-itemid="<?php echo $item['listItemId']; ?>" data-name="name" onclick="updateNumClicks(this.dataset.itemid, this.checked);" <?php echo $item['isChecked'] ? 'checked' : ''; ?>>                                  
                                         <button type='submit' class="list__container--items-itemEdit js--editItem" name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                                                                                         
                                         <button type='button' class="list__container--items-itemDelete" onClick="verifyDeleteItem(this);" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
                                         <input name='scrollPosition' hidden>
@@ -567,7 +566,7 @@
             //isChecked ? '' : console.log('isChecked false'); 
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function (){               
-                //NOT YET implemented Message to user box on erro
+                //NOT YET implemented Message to user box on error
                 // if (this.readyState == 4 && this.status == 200) {
                 //     //document.getElementById("js--tempId").style.background-color = 'green';
                 //     document.getElementById("js--tempId").innerHTML = this.responseText;
