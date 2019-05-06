@@ -188,12 +188,13 @@ hr {
   .list__selectList {
     display: none;
     text-align: center; }
-    .list__selectList--text {
+    .list__selectList--changeListButton {
+      text-align: center;
+      margin-top: 10px;
       font-size: 16px;
       font-style: italic;
       letter-spacing: normal;
       word-spacing: normal;
-      margin-left: -15px;
       cursor: pointer; }
     .list__selectList--active {
       display: block; }

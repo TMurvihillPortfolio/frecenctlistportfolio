@@ -21,15 +21,15 @@
         display: none;
         text-align: center;
 
-        &--text {
+        &--changeListButton {
+            text-align: center;
+            margin-top: 10px;
             font-size: 16px;
             font-style: italic;
             letter-spacing: normal;
             word-spacing: normal;
-            margin-left: -15px;
             cursor: pointer;
-        }
-        
+        }        
         &--active {
             display: block;
             &>select {

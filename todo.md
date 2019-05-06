@@ -1,11 +1,13 @@
 # TODO
 
-- move change list to next line
+- frecency calc needs to be run on num clicks on render list
 
 ### Add List
-- delete this line
+- delete list
+- edit list
 
 ### Low Priority
+
 - create a way to contact support
 - get background image fed from Cloudinary
 - ListItem categories in db should be by category id, not word

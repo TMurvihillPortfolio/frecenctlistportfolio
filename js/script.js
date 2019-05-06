@@ -206,7 +206,7 @@ function removeHeader(formElement) {
 }
 function premiumView(object) {
     const changeListButton = document.querySelector('#js--changeListButton');
+    const changeListSelectorBox = document.querySelector('#js--selectList');
     changeListButton.style.display="none";
-    changeListButton.parentElement.nextElementSibling.classList.add("list__selectList--active");
-    console.log("clicked");
+    changeListSelectorBox.classList.add("list__selectList--active");
 }

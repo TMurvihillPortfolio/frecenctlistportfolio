@@ -3,21 +3,20 @@
 <?php include_once 'php/classes/Database.php'; ?>
 <?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
-<?php //determine if login needed
+<?php //redirect to login if needed
     $loginNeeded = true;
-
     if (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') {
         $loginNeeded = false;
     } else {
-        header("Location: login.php");
+        header("Location: login.php");  
         exit();
     }
-?>    
+?>
 <?php //change list submit clicked
-        if (isset($_POST['selectList'])) {
-            $_SESSION['listId'] = (int)$_POST['selectList'];
-            unset($_POST['selectList']);
-        }
+    if (isset($_POST['selectList'])) {
+        $_SESSION['listId'] = (int)$_POST['selectList'];
+        unset($_POST['selectList']);
+    }
 ?>
 <?php //get userInfo, lists and categories
     
@@ -118,7 +117,7 @@
             }               
             
             //Calculate num of clicks
-            $numClicks = calculateClicks($firstClick, $frecency, $frecencyInterval);
+            $numClicks = calculateClicks($firstClick, $lastClick, $frecency, $frecencyInterval);
            
             //edit the item in db
             try {
@@ -146,9 +145,9 @@
             } 
             
         //ADD Item
-        } else {           
+        } else {    
             //initialize data variables
-            $listItemId = time() . mt_rand() . $_SESSION['userId']; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
+            $listItemId = '';
             $title = '';
             $category = '';
             $frecencyWord = '';
@@ -159,7 +158,7 @@
             $isChecked = 'off';
 
             //create new list item id
-            $listItemId = time() . mt_rand() . $_SESSION['userId']; //NOT YET IMPLEMENTED -- needs the userId to replace 'tmurv'
+            $listItemId = time().mt_rand().$_SESSION['userId'];
 
             //sanitize and assign user input values           
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -181,18 +180,13 @@
                 }
             } 
             
-            //set initial click values
-                           
-            //if ($isChecked == 1) {
-                //set first and last click (first click simulated)
-                $firstClick = date("Y-m-d H:i:s", time() - ($frecencyInterval*$minimumIntervals)); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
-                $lastClick = date('Y-m-d H:i:s');
-                //calculate number of clicks to match user frecency word input
-                $frecencyNumber = getFrecencyNumber($frecencyWord);
-                $numClicks = calculateClicks($firstClick, $frecencyNumber, $frecencyInterval); //Might be simulated for calculations              
-            //} else {
-            //    $numClicks = 0;
-            //}
+            //determine faux first click and last click based on user entered frecency
+            $firstClick = date("Y-m-d H:i:s", time() - ($frecencyInterval*$minimumIntervals)); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days
+            $lastClick = date('Y-m-d H:i:s');
+
+            //calculate number of clicks to match user frecency word input
+            $frecencyNumber = getFrecencyNumber($frecencyWord);
+            $numClicks = calculateClicks($firstClick, $lastClick, $frecencyNumber, $frecencyInterval); //Might be simulated for calculations
             
             //Create and execute the query         
             try {
@@ -217,7 +211,7 @@
         //restore environment
         $_POST = [];
         header("Location: index.php", true, 301);
-        exit;   
+        exit();   
     }
 ?>
 <?php //show edit item window
@@ -267,12 +261,13 @@
     <div id="js--scrollPositionDiv" hidden><?php if (isset($_SESSION['scrollPosition'])) {echo $_SESSION['scrollPosition']; $_SESSION['scrollPosition'] = '0';} ?></div>
     <!-- display main navigation -->
     <?php include 'php/reusables/mainnav.php'; ?>
-    <!-- login, add/edit list, and main list section -->
+    <!-- add/edit list, and main list section -->
     <section class="list">
-        <h1><?php echo (isset($listInfo['listName'])) ? $listInfo['listName'] : "My 'Frecent' List"; ?> <?php if (isset($_SESSION['userInfo']['premium']) && $_SESSION['userInfo']['premium']) {echo "<span id='js--changeListButton' class='list__selectList--text' onClick='premiumView()'>Change List</span>";} ?></h1>
+        <h1><?php echo (isset($listInfo['listName'])) ? $listInfo['listName'] : "My 'Frecent' List"; ?></h1>
+        <?php if (isset($_SESSION['userInfo']['premium']) && $_SESSION['userInfo']['premium']) {echo "<div id='js--changeListButton' class='list__selectList--changeListButton' onClick='premiumView()'>Change List</div>";} ?>
         <!-- if change list selected, display list choices -->
-        <form action="index.php" name="changeListSelectBox" class='list__selectList' method='post'>
-            <select name="selectList" onChange="this.classList.remove('list__selectList--active'); this.parentElement.previousElementSibling.children[0].style.display='inline-block'; console.log('selected'); this.form.submit();">
+        <form action="index.php" name="changeListSelectBox" class='list__selectList' id="js--selectList" method='post'>
+            <select name="selectList" onChange="this.classList.remove('list__selectList--active'); document.querySelector('#js--changeListButton').style.display='inline-block'; console.log('selected'); this.form.submit();">
                 <?php foreach($userLists as $row) : ?>                     
                     <?php $selected = ""; ?> 
                     <?php if(strtolower($row['listId'])==strtolower($_SESSION['listId'])) {$selected = 'selected';} ?>
@@ -286,32 +281,6 @@
         <br>
         <hr>
         <br>
-        <div class="login login__whatIsFrecency" style="display: <?php echo $loginNeeded ? 'block' : 'none' ?>">"We can select what we use the most right at the top of the list and then easily reorder the list by category when it is time to shop. It's so convenient!"</div>
-        <!-- Login Window -->
-        <div class="login" style="display: <?php echo $loginNeeded ? 'block' : 'none' ?>">
-            <div class="login__line1">
-                <h3>Login<span> Page</span> </h3>
-                <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up</a></h4>              
-            </div>
-            <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="login__form">
-                                                
-                <div class="login__form--email">
-                    <label for="email">Email: </label>
-                    <input name="email" type="email" required>                                           
-                </div>
-                            
-                <div class="login__form--password">
-                    <label for="password">Password: </label>
-                    <input name="password" type="password" placeholder="password" required>                
-                </div>
-            
-                <div class="login__form--submit">
-                    <input type="submit" name="submitLogin" class="btn" value="Submit"/>           
-                    <!-- <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up<a></h4> -->
-                </div>
-            </form>
-        </div>
         <!-- Add/Edit Item Window -->
         <div class="list__addItem" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
             <button class="btn btn__secondary" id="js--addItemButton" style="display: <?php echo (isset($_POST['editItem'])) ? 'none' : 'block' ?>" onClick="prepareEnvironmentAddItemForm();">Add Item</button>

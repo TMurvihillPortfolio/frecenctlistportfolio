@@ -29,7 +29,7 @@
     }
 
     //Calculate the number of click for a given frecency. Master formula = numClicks * currentClickPeriod (from config file) /timeSinceFirstClick
-    function calculateClicks($firstClick, $frecency=0, $frecencyInterval) {       
+    function calculateClicks($firstClick, $lastClick, $frecency=0, $frecencyInterval) {       
         //return 0 if no frecency number
         if ($frecency <= 0 || $frecency == '') {
             return 0;
@@ -37,8 +37,7 @@
 
         //get time in seconds since first click
         $timeSinceFirstClick = time() - strtotime($firstClick);
-        $numIntervals = round($timeSinceFirstClick / $frecencyInterval);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ;
-
+        $numIntervals = round($timeSinceFirstClick / $frecencyInterval);
         //NOT YET IMPLEMENTED -- validate $timeSinceFirstClick
         if (!$numIntervals || $numIntervals < 1) {
             //NOT YET IMPLEMENTED error message that first date needs to be updated or was updated "error encountered, please edit item and reenter frecency"
@@ -46,6 +45,8 @@
         }
         $numClicks = $numIntervals * ($frecency/100);
 
+        //penalize number of clicks for not recently clicked
+        $numClicks = numClicksFrecency($lastClick, $numClicks);
         //return number of clicks for the given frecency
         return $numClicks;   //frecencyInterval can be found in config file    
     }
@@ -107,6 +108,30 @@
         if ($frecencyNum < 1) return "<1";
         if ($frecencyNum > 100) return "100+";
         return round($frecencyNum);
+    }
+
+    //helper function for numClicksFrecency function. Finds out how many days since given date
+    function numDaysOld($daysDate) {        
+        $now = time();
+        $your_date = strtotime($daysDate);
+        $datediff = $now - $your_date;
+        return round($datediff / (60 * 60 * 24));
+    }
+
+    //penalizes number of clicks if item has not been clicked recently
+    function numClicksFrecency($lastClick, $numClicks) {
+        $daysOld = numDaysOld($lastClick);
+        
+        if ($daysOld > 240) {
+            $numClicks *= .05;
+        } else if ($daysOld > 180) {
+            $numClicks *= .20;
+        } else if ($daysOld > 120) {
+            $numClicks *= .35;
+        } else if ($daysOld > 60) {
+            $numClicks *= .8;
+        }
+        return $numClicks;
     }
 
     //Logout

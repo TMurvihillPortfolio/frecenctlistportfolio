@@ -8,7 +8,7 @@
 
 The 'frecency' (combination of frequently clicked and recently clicked) of a list item is calculated from the following data associated with each list item: first click, last click, and number of clicks. When a list item is added by the user, the user selects a starting 'frecency' from the following choices: often, sometimes, rarely, one-time purchase. The first click and number of click data fields are then populated with simulated data to get to a 'frecency' number (0-100+) that matches the user input. The user may later edit the 'frecency' number to 'fine-tune' the order in which items appear on the list.
 
-'Frecency' is base on how many clicks per 100 days.
+'Frecency' is based on how many clicks per 100 days.
 often: 80+ clicks
 sometimes: 20-80 clicks
 rarely: 1-20 clicks
