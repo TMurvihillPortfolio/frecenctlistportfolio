@@ -3,93 +3,16 @@
 <?php include_once 'php/classes/Database.php'; ?>
 <?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
-<?php //determine if login window needed
+<?php //determine if login needed
     $loginNeeded = true;
 
     if (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') {
         $loginNeeded = false;
+    } else {
+        header("Location: login.php");
+        exit();
     }
-?>
-<?php //on login submit button
-    if(isset($_POST['submitLogin'])){  
-        
-        $inputPassword = $_POST['password']; 
-        $inputEmail = $_POST['email'];       
-        try {
-            $splQuery = "SELECT * FROM users WHERE email = :email";
-            $statement = $db->prepare($splQuery);
-            $statement->execute(array(':email'=>$inputEmail));
-
-            if($row=$statement->fetch()){
-                $userId = $row['userId'];
-                $hashed_password = $row['password'];
-                $password = $row['password'];
-                $activated = $row['active'];
-    
-                if(password_verify($inputPassword, $hashed_password)){
-                    //echo "did we visit";
-                    if ($activated) {
-                        //clear old session
-                        if (isset($_SESSION['userId'])) {
-                            unset($_SESSION['listId']);
-                            unset($_SESSION['orderBy']);
-                            unset($_SESSION['viewBy']);
-                            unset($_SESSION['userId']);
-
-                            // NOT YET IMPLEMENTED if(isset($_COOKIE['rememberUserCookie'])){
-                            //     uset($_COOKIE['rememberUserCookie']);
-                            //     setcookie('rememberUserCookie', null, -1, '/');
-                            // } 
-                        }
-                        //Not yet implemented, use session userInfo instead of user id 
-                        $_SESSION['userId'] = $userId;
-
-                        //store user info in session
-                        $_SESSION['userInfo'] = $row;             
-
-                        if (isset($_POST['listSelect'])) {
-                            $splQuery = "SELECT * FROM Lists WHERE listId = :listId";
-                            $statement = $db->prepare($splQuery);
-                            $statement->execute(array(':listId'=>$_SESSION['listId']));
-                            if($listRow=$statement->fetch()){              
-                                header("Location: index.php");
-                                exit;
-                            } else {
-                                //NOT YET IMPLEMENTED error handling
-                                $result = "list not found";
-                            }
-                        }else{
-                            $splQuery = "SELECT * FROM Lists WHERE listUserId = :userId AND isDefault = 1";
-                            $statement = $db->prepare($splQuery);
-                            $statement->execute(array(':userId'=>$userId));
-                            if($listRow=$statement->fetch()){
-                                $_SESSION['listId'] = $listRow['listId'];                
-                                header("Location: index.php");
-                                exit;
-                            } else {
-                                //NOT YET IMPLEMENTED error handling
-                                $result = "default list not found";
-                            }
-                        }
-                        
-                        
-                    }else{
-                        $result="Account not activated. Please check your email inbox for a verification email.";
-                    }
-                }else{           
-                    $result = "Invalid password.<br>Please try again.";
-                }
-                    
-            }else{
-                $result = "Email not found.<br>Please try again.";
-            }
-
-        } catch (PDOException $ex) {
-            $result = "An error occurred.<br>Error message number: ".$ex->getCode();
-        }  
-    }
-?>
-    
+?>    
 <?php //change list submit clicked
         if (isset($_POST['selectList'])) {
             $_SESSION['listId'] = (int)$_POST['selectList'];
@@ -346,7 +269,6 @@
     <?php include 'php/reusables/mainnav.php'; ?>
     <!-- login, add/edit list, and main list section -->
     <section class="list">
-        <div class="list list__superHeading">What do you buy frequently? <span>plus</span> What have you bought recently?</div>
         <h1><?php echo (isset($listInfo['listName'])) ? $listInfo['listName'] : "My 'Frecent' List"; ?> <?php if (isset($_SESSION['userInfo']['premium']) && $_SESSION['userInfo']['premium']) {echo "<span id='js--changeListButton' class='list__selectList--text' onClick='premiumView()'>Change List</span>";} ?></h1>
         <!-- if change list selected, display list choices -->
         <form action="index.php" name="changeListSelectBox" class='list__selectList' method='post'>

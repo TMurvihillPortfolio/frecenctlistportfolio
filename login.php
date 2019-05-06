@@ -2,164 +2,84 @@
 <?php include 'php/config/session.php'; ?>
 <?php include 'php/classes/Database.php'; ?>
 <?php include 'php/reusables/helpers.php'; ?>
-<?php //update email
-    if (isset($_POST['emailSubmit'])) {
-        //initialize variables
-        $newEmail = '';
-        $userId = '';
-        $success = false;
-
-        //double check and set user id
-        if (isset($_SESSION['userId'])) {
-            $userId = $_SESSION['userId'];
-        } else {
-            $result = "Session user Id was lost. Please logout and login again.";
-            exit();
-        }
-
-        //sanitize user input
-        if (isset($_POST['email']) && $_POST['email'] !=='') {
-            $newEmail = testInput($_POST['email']);
-            $success = true;
-        }
-
-        //encode user id and email
-        $encodeUserId = base64_encode("encodeuserid{$userId}");
-        $encodeNewEmail = base64_encode("encodenewemail{$newEmail}");
-
-        //prepare email body
-
-        $mail_body = '<html>
-        <body style="color:#083a08; font-family: Lato, Arial, Helvetica, sans-serif;
-                            line-height:1.8em;">
-        <h2>Message from Frecency<span style="color:#3C7496;">List</span></h2>
-        <p>Dear Frecency List user,<br><br>Thank you for requesting to change your account email address, please click on the link below to
-            confirm your new email address</p>
-        <p style="text-decoration: underline; font-size: 24px;"><a style="color:#3C7496;" href='.$rootDirectory.'activateOrChangeEmail.php?userId='.$encodeUserId.'&newEmail='.$encodeNewEmail.'"> Confirm Email</a></p>
-        <p><strong>&copy;2018 <a href="https://take2tech.ca" style="color:#3C7496;text-decoration: underline;">take2tech.ca</strong></p>
-        </body>
-        </html>';
-
-        $subject = "Message from 'Frecency' List";
-        $headers = "From: 'Frecency' List.--User Signup" . "\r\n";
-        $headers .= "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-
-        //Error Handling for PHPMailer
-        if(!mail($newEmail, $subject, $mail_body, $headers)){
-            $result = "Email confirmation send failed.";
-        }
-        else{
-            $result = "Email update pending confirmation. Please check new email for confirmation link.";
-        }           
-    }
-?>
-<?php //update password
-    try {
-        if (isset($_POST['passwordSubmit'])) {
-            //initialize variables
-            $userId = $userInputPassword = $newPassword = $confirmPassword = '';
-            //assign variables post and session values
-            if (isset($_SESSION['userId'])) {
-                $userId = $_SESSION['userId'];
-            }
-            if (isset($_POST['userInputPassword'])) {
-                $userInputPassword = testInput($_POST['userInputPassword']);
-            }
-            if (isset($_POST['userInputPassword'])) {
-                $newPassword = testInput($_POST['newPassword']);
-            }
-            if (isset($_POST['userInputPassword'])) {
-                $confirmPassword = testInput($_POST['confirmPassword']);
-            }
-            //verifty that new and confirm new passwords match
-            if ($newPassword === $confirmPassword) {
-                //Get old hashed password from db
-                $splQuery = "SELECT password FROM users WHERE userId = :userId";
-                $statement = $db->prepare($splQuery);
-                $statement->execute(array(':userId'=>$userId));
-                //if user found
-                if($row=$statement->fetch()){ 
-                    //verify that old password matches db 
-                    $passwordFromDb = $row['password'];                   
-                    if (password_verify($userInputPassword, $passwordFromDb)) {
-                        //hash the new password
-                        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                        //update db with new password
-                        $sqlUpdate = "UPDATE users SET password=:password WHERE userId=:userId";
-                                    $statement = $db->prepare($sqlUpdate);
-                                    $statement->execute(array(':password'=>$hashedPassword, ':userId'=>$userId));
-    
-                                    if($statement->rowCount()===1){
-                                        $result = "Password reset Successful.";
-                                    }else{
-                                        $result = 'Password not updated.';
-                                    }
-                    } else {
-                        $result="Current password is not correct.";
-                    }
-                }
-            } else {
-                $result = "New password and confirm password do not match.";
-            }
-        }
-    } catch (Exception $ex) {
-        $result = "An error occurred. Password may not be updated: ".$ex;
-    }
-?>
-<?php //cancel premium subscription
-    if (isset($_POST['cancelPremiumSubscription'])) {
-        //delete user
-        if (isset($_SESSION['userInfo'])) {
-            try {
-                $query = 'UPDATE users SET premium = false WHERE userId = :userId';
-                $statement = $db->prepare($query);
-                $statement->execute(array(':userId'=>$_SESSION['userInfo']['userId']));
-                $_SESSION['userInfo']['premium'] = 0;
-                $result = "Your premium subscription has been cancelled. You may still use the Frecency List at the basic level.";
-    
-            } catch (Exception $e) {
-                //NOT YET IMPLEMENTED
-                $result = 'Cancel subscription failed. Please try logging out and logging in again.';
-            }
-        } else {
-            $result = "Subscription not cancelled. User not found, please try logging out and logging in again.";
-        }
-    }
-?>
-<?php //close account
-    if (isset($_POST['closeAccountSubmit'])) {
-        //delete user
-        if (isset($_SESSION['userId'])) {
-            $result = closeAccount($db, $_SESSION['userId']);
-            //clean up environment
-            if ($result === 'Account has been closed.') {
-                logout();         
-            }
-        } else {
-            $result = "Account not closed. User not found, please try logging out and logging in again.";
-        }
-    }
-?>
-<?php //get profile data for page render
-    try {
-        if (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') {
-            $userId = $_SESSION['userId'];
-            $splQuery = "SELECT * FROM users WHERE userId = :userId";
+<?php //on login submit button
+    if(isset($_POST['submitLogin'])){  
+        
+        $inputPassword = $_POST['password']; 
+        $inputEmail = $_POST['email'];       
+        try {
+            $splQuery = "SELECT * FROM users WHERE email = :email";
             $statement = $db->prepare($splQuery);
-            $statement->execute(array(':userId'=>$userId));
-    
-            if ($row=$statement->fetch()) {  
+            $statement->execute(array(':email'=>$inputEmail));
+
+            if($row=$statement->fetch()){
                 $userId = $row['userId'];
-            } else {
-                $result = 'User not found, please login again or signup for a new account.';
+                $hashed_password = $row['password'];
+                $password = $row['password'];
+                $activated = $row['active'];
+
+                if(password_verify($inputPassword, $hashed_password)){
+                    //echo "did we visit";
+                    if ($activated) {
+                        //clear old session
+                        if (isset($_SESSION['userId'])) {
+                            unset($_SESSION['listId']);
+                            unset($_SESSION['orderBy']);
+                            unset($_SESSION['viewBy']);
+                            unset($_SESSION['userId']);
+
+                            // NOT YET IMPLEMENTED if(isset($_COOKIE['rememberUserCookie'])){
+                            //     uset($_COOKIE['rememberUserCookie']);
+                            //     setcookie('rememberUserCookie', null, -1, '/');
+                            // } 
+                        }
+                        //Not yet implemented, use session userInfo instead of user id 
+                        $_SESSION['userId'] = $userId;
+
+                        //store user info in session
+                        $_SESSION['userInfo'] = $row;             
+
+                        if (isset($_POST['listSelect'])) {
+                            $splQuery = "SELECT * FROM Lists WHERE listId = :listId";
+                            $statement = $db->prepare($splQuery);
+                            $statement->execute(array(':listId'=>$_SESSION['listId']));
+                            if($listRow=$statement->fetch()){              
+                                header("Location: index.php");
+                                exit;
+                            } else {
+                                //NOT YET IMPLEMENTED error handling
+                                $result = "list not found";
+                            }
+                        }else{
+                            $splQuery = "SELECT * FROM Lists WHERE listUserId = :userId AND isDefault = 1";
+                            $statement = $db->prepare($splQuery);
+                            $statement->execute(array(':userId'=>$userId));
+                            if($listRow=$statement->fetch()){
+                                $_SESSION['listId'] = $listRow['listId'];                
+                                header("Location: index.php");
+                                exit;
+                            } else {
+                                //NOT YET IMPLEMENTED error handling
+                                $result = "default list not found";
+                            }
+                        }
+                        
+                        
+                    }else{
+                        $result="Account not activated. Please check your email inbox for a verification email.";
+                    }
+                }else{           
+                    $result = "Invalid password.<br>Please try again.";
+                }
+                    
+            }else{
+                $result = "Email not found.<br>Please try again.";
             }
-        } else {
-            $result = 'User not found, please login again or signup for a new account.';
-        }
-    } catch (Exception $e) {
-        $result = "An error occurred. Please try logging out and logging back in.";
-    } 
+
+        } catch (PDOException $ex) {
+            $result = "An error occurred.<br>Error message number: ".$ex->getCode();
+        }  
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -167,85 +87,43 @@
 <body>
     <div class="outer">
         <?php include 'php/reusables/mainnav.php'; ?>
-        <div class="profile__line1">
-            <h2>Profile<span>Page</span></h2>
-        </div>        
-        <?php if (isset($result)) : ?>
-            <div class="signatureBox">           
-                <p style="color: #153a52;;"><?php echo isset($result) ? $result : ''; ?></p>
+        <section class="login">
+            <br>      
+            
+            <div class="login__superHeading"><p>What do you buy frequently? <span>plus</span> What have you bought recently?</p></div>
+            <h1>"My 'Frecent' List"</h1>
+            <br>
+            <hr>
+            <br>
+            <div class="login__whatIsFrecency">"It's so convenient! We can select what we use the most right at the top of the list and then easily reorder the list by category when it is time to shop." --Trish Hill
             </div>
-        <?php endif; ?>  
-        <div class="profile__container">
-            <div class="profile__form profile__form--email" id="js--profileOriginalEmail">
-                <?php 
-                    if (isset($userId)) {
-                        echo $row['email'];
-                    } else {
-                        echo "no user found";
-                    }
-                ?>
-            </div>
-            <div class="profile__container--bottom">
-                <div class="profile_form profile__form--changeProfileButton">
-                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href='<?php echo ($_SESSION['userInfo']['premium']) ? 'editCategories.php' : ''; ?>'>Add/Edit Categories <span>(Premium)</span></a></button>                
+
+            <div class="signatureBox">
+                
+                <div class="login__line1">
+                    <h3>Login<span> Page</span> </h3>
+                    <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up</a></h4>              
                 </div>
-                <br>
-                <div class="profile_form profile__form--changeProfileButton">
-                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href=" <?php echo ($_SESSION['userInfo']['premium']) ? 'addEditLists.php' : ''; ?>">Add/Edit Lists <span>(Premium)</span></a></button>                
-                </div>
-                <br>
-                <form action="profile.php" method="post">              
-                    <div class="profile_form profile__form--changeProfileButton">                         
-                        <button name="cancelPremiumSubscription" type="button" class="btn btn__secondary profile__form--changeProfileButton" style="<?php echo ($_SESSION['userInfo']['premium'])? '' : 'display: none'; ?>" id='js--cancelPremium' onClick="cancelPremium('<?php echo $_SESSION["userInfo"]["email"]; ?>');">Cancel Premium Subscription</button>
-                        <button type="button" class="btn btn__secondary profile__form--changeProfileButton" style="<?php echo ($_SESSION['userInfo']['premium'])? 'display: none' : ''; ?>" ><a href='subscribe.php'>Go Premium!</a></button>
+                <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="login__form">
+                                                    
+                    <div class="login__form--email">
+                        <label for="email">Email: </label>
+                        <input name="email" type="email" required>                                           
+                    </div>
+                                
+                    <div class="login__form--password">
+                        <label for="password">Password: </label>
+                        <input name="password" type="password" placeholder="password" required>                
+                    </div>
+                
+                    <div class="login__form--submit">
+                        <input type="submit" name="submitLogin" class="btn" value="Submit"/>           
+                        <!-- <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up<a></h4> -->
                     </div>
                 </form>
-                <br>
-                <hr>
-                <br>
-                <form action="profile.php" method="post">
-                    <div id="js--emailInput" hidden>
-                        <div style="display: flex">
-                            <h3>Change Email:</h3>
-                        </div>
-                        <input name="email" type="email" placeholder="enter new email">
-                    </div>
-                    <div class="profile_form profile__form--changeProfileButton">                             
-                        <button name="emailSubmit" type="button" class="btn btn__secondary profile__form--changeProfileButton" onClick="startChangeEmail(this)" id="js--profileChangeSaveEmail">Change Email</button>
-                        <button name="emailCancel" type="button" class="btn btn__primaryVeryDark profile__form--changeProfileButton" onClick="startChangeEmail(this)" id="js--profileCancelEmail" hidden>Cancel</button>                 
-                    </div>
-                </form> 
-                <br>                                         
-                                
-                <div class="profile__form--changePassword profile__form--changeProfileButton">
-                    <form action="profile.php" method="post">
-                        <div id="js--profileChangePassword" hidden>
-                            <input type="password" placeholder="enter current password" name="userInputPassword">
-                            <input type="password" placeholder="enter new password" name="newPassword" id="js--profileNewPassword">
-                            <input type="password" placeholder="confirm new password" name="confirmPassword">
-                        </div>
-                        <div class="profile__form profile__form--changePasswordButton">
-                            <button name="passwordSubmit" type="button" class="btn btn__secondary profile__form--changeProfileButton" onClick="startChangePassword(this)" id='js--profileChangePasswordButton'>Change Password</button>
-                            <button name="passwordCancel" type="button" class="btn btn__primaryVeryDark profile__form--changeProfileButton" onClick="startChangePassword(this)" id="js--profileCancelPasswordButton" hidden>Cancel</button>                 
-                        </div>                        
-                        <div class="profile__form profile__form--password" id="js--profileOriginalPassword" hidden>
-                            <?php 
-                                if ($row['password']) {
-                                    echo $row['password'];
-                                }
-                            ?>
-                        </div>
-                    </form>
-                </div>    
-                
-                <br>
-                <form action="profile.php" method="post">              
-                    <div class="profile_form profile__form--changeProfileButton">                             
-                        <button name="closeAccountSubmit" type="button" class="btn btn__secondary profile__form--changeProfileButton" onClick="startCloseAccount(this, '<?php echo $row['email']; ?>')" id="js--profileCloseAccount">Close Account</button>
-                    </div>
-                </form>               
             </div>
-        </div>
+        </section>
     </div>
 </body>
 </html>

@@ -140,10 +140,11 @@ hr {
     opacity: .15;
     border-radius: 6px; }
   .mainNav__nav {
+    position: absolute;
+    right: 10px;
+    top: 20px;
     font-weight: 500;
-    margin: 10px;
     display: flex;
-    float: right;
     color: #083a08;
     list-style: none;
     height: 3.5rem;
@@ -151,7 +152,6 @@ hr {
     @media only screen and (max-width: 37.5em) {
       .mainNav__nav {
         font-size: 14px;
-        float: none;
         margin: 3px;
         height: 1rem;
         position: absolute;
@@ -185,21 +185,6 @@ hr {
       padding: 10px;
       margin: 5px;
       border: none; } }
-  .list__superHeading {
-    margin: 10px 10px 20px;
-    padding: 0;
-    width: 100%;
-    text-align: center;
-    font-weight: 600;
-    font-style: italic;
-    border: none; }
-    .list__superHeading > span {
-      font-size: 30px;
-      display: inline-block;
-      margin-left: 16px;
-      margin-right: 16px;
-      color: #3C7496;
-      transform: skew(-20deg); }
   .list__selectList {
     display: none;
     text-align: center; }
@@ -405,13 +390,30 @@ hr {
           padding: 2px; }
 
 .login {
-  display: block;
-  padding: 0.5rem 1rem 1rem;
   width: 80%;
   margin: 0 auto; }
+  .login__superHeading > p {
+    text-align: center;
+    font-weight: 600;
+    font-style: italic;
+    margin-bottom: 25px; }
+    .login__superHeading > p > span {
+      font-size: 30px;
+      display: inline-block;
+      margin-left: 16px;
+      margin-right: 16px;
+      color: #3C7496;
+      transform: skew(-20deg); }
+  .login > h1 {
+    margin: 35px auto 20px;
+    text-align: center;
+    color: #083a08;
+    letter-spacing: 4px;
+    word-spacing: 9px;
+    font-weight: 500; }
   .login__whatIsFrecency {
     text-align: center;
-    margin: auto;
+    margin: 20px auto 60px;
     width: 80%;
     font-weight: 400;
     font-size: 16px; }
@@ -481,8 +483,10 @@ hr {
     .login__form--submit {
       display: flex;
       justify-content: space-between; }
-      .login__form--submit > input {
-        font-size: 100%; }
+      .login__form--submit > input[type='submit'] {
+        margin: 15px auto 5px;
+        font-size: 18px;
+        padding: 5px 7px; }
     .login__form > div > label,
     .login__form > div > input,
     .login__form > div > select {

@@ -1,12 +1,32 @@
 .login {
-    display: block;
-    padding: 0.5rem 1rem 1rem;
     width: 80%;
     margin: 0 auto;
 
+    &__superHeading>p {
+        text-align: center;
+        font-weight: 600;
+        font-style: italic;
+        margin-bottom: 25px;
+        &>span {
+            font-size: 30px;
+            display: inline-block;
+            margin-left: 16px;
+            margin-right: 16px;
+            color: $colorTertiary;
+            transform: skew(-20deg);   
+        }
+    }
+    &>h1 {
+        margin: 35px auto 20px;
+        text-align:center;  
+        color: $colorSecondaryDark;
+        letter-spacing: 4px;
+        word-spacing: 9px;
+        font-weight: 500;        
+    }
     &__whatIsFrecency {
         text-align: center;
-        margin: auto;
+        margin: 20px auto 60px;
         width: 80%;
         font-weight: 400;
         font-size: 16px;
@@ -98,8 +118,10 @@
         &--submit {         
             display: flex;
             justify-content: space-between;
-            &>input {
-                font-size: 100%;
+            &>input[type='submit'] {             
+                margin: 15px auto 5px;
+                font-size: 18px;
+                padding: 5px 7px;
             }     
         }
         &>div>label,
