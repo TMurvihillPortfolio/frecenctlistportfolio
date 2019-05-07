@@ -3,7 +3,14 @@
 <?php include_once 'php/classes/Database.php'; ?>
 <?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
-<?php
+<?php 
+  //Run  list  Query
+  $query  = "SELECT * FROM Lists WHERE listUserId=:listUserId ORDER BY listName";
+  $statement = $db->prepare($query);
+  $statement->execute(array(':listUserId'=>$_SESSION['userInfo']['userId']));
+  $lists = $statement->fetchAll(PDO::FETCH_ASSOC);
+?>
+<?php //add  list
     if (isset($_POST['addListCancel'])) {
         header('Location: profile.php');
         exit();
@@ -65,7 +72,17 @@
         }
     }
 ?>
-
+<?php
+  //Delete  list
+  if(isset($_POST['delete'])){
+    $listId = $_POST['listId'];
+    $query = "DELETE FROM Lists WHERE listId = :listId";
+    $statement = $db->prepare($query);
+    $statement->execute(array(":listId"=>$listId));
+    header("Location: addEditLists.php", true, 301);
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <?php include 'php/reusables/head.php'; ?>
@@ -98,9 +115,64 @@
                     <button name="addListSubmit" type="submit" class="btn btn__secondary profile__form--changeProfileButton">Add List</button>
                     <button name="addListCancel" type="cancel" class="btn btn__primaryVeryDark profile__form--changeProfileButton"><a href='index.php' class='btn btn__primaryVeryDark profile__form--changeProfileButton'>Cancel</a></button>                 
             </form>   
-                </div>
-            
+                </div>           
         </div>
+
+
+
+        <?php if($lists) : ?>
+            <div class="addEditLists__editArea signatureBox">
+                <div class="addEditLists__editArea--title">
+                        <h3>Edit <span> list </span> </h3>
+                </div>                
+                <div class="addEditLists__list--lineItem addEditLists__ list--lineItem-headings">
+                    <div class="addEditLists__list--lineItem-listName">
+                        List Name
+                    </div>
+                    <div class="addEditLists__list--lineItem-isDefault">
+                        Default?
+                    </div>               
+                    <div class="addEditLists__list--lineItem-editDelete">                            
+                    </div>
+                </div>
+                <?php foreach($lists as $list) : ?>
+                    <form method="post" name="edit" action="addEditLists.php">
+                        
+                        <div class="addEditLists__list--lineItem">
+                            <div class="addEditLists__list--lineItem-listName">
+                                <?php echo $list['listName']; ?>
+                            </div>
+                            <div class="addEditLists__list--lineItem-listName" hidden>
+                                <input class="addEditLists__list--lineItem-listName" name=" list Name" type="text" value="<?php echo  $list['listName']; ?>"/>
+                            </div>
+                            <?php if($list['isDefault']==1) {$checked = 'checked';}else{$checked="";} ?>
+                            <div class="addEditLists__list--lineItem-isDefault">
+                                <label for="isDefault">Default?</label>
+                                <input class="addEditLists__list--lineItem-isDefault" name="isDefaultOld" type="checkbox" <?php echo $checked ?> disabled/>
+                            </div>
+                            <div class="addEdit___list--lineItem-isDefault" hidden>
+                                <label for="isDefault">Default?</label>
+                                <input class="addEditLists__list--lineItem-isDefault" name="isDefault" type="checkbox" <?php echo $checked ?> />
+                            </div>
+                            <div class="addEditLists__list--lineItem-listId" hidden>
+                                <input class="list__lineItem--listId" name="listId" type="text" value="<?php echo $list['listId']; ?>" hidden/>
+                            </div>
+                            <div class="addEditLists__list--lineItem-editDelete">                            
+                                <button name="edit" type="button" class="btn btn__secondary" onClick="startEditLists(this)">Edit</button>
+                                <button name="delete" type="button" class="btn btn__primaryVeryDark" onClick="startEditLists(this)">Delete</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <hr>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+
+
+
+
     </div>
 
     

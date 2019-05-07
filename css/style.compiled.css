@@ -640,28 +640,26 @@ hr {
       .addEditLists__editArea--title > h3 > span {
         color: #f0f34a; }
 
-.addEditLists__piggy--lineItem {
+.addEditLists__list--lineItem {
   display: flex;
   justify-content: space-between; }
-  .addEditLists__piggy--lineItem-headings {
+  .addEditLists__list--lineItem-headings {
     margin-bottom: 10px; }
-    .addEditLists__piggy--lineItem-headings > * {
+    .addEditLists__list--lineItem-headings > * {
       text-decoration: underline; }
   @media only screen and (max-width: 75em) {
-    .addEditLists__piggy--lineItem {
+    .addEditLists__list--lineItem {
       display: block; } }
-  .addEditLists__piggy--lineItem > hr {
+  .addEditLists__list--lineItem > hr {
     visibility: hidden;
     opacity: 0; }
     @media only screen and (max-width: 75em) {
-      .addEditLists__piggy--lineItem > hr {
+      .addEditLists__list--lineItem > hr {
         visibility: visible;
         opacity: 1; } }
-  .addEditLists__piggy--lineItem-piggyBankName {
+  .addEditLists__list--lineItem-listName {
     flex: 4; }
-  .addEditLists__piggy--lineItem-piggyBankOwner {
-    flex: 2; }
-  .addEditLists__piggy--lineItem-isDefault {
+  .addEditLists__list--lineItem-isDefault {
     flex: 1; }
-  .addEditLists__piggy--lineItem-editDelete {
+  .addEditLists__list--lineItem-editDelete {
     flex: 1; }

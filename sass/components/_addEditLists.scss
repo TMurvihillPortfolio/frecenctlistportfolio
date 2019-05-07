@@ -59,7 +59,7 @@
             }
         }
     }
-    &__piggy--lineItem {
+    &__list--lineItem {
         &-headings {
             margin-bottom:10px;
        
@@ -84,11 +84,8 @@
             }
         }
 
-        &-piggyBankName {
+        &-listName {
             flex: 4;
-        }
-        &-piggyBankOwner {
-            flex: 2;
         }
         &-isDefault {
             flex: 1;

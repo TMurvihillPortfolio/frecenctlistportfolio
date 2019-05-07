@@ -143,6 +143,105 @@ function startCloseAccount(clickedItem, userEmail) {
     }
  }
 
+ function startEditLists(clickedItem) {
+    //declare variables
+
+    var listName;
+    var listNameEdit;
+    var isDefault;
+    var isDefaultEdit;
+    
+    var cancelButton;
+    var ancestorDiv;
+
+    //define DOM elements
+        
+    ancestorDiv = clickedItem.parentElement.parentElement;  
+      
+    listName = ancestorDiv.children[0];
+    listNameEdit = ancestorDiv.children[1];
+    isDefault = ancestorDiv.children[2];
+    isDefaultEdit = ancestorDiv.children[3];
+    
+    if(clickedItem.innerHTML=="Edit") {
+        //define DOM elements
+        cancelButton=clickedItem.nextElementSibling;
+   
+        //reset edit field values
+        piggyBankNameEdit.children[0].value=piggyBankName.innerText;
+        piggyBankOwnerEdit.children[0].value=piggyBankOwner.innerText;
+        isDefaultEdit.children[0].value=isDefault.children[1].value; 
+
+        //hide original data fields / show edit fields 
+    
+        piggyBankName.hidden = true;
+        piggyBankNameEdit.hidden = false;
+        piggyBankOwner.hidden = true;
+        piggyBankOwnerEdit.hidden = false;
+        isDefault.hidden = true;
+        isDefaultEdit.hidden = false;
+    
+        //change button text and style
+        clickedItem.innerHTML="Save";
+        cancelButton.innerHTML="Cancel";
+        cancelButton.style="background-color:yellow;color:#333";
+        
+        return;
+    }
+
+    if(clickedItem.innerHTML=="Cancel"){
+        //define DOM elements
+        cancelButton=clickedItem;
+
+        //reset edit fields values
+        piggyBankNameEdit.children[0].value=piggyBankName.innerText;
+        piggyBankOwnerEdit.children[0].value=piggyBankOwner.innerText;
+        isDefaultEdit.children[1].value=isDefault.value;
+
+        //show original data fields / hide edit fields       
+        piggyBankName.hidden = false;
+        piggyBankNameEdit.hidden = true;
+        piggyBankOwner.hidden = false;
+        piggyBankOwnerEdit.hidden = true;
+        isDefault.hidden = false;
+        isDefaultEdit.hidden = true;
+        isDefault.children[1].disabled = true;
+
+        //change button text and style
+        clickedItem.previousElementSibling.innerHTML="Edit";
+        cancelButton.innerHTML="Delete";
+        cancelButton.style="background-color:#A43C3D;color:#eee";
+    
+        return;       
+    }
+    if(clickedItem.innerHTML=="Delete"){
+        if (isDefault.children[1].checked == true) {
+            alert("Can not delete default list. Please choose another default list or add a new default list before deleting.");
+            return;
+        }
+        if(!confirm("Delete Item?")) {
+            return;
+        }
+        clickedItem.type="submit";
+        return;
+    }
+    
+
+    if(clickedItem.innerHTML=="Save"){
+        //define DOM elements
+        cancelButton=clickedItem.nextElementSibling;
+        
+        //enable checkbox for php POST variable value check
+        isDefault.children[1].disabled = false;
+
+        //change text and style of buttons
+        cancelButton.innerHTML="Delete";
+        cancelButton.style="background-color:#A43C3D;color:#eee";
+        clickedItem.innerHTML="Edit";
+        clickedItem.type="submit";  
+    }     
+}
+
 
 /***********************
  * Mobile Navigation
@@ -162,12 +261,11 @@ function mobileNav() {
     } 
 } 
 
-/***********************
- * MISC Utilities
- ***********************/
 
- //Remove frecency or category header after last item checked or unchecked
 
+
+
+//Remove frecency or category header after last item checked or unchecked
 function removeHeader(formElement) {
     //Find previous element to item checked or unchecked
     isItItemHeaderElement=formElement.previousElementSibling;
