@@ -164,20 +164,18 @@ function startCloseAccount(clickedItem, userEmail) {
     isDefaultEdit = ancestorDiv.children[3];
     
     if(clickedItem.innerHTML=="Edit") {
+
         //define DOM elements
         cancelButton=clickedItem.nextElementSibling;
    
         //reset edit field values
-        piggyBankNameEdit.children[0].value=piggyBankName.innerText;
-        piggyBankOwnerEdit.children[0].value=piggyBankOwner.innerText;
+        listNameEdit.children[0].value=listName.innerText;
         isDefaultEdit.children[0].value=isDefault.children[1].value; 
 
         //hide original data fields / show edit fields 
     
-        piggyBankName.hidden = true;
-        piggyBankNameEdit.hidden = false;
-        piggyBankOwner.hidden = true;
-        piggyBankOwnerEdit.hidden = false;
+        listName.hidden = true;
+        listNameEdit.hidden = false;
         isDefault.hidden = true;
         isDefaultEdit.hidden = false;
     
@@ -194,15 +192,12 @@ function startCloseAccount(clickedItem, userEmail) {
         cancelButton=clickedItem;
 
         //reset edit fields values
-        piggyBankNameEdit.children[0].value=piggyBankName.innerText;
-        piggyBankOwnerEdit.children[0].value=piggyBankOwner.innerText;
+        listNameEdit.children[0].value=listName.innerText;
         isDefaultEdit.children[1].value=isDefault.value;
 
         //show original data fields / hide edit fields       
-        piggyBankName.hidden = false;
-        piggyBankNameEdit.hidden = true;
-        piggyBankOwner.hidden = false;
-        piggyBankOwnerEdit.hidden = true;
+        listName.hidden = false;
+        listNameEdit.hidden = true;
         isDefault.hidden = false;
         isDefaultEdit.hidden = true;
         isDefault.children[1].disabled = true;
@@ -228,6 +223,7 @@ function startCloseAccount(clickedItem, userEmail) {
     
 
     if(clickedItem.innerHTML=="Save"){
+        console.log('imin');
         //define DOM elements
         cancelButton=clickedItem.nextElementSibling;
         

@@ -134,6 +134,18 @@
         return $numClicks;
     }
 
+//Removes the default list for the session user in case a new default has been selected or added
+function removeDefaultList($db, $userId) {
+    try {
+        //remove default from all lists, default=true will be added to the edited piggybank in the following query
+        $query = "UPDATE Lists SET isDefault = :isDefault WHERE listUserId = :listUser AND isDefault=1";      
+        $statement = $db->prepare($query);
+        $statement->execute(array(':isDefault'=>0, ':listUser'=>$_SESSION['userInfo']['userId']));   
+    } catch(PDOexeption $ex) {
+        $result = "Problem removing old default listing. Please contact support, if necessary.";
+    }   
+}
+
     //Logout
     function logout(){
         // NOT YET IMPLEMENTED if(isset($_COOKIE['rememberUserCookie'])){

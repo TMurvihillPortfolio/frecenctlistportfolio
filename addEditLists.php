@@ -3,12 +3,24 @@
 <?php include_once 'php/classes/Database.php'; ?>
 <?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
-<?php 
-  //Run  list  Query
-  $query  = "SELECT * FROM Lists WHERE listUserId=:listUserId ORDER BY listName";
-  $statement = $db->prepare($query);
-  $statement->execute(array(':listUserId'=>$_SESSION['userInfo']['userId']));
-  $lists = $statement->fetchAll(PDO::FETCH_ASSOC);
+<?php
+    if (!isset($_SESSION['userInfo']['userId'])) {
+        header("Location: login.php");
+        exit();
+    }
+
+    try {
+        //Run  list  Query
+        $query  = "SELECT * FROM Lists WHERE listUserId=:listUserId ORDER BY listName";
+        $statement = $db->prepare($query);
+        $statement->execute(array(':listUserId'=>$_SESSION['userInfo']['userId']));
+        $lists = $statement->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOexception $ex) {
+        $result = "An error occurred. Logout and login and try again.";
+    }   
+    if (!$lists) {
+        $result = "No lists found. Please go to profile from main menu and add a list.";
+    }
 ?>
 <?php //add  list
     if (isset($_POST['addListCancel'])) {
@@ -73,15 +85,68 @@
     }
 ?>
 <?php
-  //Delete  list
-  if(isset($_POST['delete'])){
-    $listId = $_POST['listId'];
-    $query = "DELETE FROM Lists WHERE listId = :listId";
-    $statement = $db->prepare($query);
-    $statement->execute(array(":listId"=>$listId));
-    header("Location: addEditLists.php", true, 301);
-    exit();
-  }
+    //Edit transaction
+    // if (isset($_POST) && count($_POST)>0){
+    //     echo count($_POST);
+    // var_dump($_POST);
+    //exit();
+    // }
+    
+    if(isset($_POST['edit'])){
+        //Assign Vars   
+        $listUserId = $_SESSION['id'];
+        $listName = $_POST['listName'];
+        $listId = $_POST['listId'];
+        $isDefault='';
+        $isDefaultOld='';
+        if(isset($_POST['isDefault']) && $_POST['isDefault']=='on'){
+            $isDefault = TRUE;
+        }     
+        if(!isset($_POST['isDefault'])) {
+            $isDefault = 0;
+        }
+        if(isset($_POST['isDefaultOld']) && $_POST['isDefaultOld']=='on'){
+            $isDefaultOld = TRUE;
+        }         
+        if(!isset($_POST['isDefaultOld'])) {
+            $isDefaultOld = 0;
+        }
+        
+        //in case user changing to a new default account
+        if ($isDefaultOld == 0 && $isDefault == 1) {
+            removeDefaultList($db, $_SESSION['id']);
+        }
+
+        //Update List Data
+        try {
+            $query = "UPDATE Lists SET listName = :listName, isDefault = :isDefault WHERE listId=:listId";      
+            $statement = $db->prepare($query);
+            $statement->execute(array(':listName'=>$listName,
+                                        ':isDefault'=>$isDefault,
+                                        ':listId'=>$listId));
+        } catch(PDOexception $ex) {
+            $result = "Error updating list. Please login and logout and try again.";
+            echo $result;
+            exit();
+        }      
+        
+        header("Location: addEditLists.php", true, 301);
+        exit();
+    }
+?>
+<?php //Delete list
+    if((!isset($_POST['edit'])) && isset($_POST['delete'])){
+        $listId = $_POST['listId'];
+        try {
+            $query = "DELETE FROM Lists WHERE listId = :listId";
+            $statement = $db->prepare($query);
+            $statement->execute(array(":listId"=>$listId));
+            header("Location: addEditLists.php", true, 301);
+            exit();
+        } catch (PDOexception $ex) {
+            $result = "Error occurred. List not deleted.";
+        }        
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -138,12 +203,13 @@
                 <?php foreach($lists as $list) : ?>
                     <form method="post" name="edit" action="addEditLists.php">
                         
+                    
                         <div class="addEditLists__list--lineItem">
                             <div class="addEditLists__list--lineItem-listName">
                                 <?php echo $list['listName']; ?>
                             </div>
                             <div class="addEditLists__list--lineItem-listName" hidden>
-                                <input class="addEditLists__list--lineItem-listName" name=" list Name" type="text" value="<?php echo  $list['listName']; ?>"/>
+                                <input class="addEditLists__list--lineItem-listName" name="listName" type="text" value="<?php echo  $list['listName']; ?>"/>
                             </div>
                             <?php if($list['isDefault']==1) {$checked = 'checked';}else{$checked="";} ?>
                             <div class="addEditLists__list--lineItem-isDefault">
@@ -168,13 +234,6 @@
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-
-
-
-
-
-    </div>
-
-    
+    </div>  
 </body>
 </html>
