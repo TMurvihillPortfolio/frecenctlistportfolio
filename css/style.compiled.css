@@ -615,6 +615,15 @@ hr {
       color: #f2f8f2;
       font-size: 16px; }
 
+.addEditLists__addArea--title > h3 {
+  color: #0d530d;
+  font-size: 32px; }
+  .addEditLists__addArea--title > h3 > span {
+    color: #3C7496; }
+
+.addEditLists__addArea label {
+  font-weight: 400; }
+
 .addEditLists__addArea > form {
   line-height: 2;
   margin-top: 10px; }
@@ -628,39 +637,45 @@ hr {
 
 .addEditLists__addArea--submit {
   text-align: center;
-  margin-top: 17.5px; }
+  margin-top: 17.5px;
+  margin-bottom: 10px;
+  font-size: 20px; }
 
 .addEditLists__editArea {
-  width: 80%;
-  margin: 60px auto; }
+  padding: 50px;
+  width: 85%;
+  margin: 50px auto;
+  border: 11px double #083a08;
+  border-radius: 7px;
+  max-width: 820px; }
   .addEditLists__editArea--title {
-    margin-bottom: 25px; }
+    margin-bottom: 25px;
+    font-size: 32px; }
     .addEditLists__editArea--title > h3 {
       color: #0d530d; }
       .addEditLists__editArea--title > h3 > span {
-        color: #f0f34a; }
+        color: #3C7496; }
 
 .addEditLists__list--lineItem {
-  padding-top: 19px;
-  margin-bottom: -7px;
-  display: flex;
-  justify-content: space-between; }
+  border: 1px solid #083a08;
+  padding: 15px 5px 15px 25px;
+  display: flex; }
   @media only screen and (max-width: 56.25em) {
     .addEditLists__list--lineItem {
       display: block; } }
-  .addEditLists__list--lineItem > hr {
-    visibility: hidden;
-    opacity: 0; }
-    @media only screen and (max-width: 56.25em) {
-      .addEditLists__list--lineItem > hr {
-        visibility: visible;
-        opacity: 1; } }
   .addEditLists__list--lineItem-listName {
-    flex: 3; }
+    flex: 3;
+    flex: 3;
+    padding: 3px 5px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 300px; }
   .addEditLists__list--lineItem-isDefault {
     flex: 1; }
   .addEditLists__list--lineItem-editDelete {
-    flex: 1; }
+    flex: 2;
+    text-align: right;
+    margin-left: -80px; }
     .addEditLists__list--lineItem-editDeletePencil, .addEditLists__list--lineItem-editDeleteX {
       z-index: 2000;
       background-color: transparent;
@@ -673,3 +688,8 @@ hr {
         .addEditLists__list--lineItem-editDeletePencil > img,
         .addEditLists__list--lineItem-editDeleteX > img {
           height: 15px; } }
+
+#addListCancel {
+  background-color: #f0f34a;
+  margin-left: 5px;
+  color: #333; }

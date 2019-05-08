@@ -162,48 +162,37 @@
                 <p style="color: #153a52;;"><?php echo isset($result) ? $result : ''; ?></p>
             </div>
         <?php endif; ?>  
-
-        <div class="addEditLists__addArea signatureBox">
-            <div class="addEditLists__addArea--title">
-                    <h3>Add <span> List</span> </h3>
-            </div>
-            <form action="addEditLists.php" method="post">
-                <div class="addEditLists__addArea--name">
-                    <label for="email">List Name: </label>
-                    <input name="addListName" type="text" required>                                           
-                </div>
-                <div class="addEditLists__addArea--default">
-                    <label for="default">Set as default? </label>
-                    <input name="isDefault" type="checkbox">             
-                </div>
-                <div class="addEditLists__addArea--submit">                             
-                    <button name="addListSubmit" type="submit" class="btn btn__secondary profile__form--changeProfileButton">Add List</button>
-                    <button name="addListCancel" type="cancel" class="btn btn__primaryVeryDark profile__form--changeProfileButton"><a href='index.php' class='btn btn__primaryVeryDark profile__form--changeProfileButton'>Cancel</a></button>                 
-            </form>   
-                </div>           
-        </div>
-
-
-
         <?php if($lists) : ?>
-            <div class="addEditLists__editArea signatureBox">
+            <div class="addEditLists__editArea">
+                <div class="addEditLists__addArea">
+                    <div class="addEditLists__addArea--title">
+                       <h3>Add <span> List</span> </h3>
+                    </div>
+                    <form action="addEditLists.php" method="post">
+                        <div class="flex">
+                            <div class="addEditLists__addArea--name">
+                                <label for="email">List Name: </label>
+                                <input name="addListName" type="text" required>                                           
+                            </div>
+                            <div class="addEditLists__addArea--default">
+                                <label for="default">Set as default? </label>
+                                <input name="isDefault" type="checkbox">             
+                            </div>
+                        </div>
+                        <div class="addEditLists__addArea--submit">                             
+                            <button name="addListSubmit" type="submit" class="btn btn__secondary">Add List</button>
+                            <button name="addListCancel" type="reset" class="btn btn__primaryVeryDark" id="addListCancel">Reset</button>                 
+                        </div>
+                    </form> 
+                </div>                            
+                <br>
+                <hr>
+                <br>
                 <div class="addEditLists__editArea--title">
-                        <h3>Edit <span> list </span> </h3>
-                </div>                
-                <!-- <div class="addEditLists__list--lineItem addEditLists__ list--lineItem-headings">
-                    <div class="addEditLists__list--lineItem-listName">
-                        List Name
-                    </div>
-                    <div class="addEditLists__list--lineItem-isDefault">
-                        Default?
-                    </div>               
-                    <div class="addEditLists__list--lineItem-editDelete">                            
-                    </div>
-                </div> -->
+                        <h3>Edit <span> Lists </span> </h3>
+                </div>
                 <?php foreach($lists as $list) : ?>
-                    <form method="post" name="edit" action="addEditLists.php">
-                        
-                    
+                    <form method="post" name="edit" action="addEditLists.php">                  
                         <div class="addEditLists__list--lineItem">
                             <div class="addEditLists__list--lineItem-listName" id="js--listName">
                                 <?php echo $list['listName']; ?>
@@ -224,16 +213,13 @@
                                 <input class="list__lineItem--listId" name="listId" type="text" value="<?php echo $list['listId']; ?>" hidden/>
                             </div>
                             <div class="addEditLists__list--lineItem-editDelete">
-                                <button type='button' class="addEditLists__list--lineItem-editDeletePencil" name="editPencil" onClick="startEditLists(this)"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                                                                                         
-                                <button type='button' class="addEditLists__list--lineItem-editDeleteX" name='delete' onClick="deleteList(this);"><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>      
-                            
+                                <button type='button' class="addEditLists__list--lineItem-editDeletePencil" name="editPencil" onClick="startEditLists(this)"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                                                                                
+                                <button type='button' class="addEditLists__list--lineItem-editDeleteX" name='delete' onClick="deleteList(this);"><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>
                                 <button name="saveButton" type="button" class="btn btn__secondary" onClick="startEditLists(this)" hidden>Save</button>
                                 <button name="cancelButton" type="button" class="btn btn__primaryVeryDark" onClick="startEditLists(this)" hidden>Cancel</button>
                             </div>
                         </div>
                     </form>
-                    <br>
-                    <hr>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>

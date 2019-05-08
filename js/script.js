@@ -183,13 +183,14 @@ function startCloseAccount(clickedItem, userEmail) {
         listNameEdit.hidden = false;
         isDefault.hidden = true;
         isDefaultEdit.hidden = false;
+        isDefaultEdit.style.zIndex="10000";
     
         //change button text and style
         clickedItem.hidden=true;
         clickedItem.nextElementSibling.hidden=true;
         saveButton.hidden=false;
         cancelButton.hidden=false;
-        cancelButton.style="background-color:yellow;color:#333";
+        cancelButton.style="background-color:#f0f34a;color:#333";
         
         return;
     }
@@ -207,6 +208,7 @@ function startCloseAccount(clickedItem, userEmail) {
         listNameEdit.hidden = true;
         isDefault.hidden = false;
         isDefaultEdit.hidden = true;
+        isDefaultEdit.style.zIndex="unset";
         isDefault.children[1].disabled = true;
 
         //change button text and style
@@ -226,6 +228,9 @@ function startCloseAccount(clickedItem, userEmail) {
         //enable checkbox for php POST variable value check
         isDefault.children[1].disabled = false;
 
+        //reset z-index
+        isDefaultEdit.style.zIndex="unset";
+
         //change text and style of buttons
         clickedItem.hidden=true;
         clickedItem.nextElementSibling.hidden=true; 
@@ -243,6 +248,7 @@ function deleteList(clickedItem) {
     
     ancestorDiv = clickedItem.parentElement.parentElement;  
     isDefault = ancestorDiv.children[2];
+    listName = clickedItem.parentElement.parentElement.children[0].innerText;
     
     //Check if list is default
     if (isDefault.children[1].checked == true) {
@@ -251,7 +257,7 @@ function deleteList(clickedItem) {
     }
 
     //Confirm delete with user
-    if(!confirm("Delete Item?")) {
+    if(!confirm(`Delete List "${listName}"?`)) {
         return;
     }
 
