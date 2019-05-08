@@ -641,25 +641,35 @@ hr {
         color: #f0f34a; }
 
 .addEditLists__list--lineItem {
+  padding-top: 19px;
+  margin-bottom: -7px;
   display: flex;
   justify-content: space-between; }
-  .addEditLists__list--lineItem-headings {
-    margin-bottom: 10px; }
-    .addEditLists__list--lineItem-headings > * {
-      text-decoration: underline; }
-  @media only screen and (max-width: 75em) {
+  @media only screen and (max-width: 56.25em) {
     .addEditLists__list--lineItem {
       display: block; } }
   .addEditLists__list--lineItem > hr {
     visibility: hidden;
     opacity: 0; }
-    @media only screen and (max-width: 75em) {
+    @media only screen and (max-width: 56.25em) {
       .addEditLists__list--lineItem > hr {
         visibility: visible;
         opacity: 1; } }
   .addEditLists__list--lineItem-listName {
-    flex: 4; }
+    flex: 3; }
   .addEditLists__list--lineItem-isDefault {
     flex: 1; }
   .addEditLists__list--lineItem-editDelete {
     flex: 1; }
+    .addEditLists__list--lineItem-editDeletePencil, .addEditLists__list--lineItem-editDeleteX {
+      z-index: 2000;
+      background-color: transparent;
+      border: none; }
+    .addEditLists__list--lineItem-editDeletePencil > img,
+    .addEditLists__list--lineItem-editDeleteX > img {
+      height: 25px;
+      margin: 0 3px; }
+      @media only screen and (max-width: 37.5em) {
+        .addEditLists__list--lineItem-editDeletePencil > img,
+        .addEditLists__list--lineItem-editDeleteX > img {
+          height: 15px; } }

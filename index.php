@@ -421,8 +421,8 @@
                                     </div>
                                     <div class="flex__line2">
                                         <input type="checkbox" name="checkBox" data-itemid="<?php echo $item['listItemId']; ?>" data-name="name" onclick="updateNumClicks(this.dataset.itemid, this.checked);" <?php echo $item['isChecked'] ? 'checked' : ''; ?>>                                  
-                                        <button type='submit' class="list__container--items-itemEdit js--editItem" name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                                                                                         
-                                        <button type='button' class="list__container--items-itemDelete" onClick="verifyDeleteItem(this);" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>  
+                                        <button type='submit' class="list__container--items-itemEdit js--editItem" name="editItem"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                                                                                     
+                                        <button type='button' class="list__container--items-itemDelete" onClick="verifyDeleteItem(this);" name='itemDelete'><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>
                                         <input name='scrollPosition' hidden>
                                         <div class="list__container--items-frecency" hidden><input type="text" name='frecency' value="<?php echo $item['calcfrec']; ?>"></div>                                                   
                                         <div class="list__container--items-itemId" hidden><input type="text" name='editId' value="<?php echo $item['listItemId']; ?>"></div>

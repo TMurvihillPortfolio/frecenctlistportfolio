@@ -159,14 +159,19 @@ function startCloseAccount(clickedItem, userEmail) {
     ancestorDiv = clickedItem.parentElement.parentElement;  
       
     listName = ancestorDiv.children[0];
+    //console.log("name", listName.innerText);
     listNameEdit = ancestorDiv.children[1];
+    //console.log("nameedit: ", listNameEdit.children[0].value);
     isDefault = ancestorDiv.children[2];
+    //console.log('default', isDefault.children[1].value);
     isDefaultEdit = ancestorDiv.children[3];
-    
-    if(clickedItem.innerHTML=="Edit") {
+    //console.log('defaulteidt', isDefaultEdit.children[1].value);
+
+    if(clickedItem.name=="editPencil") {
 
         //define DOM elements
-        cancelButton=clickedItem.nextElementSibling;
+        saveButton=clickedItem.nextElementSibling.nextElementSibling;
+        cancelButton=clickedItem.nextElementSibling.nextElementSibling.nextElementSibling;
    
         //reset edit field values
         listNameEdit.children[0].value=listName.innerText;
@@ -180,14 +185,16 @@ function startCloseAccount(clickedItem, userEmail) {
         isDefaultEdit.hidden = false;
     
         //change button text and style
-        clickedItem.innerHTML="Save";
-        cancelButton.innerHTML="Cancel";
+        clickedItem.hidden=true;
+        clickedItem.nextElementSibling.hidden=true;
+        saveButton.hidden=false;
+        cancelButton.hidden=false;
         cancelButton.style="background-color:yellow;color:#333";
         
         return;
     }
 
-    if(clickedItem.innerHTML=="Cancel"){
+    if(clickedItem.name=="cancelButton"){
         //define DOM elements
         cancelButton=clickedItem;
 
@@ -203,27 +210,16 @@ function startCloseAccount(clickedItem, userEmail) {
         isDefault.children[1].disabled = true;
 
         //change button text and style
-        clickedItem.previousElementSibling.innerHTML="Edit";
-        cancelButton.innerHTML="Delete";
-        cancelButton.style="background-color:#A43C3D;color:#eee";
+        clickedItem.hidden=true;
+        clickedItem.previousElementSibling.hidden=true;
+        clickedItem.previousElementSibling.previousElementSibling.hidden=false;
+        clickedItem.previousElementSibling.previousElementSibling.previousElementSibling.hidden=false;
     
         return;       
     }
-    if(clickedItem.innerHTML=="Delete"){
-        if (isDefault.children[1].checked == true) {
-            alert("Can not delete default list. Please choose another default list or add a new default list before deleting.");
-            return;
-        }
-        if(!confirm("Delete Item?")) {
-            return;
-        }
-        clickedItem.type="submit";
-        return;
-    }
-    
 
-    if(clickedItem.innerHTML=="Save"){
-        console.log('imin');
+    if(clickedItem.name=="saveButton"){
+        console.log('imin Save');
         //define DOM elements
         cancelButton=clickedItem.nextElementSibling;
         
@@ -231,13 +227,38 @@ function startCloseAccount(clickedItem, userEmail) {
         isDefault.children[1].disabled = false;
 
         //change text and style of buttons
-        cancelButton.innerHTML="Delete";
-        cancelButton.style="background-color:#A43C3D;color:#eee";
-        clickedItem.innerHTML="Edit";
+        clickedItem.hidden=true;
+        clickedItem.nextElementSibling.hidden=true; 
+        clickedItem.previousElementSibling.hidden=false;
+        clickedItem.previousElementSibling.previousElementSibling.hidden=false;
+          
         clickedItem.type="submit";  
     }     
 }
 
+function deleteList(clickedItem) {
+    //Initialize variables
+    var ancestorDiv;
+    var isDefault;
+    
+    ancestorDiv = clickedItem.parentElement.parentElement;  
+    isDefault = ancestorDiv.children[2];
+    
+    //Check if list is default
+    if (isDefault.children[1].checked == true) {
+        alert("Can not delete default list. Please choose another default list or add a new default list before deleting.");
+        return;
+    }
+
+    //Confirm delete with user
+    if(!confirm("Delete Item?")) {
+        return;
+    }
+
+    //Submit form for PHP delete
+    clickedItem.type="submit";
+    return;   
+}
 
 /***********************
  * Mobile Navigation
