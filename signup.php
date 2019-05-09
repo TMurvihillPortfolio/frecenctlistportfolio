@@ -61,6 +61,85 @@
                             $statement->execute(array( ':listName' => $listName, ':listUserId' => $listUserId, ':isDefault' => $isDefault));
                             if($statement->rowCount() == 1) {
                                 $result = "Registration Successful";
+
+                                //insert a few items
+                                //prepare variables for insert
+                                $listId = $db->lastInsertId();
+                                $listItemId1 = time().mt_rand().$listUserId;
+                                $listItemId2 = time().mt_rand().$listUserId;
+                                $listItemId3 = time().mt_rand().$listUserId;
+                                $listItemId4 = time().mt_rand().$listUserId;
+                                $listItemId5 = time().mt_rand().$listUserId;
+                                $firstClick = date("Y-m-d H:i:s", time() - ($frecencyInterval*$minimumIntervals)); //Might be simulated for calculations NOT YET IMPLEMENTED, config number of days,
+                                $lastClick = date('Y-m-d H:i:s');
+                                
+                                try {
+                                    $insertListItems = "INSERT INTO ListItems (title, category, qty, listItemId,  isChecked, numClicks, firstClick, lastClick, listId)
+                                                            VALUES (:title, :category, :qty, :listItemId, :isChecked, :numClicks, :firstClick, :lastClick, :listId);";
+                                    $statement = $db->prepare($insertListItems);
+                                        
+                                    $statement->execute(array(
+                                        ':title'=>'milk',
+                                        ':category' => 'Dairy', 
+                                        ':qty' => 1, 
+                                        ':listItemId' => $listItemId1,                           
+                                        ':isChecked' => 0,
+                                        ':numClicks' => 5,
+                                        ':firstClick' => $firstClick,
+                                        ':lastClick' => $lastClick,
+                                        ':listId' => $listId
+                                    ));
+                                    $statement->execute(array(
+                                        ':title'=>'apples',
+                                        ':category' => 'Produce', 
+                                        ':qty' => 1, 
+                                        ':listItemId' => $listItemId2,                           
+                                        ':isChecked' => 0,
+                                        ':numClicks' => 5,
+                                        ':firstClick' => $firstClick,
+                                        ':lastClick' => $lastClick,
+                                        ':listId' => $listId
+                                    ));
+                                    $statement->execute(array(
+                                        ':title'=>'bread',
+                                        ':category' => 'Breads',
+                                        ':qty' => 1, 
+                                        ':listItemId' => $listItemId3,                           
+                                        ':isChecked' => 0,
+                                        ':numClicks' => 5,
+                                        ':firstClick' => $firstClick,
+                                        ':lastClick' => $lastClick,
+                                        ':listId' => $listId
+                                    ));
+                                    $statement->execute(array(
+                                        ':title'=>'eggs',
+                                        ':category' => 'Dairy',
+                                        ':qty' => 1, 
+                                        ':listItemId' => $listItemId4,                           
+                                        ':isChecked' => 0,
+                                        ':numClicks' => 5,
+                                        ':firstClick' => $firstClick,
+                                        ':lastClick' => $lastClick,
+                                        ':listId' => $listId
+                                    ));
+                                    $statement->execute(array(
+                                        ':title'=>'bananas',
+                                        ':category' => 'Produce',
+                                        ':qty' => 1, 
+                                        ':listItemId' => $listItemId5,                           
+                                        ':isChecked' => 0,
+                                        ':numClicks' => 5,
+                                        ':firstClick' => $firstClick,
+                                        ':lastClick' => $lastClick,
+                                        ':listId' => $listId
+                                    ));
+                                } catch (PDOException $ex) {
+                                    //a notice to webmaster should be sent here. User does not need to see error as adding a couple of list items is optional
+                                    echo $ex;
+                                    exit();
+                                }
+                                
+
                             } else {
                                 throw new Exception('Error adding List');
                             }

@@ -20,7 +20,7 @@
 ?>
 <?php //get userInfo, lists and categories
     
-    if (!isset($_SESSION['orderBy']) || $_SESSION['orderBy'] == '') $_SESSION['orderBy'] = 'alpha';
+    if (!isset($_SESSION['orderBy']) || $_SESSION['orderBy'] == '') $_SESSION['orderBy'] = 'category';
     if (isset($_POST['category'])) {
         $_SESSION['orderBy'] = 'category';
         unset($_POST['category']);
@@ -68,7 +68,7 @@
         
     }
 ?>
-<?php //add/edit submit button clicked
+<?php //add/edit item submit button clicked
 
     if (isset($_POST['addEditSave'])) {
         

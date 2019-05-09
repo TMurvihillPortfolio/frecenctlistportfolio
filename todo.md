@@ -23,6 +23,7 @@
 - ListItem categories in db should be by category id, not word
 - sanitize cancelPremium input for if == statement to lowercase etc.
 - add scroll to functionality to addEditLists.php for after delete or edit
+- refactor sql insert item on signup into an array
 
 ### FUTURE FEATURES !!
 
