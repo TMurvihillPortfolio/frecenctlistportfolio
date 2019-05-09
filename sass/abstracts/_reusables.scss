@@ -47,6 +47,13 @@
     }
 }
 
+.result {
+    color:$colorWarning;
+    max-width: 400px;
+    text-align: center;
+    font-weight: 400;
+}
+
 .flex {
     width: 100%;
     display: flex;

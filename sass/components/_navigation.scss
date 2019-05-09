@@ -17,12 +17,13 @@
         z-index: 1000;
 
         @include respond(phone) {
-            font-size: 14px;
-            margin: 3px;
-            height: 1rem;
-            position: absolute;
-            top: 0;
-            right: 0;           
+            // font-size: 14px;
+            // margin: 3px;
+            // height: 1rem;
+            // position: absolute;
+            // top: 0;
+            // right: 0;
+            display: none;           
         }
         
         &--item>a {
