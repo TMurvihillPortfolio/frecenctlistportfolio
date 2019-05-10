@@ -53,7 +53,7 @@
                         $encodeUserId = base64_encode("encodeuserid{$listUserId}");
                     
                         //insert first list into list table
-                        try {               
+                        try {
                             //insert first list
                             $sqlInsert = "INSERT INTO Lists (listName, listUserId, isDefault)
                             VALUES (:listName, :listUserId, :isDefault)";
@@ -134,12 +134,8 @@
                                         ':listId' => $listId
                                     ));
                                 } catch (PDOException $ex) {
-                                    //a notice to webmaster should be sent here. User does not need to see error as adding a couple of list items is optional
-                                    echo $ex;
-                                    exit();
+                                    //a notice to webmaster should be sent here. User does not need to see error as adding a couple of list items is optional                                  
                                 }
-                                
-
                             } else {
                                 throw new Exception('Error adding List');
                             }
@@ -152,7 +148,7 @@
                         $mail_body = '<html>
                             <body style="color:#083a08; font-family: Lato, Arial, Helvetica, sans-serif;
                                                 line-height:1.8em;">
-                            <h2>Message from Frecency<span style="color:#3C7496;">List</span></h2>
+                            <h2>Message from Frecent<span style="color:#3C7496;">List</span></h2>
                             <p>Dear Frecency List user,<br><br>Thank you for registering, please click on the link below to
                                 confirm your email address</p>
                             <p style="text-decoration: underline; font-size: 24px;"><a style="color:#3C7496;" href='.$rootDirectory.'activateOrChangeEmail.php?userId='.$encodeUserId.'"> Confirm Email</a></p>
@@ -160,8 +156,10 @@
                             </body>
                             </html>';
                         
-                        $subject = "Message from 'Frecency' List";
-                        $headers = "From: 'Frecency' List.--User Signup" . "\r\n";
+                        $subject = "Message from 'Frecenct' List";
+                        $headers = 'From: webmaster@frecentlist.com' . "\r\n" .
+                                   'Reply-To: webmaster@frecentlist.com' . "\r\n" .
+                                   'X-Mailer: PHP/' . phpversion();
                         $headers .= "MIME-Version: 1.0" . "\r\n";
                         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
                         
@@ -170,7 +168,7 @@
                             $result = "Email send failed.";
                         }
                         else{
-                            $result = "Registration Successful. Please check your email for the confirmation link and login instructions.";
+                            $result = "Registration Successful. Please check your email for the confirmation link.<br><br><hr><br>If the confirmation email is delayed you may <a href='login.php'>click here</a> to proceed to the login page. You will have 24 hours to confirm your email.";
                         }
                     }
                 } catch (PDOException $ex) {

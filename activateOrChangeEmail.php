@@ -30,7 +30,9 @@
         }
     //if a new account
     } else if(isset($_GET['userId']) && !isset($_GET['newEmail'])) {
+        
         $encoded_id = $_GET['userId'];
+        unset($_GET['userId']);
         $decode_id = base64_decode($encoded_id);
         $user_id_array = explode("encodeuserid", $decode_id);
         $userId = $user_id_array[1];
@@ -38,12 +40,21 @@
         try {
             $sql = "UPDATE users SET active =:active WHERE userId=:userId AND active='0'";       
             $statement = $db->prepare($sql);
-            $statement->execute(array(':active' => "1", ':userId' => $userId));
-           
+            $statement->execute(array(':userId' => $userId, ':active' => "1"));
+            
+            if (!$statement) {
+                echo "not statement";
+                var_dump($_GET);
+                exit();
+            }
             if ($statement->rowCount() == 1) {
                 $result = '<h2>Email Confirmed </h2>
                 <p>Your email address has been verified, you can now <a class="activate" href="index.php" style="color: #e47587; font-style: italic">login</a> with your email and password.</p>';
             } else {
+                echo 'else';
+                echo $statement->rowCount().'|';
+                echo $userId.'|';
+                echo $user_id_array[0].$user_id_array[1];
                 $result = "<p class='lead'>Account already activated. :)</p>";
             }
         } catch(PDOException $ex) {

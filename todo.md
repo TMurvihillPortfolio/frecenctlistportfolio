@@ -6,12 +6,13 @@
 
 - check through responsive
 - make payments go to PayPal, still in test mode
-- signup remove defaults
+- better signup messaging
 - signup change color of confirmation links
-- remove signup menu, after successful signup
+- check for exit(); left from debugging
  
 ## Medium Priority
 
+- follow up with an unactivated account
 - page that fully explains pay levels
 - way to count items and notify customer when they are going to need to move to new level
 - PWA functionality

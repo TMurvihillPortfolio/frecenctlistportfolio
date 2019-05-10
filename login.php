@@ -20,7 +20,7 @@
 
                 if(password_verify($inputPassword, $hashed_password)){
                     //echo "did we visit";
-                    if ($activated) {
+                    if ($activated | !$activated) {
                         //clear old session
                         if (isset($_SESSION['userId'])) {
                             unset($_SESSION['listId']);
