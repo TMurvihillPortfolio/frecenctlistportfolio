@@ -9,8 +9,9 @@
         position: absolute;
         right: 10px;
         top: 20px;
+        width: fit-content;
         font-weight: 500;
-        display: flex;
+        //display: flex;
         color: $colorSecondaryDark;
         list-style: none;
         height: 3.5rem;
@@ -23,7 +24,7 @@
             // position: absolute;
             // top: 0;
             // right: 0;
-            display: none;           
+            //display: none;           
         }
         
         &--item>a {
@@ -42,5 +43,12 @@
                 border-bottom: 1.5px solid $colorSecondaryDark;          
             }
         }
+    }
+    &__hamburger {
+        position: absolute;
+        height: 25px;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
     }
 }

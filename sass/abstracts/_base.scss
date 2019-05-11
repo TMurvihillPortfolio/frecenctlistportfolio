@@ -36,7 +36,20 @@ hr {
      //height: auto;
      background-attachment:scroll;
 }
-//BTW Media queries do not refer to the rem size we defined above.
+
+/*****************
+*Mobile Menu Classes
+*****************/
+.displayNone {
+    display: none;
+}
+.displayBlock {
+    display: block;
+}
+
+//'main menu on' uses the .flex class
+
+//Media queries do not refer to the rem size.
 //We use ems in the mixin in order to get user changes in default settings into scope. 
 
 @include respond(landscape) {

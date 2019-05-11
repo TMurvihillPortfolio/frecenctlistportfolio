@@ -5,6 +5,38 @@ window.onload = () => {
         window.scrollTo(0, parseInt(scrollPositionDiv.innerText));
         scrollPositionDiv.innerText = "0";
     }
+
+
+
+    //choose mobile or main Nav
+    function prepareNavEnviroment() {
+
+        console.log('imindocreadynav')
+        const mainNav = document.querySelector("#js--mainNav");
+        const mobileIcon = document.querySelector("#js--mobileNavIcon");
+        const closeIcon = document.querySelector("#js--closeIcon");
+        if (window.innerWidth>599) {
+            console.log('docready>greaterthan599');
+            mobileIcon.classList.remove('displayBlock');
+            mobileIcon.classList.add('displayNone');       
+            closeIcon.classList.remove('displayBlock');  
+            closeIcon.classList.add('displayNone');
+            mainNav.classList.remove('displayBlock');
+            mainNav.classList.remove('displayNone');
+            mainNav.classList.add('flex');
+        } else {
+            console.log('docready<lesthan599');
+            mobileIcon.classList.remove('displayNone');
+            mobileIcon.classList.add('displayBlock');       
+            closeIcon.classList.remove('displayBlock');  
+            closeIcon.classList.add('displayNone');
+            mainNav.classList.remove('displayBlock');
+            mainNav.classList.remove('flex');
+            mainNav.classList.add('displayNone');
+        }
+    }
+    window.addEventListener("resize", prepareNavEnviroment);
+    prepareNavEnviroment();
 }
 function prepareEnvironmentAddItemForm() {
     document.getElementById('js--addItemButton').style.display ='none';
@@ -266,28 +298,6 @@ function deleteList(clickedItem) {
     return;   
 }
 
-/***********************
- * Mobile Navigation
- * ********************/
-function mobileNav() {
-    var mainNav = document.getElementById("js--mainNav");
-    var mobileIcon = document.getElementById("js--mobileNavIcon");
-    
-    if (mobileIcon.classList.contains('fa-bars')) {
-        mobileIcon.classList.remove('fa-bars');
-        mobileIcon.classList.add('fa-window-close');
-        mainNav.style.display = "block";
-    }else{
-        mobileIcon.classList.remove('fa-window-close');
-        mobileIcon.classList.add('fa-bars');
-        mainNav.style.display = "none";
-    } 
-} 
-
-
-
-
-
 //Remove frecency or category header after last item checked or unchecked
 function removeHeader(formElement) {
     //Find previous element to item checked or unchecked
@@ -325,9 +335,53 @@ function removeHeader(formElement) {
         return;
     }
 }
+
+//customize view for premium customers
 function premiumView(object) {
     const changeListButton = document.querySelector('#js--changeListButton');
     const changeListSelectorBox = document.querySelector('#js--selectList');
     changeListButton.style.display="none";
     changeListSelectorBox.classList.add("list__selectList--active");
 }
+
+/***********************
+ * Mobile Navigation
+ * ********************/
+function mobileNav() {
+
+    console.log('imin')
+    const mainNav = document.querySelector("#js--mainNav");
+    const mobileIcon = document.querySelector("#js--mobileNavIcon");
+    const closeIcon = document.querySelector("#js--closeIcon");
+    
+    if (mobileIcon.classList.contains('displayBlock')) {
+        console.log('if1');
+        mobileIcon.classList.add('displayNone');
+        mobileIcon.classList.remove('displayBlock');
+        closeIcon.classList.add('displayBlock');
+        closeIcon.classList.remove('displayNone');
+        mainNav.classList.add('displayBlock');
+        mainNav.classList.remove('displayNone');
+        mainNav.classList.remove('flex');
+    } else if (closeIcon.classList.contains('displayBlock')) {
+        console.log('if2');
+        mobileIcon.classList.remove('displayNone');
+        mobileIcon.classList.add('displayBlock');
+        closeIcon.classList.remove('displayBlock');      
+        closeIcon.classList.add('displayNone');        
+        mainNav.classList.add('displayNone');
+        mainNav.classList.remove('displayBlock');
+        mainNav.classList.remove('flex');
+    }
+
+    if (window.innerWidth>599) {
+        console.log('if3');
+        mobileIcon.classList.remove('displayBlock');
+        mobileIcon.classList.add('displayNone');       
+        closeIcon.classList.remove('displayBlock');  
+        closeIcon.classList.add('displayNone');
+        mainNav.classList.remove('displayBlock');
+        mainNav.classList.remove('displayNone');
+        mainNav.classList.add('flex');
+    }
+} 

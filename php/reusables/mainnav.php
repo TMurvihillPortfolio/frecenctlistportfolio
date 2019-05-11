@@ -31,7 +31,11 @@
             </li>
             <li class="mainNav__nav--item">
                 <a href="about.php">About</a>
-            </li>           
+            </li>          
         <?php endif; ?>
     </ul>
+    <div onclick="mobileNav()">
+        <img src="/img/hamburger.png" alt="Open Mobile Menu Icon" class="mainNav__hamburger displayBlock" id="js--mobileNavIcon" />
+        <img src="/img/closeWindowIcon.png" alt="Close Mobile Menu Icon" class="mainNav__hamburger displayNone" id="js--closeIcon" />
+    </div>
 </section>
