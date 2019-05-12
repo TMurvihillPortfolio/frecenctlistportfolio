@@ -35,7 +35,7 @@
         <?php endif; ?>
     </ul>
     <div onclick="mobileNav()">
-        <img src="/img/hamburger.png" alt="Open Mobile Menu Icon" class="mainNav__hamburger displayBlock" id="js--mobileNavIcon" />
-        <img src="/img/closeWindowIcon.png" alt="Close Mobile Menu Icon" class="mainNav__hamburger displayNone" id="js--closeIcon" />
+        <img src="<?php echo $rootDirectory; ?>/img/hamburger.png" alt="Open Mobile Menu Icon" class="mainNav__hamburger displayBlock" id="js--mobileNavIcon" />
+        <img src="<?php echo $rootDirectory; ?>/img/closeWindowIcon.png" alt="Close Mobile Menu Icon" class="mainNav__hamburger displayNone" id="js--closeIcon" />
     </div>
 </section>

@@ -147,7 +147,7 @@
                 <br>
                 <hr>
                 <br>
-                <div class='subscription__invoice--text'>Subscribe without a PayPal account. You will be invoiced yearly by 'Frecency' List.<br><a href="frecencyInvoice.php">Click here</a></div>
+                <div class='subscription__invoice--text'>Subscribe without a PayPal account. You will be invoiced yearly by 'Frecency' List.</div>
                 <br>
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                     <input type="hidden" name="cmd" value="_s-xclick">

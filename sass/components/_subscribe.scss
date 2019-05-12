@@ -6,6 +6,9 @@
     &__line1 {
         color: $colorPrimaryDark;
         margin: 50px;
+        @include respond(phone) {
+            margin: auto;
+        }
         text-align: center;
 
         &>h2>span {

@@ -28,6 +28,9 @@
         text-align: center;
         margin: 20px auto 60px;
         width: 80%;
+        @include respond(phone) {
+            width: 100%;
+        }
         font-weight: 400;
         font-size: 16px;
     }
@@ -63,7 +66,10 @@
             >a {
                 font-style: italic;
                 color: $colorPrimaryDark;
-                margin-left: 1rem;               
+                margin-left: 1rem;
+                @include respond(phone) {
+                    margin-left: .5rem;
+                }               
             }
         }
     }
@@ -118,6 +124,7 @@
         &--submit {         
             display: flex;
             justify-content: space-between;
+            margin-bottom: 100px;
             &>input[type='submit'] {             
                 margin: 15px auto 5px;
                 font-size: 18px;

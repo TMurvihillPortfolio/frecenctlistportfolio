@@ -160,8 +160,11 @@
             justify-content: space-between;            
         }
     }
-    &__container {    
-               
+    &__container {
+        @include respond(phone) {
+            border: 1px solid $colorSecondaryDark;
+        }  
+        
         &--headers {
             display: flex;   
             justify-content: space-between;
@@ -172,16 +175,23 @@
         }
         &--items {
             margin-bottom: 25px;
+            @include respond(phone) {
+                margin: 5px;
+                //padding: 15px 5px;
+                //border: 1px solid $colorSecondaryDark;
+            }
             &-orderByHeading {
                 color: $colorSecondaryLight;
                 font-style: italic;
                 text-align: center;
             }
-            &-item {
-                border: 1px solid $colorSecondaryDark;  
-                padding: 15px 5px 15px 25px;  
+            &-item { 
+                border: 1px solid $colorSecondaryDark;
+                padding: 15px 10px;                 
                 @include respond(phone) {
-                    padding: 15px 5px;
+                    padding: 0;
+                    margin-bottom: -5px;
+                    border:none;
                 }
                 
                 &Header {
@@ -192,6 +202,10 @@
                         font-size: 16px;
                     }
                     margin: 20px;
+                    @include respond(phone) {
+                        margin-top: 17px;
+                        margin-bottom: 12px;
+                    }
                     font-style: italic;
                     font-weight: 600;
                     letter-spacing: 3px;
@@ -209,24 +223,27 @@
                     
                     @include respond(phone) {
                         font-size: 12px;
+                        padding: 7px 3px;
                     }
                 } 
                 
                 & input[type="checkbox"] {                  
-                    margin-top: 12.5px;
-                    transform: scale(2.5);  
-                    width: fit-content;
-                    margin-right: 12px;
+                    margin: 10px;
+                    transform: scale(2.5);
                     @include respond(phone) {
-                        margin: 4px 81% 0 4px;   
-                        transform: scale(1.5);                    
-                    }
-                       
+                        margin: 8.5px 6px 0;  
+                        transform: scale(2);           
+                    }                      
                 }
 
                 &Qty {
-                    text-align: center;
-                    flex: 2;                                   
+                    flex: 2;
+                    &>input {
+                        text-align: center;
+                    }
+                    @include respond(phone) {
+                        max-width: 35px;
+                    }                                 
                 }
                 &Title {
                     flex: 16;
