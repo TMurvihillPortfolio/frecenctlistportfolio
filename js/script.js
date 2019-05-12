@@ -6,17 +6,13 @@ window.onload = () => {
         scrollPositionDiv.innerText = "0";
     }
 
-
-
     //choose mobile or main Nav
     function prepareNavEnviroment() {
-
-        console.log('imindocreadynav')
         const mainNav = document.querySelector("#js--mainNav");
         const mobileIcon = document.querySelector("#js--mobileNavIcon");
         const closeIcon = document.querySelector("#js--closeIcon");
-        if (window.innerWidth>599) {
-            console.log('docready>greaterthan599');
+        
+        if (window.innerWidth>599) { //width 600 or more
             mobileIcon.classList.remove('displayBlock');
             mobileIcon.classList.add('displayNone');       
             closeIcon.classList.remove('displayBlock');  
@@ -24,8 +20,8 @@ window.onload = () => {
             mainNav.classList.remove('displayBlock');
             mainNav.classList.remove('displayNone');
             mainNav.classList.add('flex');
-        } else {
-            console.log('docready<lesthan599');
+        
+        } else { //width less than 600
             mobileIcon.classList.remove('displayNone');
             mobileIcon.classList.add('displayBlock');       
             closeIcon.classList.remove('displayBlock');  
@@ -34,10 +30,14 @@ window.onload = () => {
             mainNav.classList.remove('flex');
             mainNav.classList.add('displayNone');
         }
-    }
+    }    
     window.addEventListener("resize", prepareNavEnviroment);
     prepareNavEnviroment();
 }
+
+/**************************
+ * CRUD operations on items
+ **************************/
 function prepareEnvironmentAddItemForm() {
     document.getElementById('js--addItemButton').style.display ='none';
     document.getElementById('js--addItemForm').style.display = 'block';
@@ -62,9 +62,9 @@ function verifyDeleteItem(item) {
     }
 }
 
-/***********************
+/*************************
  * CRUD operations on profiles
- * ********************/
+ * ***********************/
 
 function startChangeEmail(clickedItem) {
    
@@ -174,7 +174,6 @@ function startCloseAccount(clickedItem, userEmail) {
         return;
     }
  }
-
  function startEditLists(clickedItem) {
     //declare variables
 
@@ -272,7 +271,6 @@ function startCloseAccount(clickedItem, userEmail) {
         clickedItem.type="submit";  
     }     
 }
-
 function deleteList(clickedItem) {
     //Initialize variables
     var ancestorDiv;
@@ -298,6 +296,9 @@ function deleteList(clickedItem) {
     return;   
 }
 
+/*************************
+ * customize view functions
+ *************************/
 //Remove frecency or category header after last item checked or unchecked
 function removeHeader(formElement) {
     //Find previous element to item checked or unchecked
@@ -335,7 +336,6 @@ function removeHeader(formElement) {
         return;
     }
 }
-
 //customize view for premium customers
 function premiumView(object) {
     const changeListButton = document.querySelector('#js--changeListButton');
@@ -348,34 +348,31 @@ function premiumView(object) {
  * Mobile Navigation
  * ********************/
 function mobileNav() {
-
-    console.log('imin')
     const mainNav = document.querySelector("#js--mainNav");
     const mobileIcon = document.querySelector("#js--mobileNavIcon");
     const closeIcon = document.querySelector("#js--closeIcon");
+    mainNav.classList.remove('mobileMenuActive');
     
     if (mobileIcon.classList.contains('displayBlock')) {
-        console.log('if1');
         mobileIcon.classList.add('displayNone');
         mobileIcon.classList.remove('displayBlock');
         closeIcon.classList.add('displayBlock');
         closeIcon.classList.remove('displayNone');
         mainNav.classList.add('displayBlock');
+        mainNav.classList.add('mobileMenuActive');
         mainNav.classList.remove('displayNone');
         mainNav.classList.remove('flex');
     } else if (closeIcon.classList.contains('displayBlock')) {
-        console.log('if2');
         mobileIcon.classList.remove('displayNone');
         mobileIcon.classList.add('displayBlock');
         closeIcon.classList.remove('displayBlock');      
+        closeIcon.classList.remove('mobileMenuActive');      
         closeIcon.classList.add('displayNone');        
         mainNav.classList.add('displayNone');
         mainNav.classList.remove('displayBlock');
         mainNav.classList.remove('flex');
     }
-
     if (window.innerWidth>599) {
-        console.log('if3');
         mobileIcon.classList.remove('displayBlock');
         mobileIcon.classList.add('displayNone');       
         closeIcon.classList.remove('displayBlock');  

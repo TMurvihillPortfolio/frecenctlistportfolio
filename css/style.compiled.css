@@ -159,27 +159,44 @@ hr {
     right: 10px;
     top: 20px;
     width: fit-content;
-    font-weight: 500;
-    color: #083a08;
-    list-style: none;
     height: 3.5rem;
-    z-index: 1000; }
-    .mainNav__nav--item > a {
+    list-style: none;
+    z-index: 1000;
+    font-weight: 500;
+    color: #083a08; }
+    .mainNav__nav--item {
       margin-left: 1rem;
-      color: #083a08;
-      text-decoration: none;
-      padding-bottom: 7px; }
-      .mainNav__nav--item > a:link, .mainNav__nav--item > a:visited {
-        border-bottom: 1px solid transparent;
-        transition: border-bottom .4s; }
-      .mainNav__nav--item > a:hover, .mainNav__nav--item > a:active {
-        border-bottom: 1.5px solid #083a08; }
+      margin-bottom: 7px; }
+      .mainNav__nav--item > a {
+        padding-bottom: 7px;
+        text-decoration: none;
+        color: #083a08; }
+        .mainNav__nav--item > a:link, .mainNav__nav--item > a:visited {
+          border-bottom: 1px solid transparent;
+          transition: border-bottom .4s; }
+        .mainNav__nav--item > a:hover, .mainNav__nav--item > a:active {
+          border-bottom: 1.5px solid #083a08; }
+        @media only screen and (max-width: 37.5em) {
+          .mainNav__nav--item > a:hover, .mainNav__nav--item > a:active {
+            border-bottom: 1.5px solid #fdfdfd;
+            padding-bottom: 4px; } }
   .mainNav__hamburger {
     position: absolute;
-    height: 25px;
     top: 10px;
     right: 10px;
+    height: 25px;
     z-index: 1000; }
+
+.mobileMenuActive {
+  height: fit-content;
+  padding: 10px;
+  padding-left: 0;
+  z-index: 1000;
+  background-color: #3C7496;
+  border-radius: 7px;
+  opacity: .9; }
+  .mobileMenuActive a {
+    color: #fdfdfd; }
 
 .list {
   padding: 50px;
@@ -526,6 +543,9 @@ hr {
     margin-left: 20px; }
     .signup__line1 > h3 > span {
       font-style: italic; }
+  .signup__form {
+    width: fit-content;
+    margin: auto; }
   .signup__form--email, .signup__form--password, .signup__form--listName {
     display: flex;
     margin-bottom: 6px; }
@@ -535,13 +555,17 @@ hr {
       padding-right: 14px; }
     .signup__form--email > input, .signup__form--password > input, .signup__form--listName > input {
       flex: 6;
-      font-size: 16px;
+      width: 100%;
+      max-width: 250px;
+      max-height: 30px;
+      padding: 5px;
       border-radius: 7px;
-      padding: 5px; }
+      font-size: 16px; }
   .signup__form--submit > input {
     display: block;
     margin: 15px auto;
-    font-size: 20px; }
+    font-size: 20px;
+    width: 150px; }
 
 .activate {
   font-style: italic;

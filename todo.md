@@ -19,6 +19,7 @@
 
 ### Low Priority
 
+- on mobile hover make border white
 - create a way to contact support
 - get background image fed from Cloudinary
 - ListItem categories in db should be by category id, not word

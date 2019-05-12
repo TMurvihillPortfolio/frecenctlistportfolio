@@ -9,46 +9,60 @@
         position: absolute;
         right: 10px;
         top: 20px;
-        width: fit-content;
-        font-weight: 500;
-        //display: flex;
-        color: $colorSecondaryDark;
-        list-style: none;
+        width: fit-content;        
         height: 3.5rem;
+        list-style: none;
         z-index: 1000;
-
-        @include respond(phone) {
-            // font-size: 14px;
-            // margin: 3px;
-            // height: 1rem;
-            // position: absolute;
-            // top: 0;
-            // right: 0;
-            //display: none;           
+        font-weight: 500;
+        color: $colorSecondaryDark;        
+        
+        &--item {
+            margin-left: 1rem;
+            margin-bottom: 7px; 
+            &>a {                     
+                padding-bottom: 7px;           
+                text-decoration: none;
+                color: $colorSecondaryDark;
+                
+                &:link,
+                &:visited {
+                    border-bottom: 1px solid transparent;
+                    transition: border-bottom .4s;
+                }
+                &:hover,
+                &:active {
+                    border-bottom: 1.5px solid $colorSecondaryDark;          
+                }
+                @include respond(phone) {
+                    &:hover,
+                    &:active {
+                        border-bottom: 1.5px solid $colorGreyLightTertiary;
+                        padding-bottom: 4px;
+                    }
+                }
+                
+            }
         }
         
-        &--item>a {
-            margin-left: 1rem;
-            color: $colorSecondaryDark;
-            text-decoration: none;
-            padding-bottom: 7px;
-            
-            &:link,
-            &:visited {
-                border-bottom: 1px solid transparent;
-                transition: border-bottom .4s;
-            }
-            &:hover,
-            &:active {
-                border-bottom: 1.5px solid $colorSecondaryDark;          
-            }
-        }
     }
     &__hamburger {
         position: absolute;
-        height: 25px;
         top: 10px;
         right: 10px;
+        height: 25px;       
         z-index: 1000;
+    }
+}
+
+.mobileMenuActive {
+    height: fit-content;
+    padding: 10px;
+    padding-left: 0;
+    z-index: 1000;
+    background-color: $colorTertiary;
+    border-radius: 7px;
+    opacity: .9;
+    & a {
+        color: $colorGreyLightTertiary;
     }
 }
