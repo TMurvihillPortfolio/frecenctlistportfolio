@@ -680,6 +680,9 @@ hr {
 .addEditLists__addArea--title > h3 {
   color: #0d530d;
   font-size: 32px; }
+  @media only screen and (max-width: 37.5em) {
+    .addEditLists__addArea--title > h3 {
+      font-size: inherit; } }
   .addEditLists__addArea--title > h3 > span {
     color: #3C7496; }
 
@@ -710,6 +713,12 @@ hr {
   border: 11px double #083a08;
   border-radius: 7px;
   max-width: 820px; }
+  @media only screen and (max-width: 37.5em) {
+    .addEditLists__editArea {
+      padding: 25px;
+      width: auto;
+      margin: auto;
+      border: none; } }
   .addEditLists__editArea--title {
     margin-bottom: 25px;
     font-size: 32px; }
@@ -732,6 +741,9 @@ hr {
     border-radius: 5px;
     font-size: 16px;
     width: 300px; }
+    .addEditLists__list--lineItem-listName > p > span {
+      font-style: italic;
+      color: #3C7496; }
   .addEditLists__list--lineItem-isDefault {
     flex: 1; }
   .addEditLists__list--lineItem-editDelete {

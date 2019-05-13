@@ -94,7 +94,7 @@
     
     if(isset($_POST['saveButton'])){
         //Assign Vars
-        $listUserId = $_SESSION['id'];
+        $listUserId = $_SESSION['userInfo']['userId'];
         $listName = $_POST['listName'];
         $listId = $_POST['listId'];
         $isDefault='';
@@ -114,7 +114,7 @@
         
         //in case user changing to a new default account
         if ($isDefaultOld == 0 && $isDefault == 1) {
-            removeDefaultList($db, $_SESSION['id']);
+            removeDefaultList($db, $_SESSION['userInfo']['userId']);
         }
 
         //Update List Data
@@ -128,8 +128,7 @@
             $result = "Error updating list. Please login and logout and try again.";
             echo $result;
             exit();
-        }      
-        
+        }             
         header("Location: addEditLists.php", true, 301);
         exit();
     }
@@ -194,16 +193,17 @@
                 <?php foreach($lists as $list) : ?>
                     <form method="post" name="edit" action="addEditLists.php">                  
                         <div class="addEditLists__list--lineItem">
+                            <?php if($list['isDefault']==1) {$checked = 'checked';}else{$checked="";} ?>
                             <div class="addEditLists__list--lineItem-listName" id="js--listName">
-                                <?php echo $list['listName']; ?>
+                                <p><?php echo $list['listName']; ?>&nbsp;<span><?php echo $checked ? '(default)':''; ?></span></p>
                             </div>
                             <div class="addEditLists__list--lineItem-listName" hidden>
-                                <input class="addEditLists__list--lineItem-listName" name="listName" id="js--listNameEdit" type="text" value="<?php echo  $list['listName']; ?>"/>
+                                <input class="addEditLists__list--lineItem-listName" name="listName" id="js--listNameEdit" type="text" value="<?php echo $list['listName']; ?>"/>                            
                             </div>
-                            <?php if($list['isDefault']==1) {$checked = 'checked';}else{$checked="";} ?>
+                            
                             <div class="addEditLists__list--lineItem-isDefault">
-                                <label for="isDefault">Default?</label>
-                                <input class="addEditLists__list--lineItem-isDefault" id="js--isDefault" name="isDefaultOld" type="checkbox" <?php echo $checked ?> disabled/>
+                                <!-- <label for="isDefault">Default?</label> -->
+                                <input class="addEditLists__list--lineItem-isDefault" id="js--isDefault" name="isDefault" type="checkbox" <?php echo $checked ?> hidden/>
                             </div>
                             <div class="addEdit___list--lineItem-isDefault" hidden>
                                 <label for="isDefault">Default?</label>

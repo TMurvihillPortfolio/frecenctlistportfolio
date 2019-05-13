@@ -194,7 +194,7 @@ function startCloseAccount(clickedItem, userEmail) {
     listNameEdit = ancestorDiv.children[1];
     //console.log("nameedit: ", listNameEdit.children[0].value);
     isDefault = ancestorDiv.children[2];
-    //console.log('default', isDefault.children[1].value);
+    //console.log('default', isDefault.children[0].value);
     isDefaultEdit = ancestorDiv.children[3];
     //console.log('defaulteidt', isDefaultEdit.children[1].value);
 
@@ -204,9 +204,14 @@ function startCloseAccount(clickedItem, userEmail) {
         saveButton=clickedItem.nextElementSibling.nextElementSibling;
         cancelButton=clickedItem.nextElementSibling.nextElementSibling.nextElementSibling;
    
+       //remove "(default)" from list name
+        if (listName.children[0].children[0].innerText == "(default)") {
+            listName.children[0].children[0].innerText = "";
+        }
+
         //reset edit field values
         listNameEdit.children[0].value=listName.innerText;
-        isDefaultEdit.children[0].value=isDefault.children[1].value; 
+        isDefaultEdit.children[0].value=isDefault.children[0].value; 
 
         //hide original data fields / show edit fields 
     
@@ -240,7 +245,7 @@ function startCloseAccount(clickedItem, userEmail) {
         isDefault.hidden = false;
         isDefaultEdit.hidden = true;
         isDefaultEdit.style.zIndex="unset";
-        isDefault.children[1].disabled = true;
+        isDefault.children[0].disabled = true;
 
         //change button text and style
         clickedItem.hidden=true;
@@ -257,7 +262,7 @@ function startCloseAccount(clickedItem, userEmail) {
         cancelButton=clickedItem.nextElementSibling;
         
         //enable checkbox for php POST variable value check
-        isDefault.children[1].disabled = false;
+        isDefault.children[0].disabled = false;
 
         //reset z-index
         isDefaultEdit.style.zIndex="unset";
@@ -281,7 +286,7 @@ function deleteList(clickedItem) {
     listName = clickedItem.parentElement.parentElement.children[0].innerText;
     
     //Check if list is default
-    if (isDefault.children[1].checked == true) {
+    if (isDefault.children[0].checked == true) {
         alert("Can not delete default list. Please choose another default list or add a new default list before deleting.");
         return;
     }

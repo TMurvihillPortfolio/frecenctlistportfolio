@@ -16,10 +16,11 @@
 - page that fully explains pay levels
 - way to count items and notify customer when they are going to need to move to new level
 - PWA functionality
+- do something if user clicks outside the edit field without saving
 
 ### Low Priority
 
-- on mobile hover make border white
+- on tap out of change list select, revert to nice italic
 - create a way to contact support
 - get background image fed from Cloudinary
 - ListItem categories in db should be by category id, not word

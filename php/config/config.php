@@ -4,7 +4,7 @@
     // ini_set('display_errors', 'On');
     // set_error_handler("var_dump");
     
-    $rootDirectory = 'https://take2tech.ca/TTT/MyProjects/FrecencyListPHP';
+    $rootDirectory = 'https://frecentlist.com';
 
     //for database connection
     $driver = 'mysql';
