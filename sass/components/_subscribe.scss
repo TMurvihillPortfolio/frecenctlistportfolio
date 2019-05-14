@@ -38,7 +38,10 @@
         & button { //on subscribeSuccess.php page
             color: $colorGreyLightSecondary;
             font-size: 16px;
-
-        }
-    }   
+        }      
+    }
+    &__text>span {
+        color: $colorSecondaryDark;
+        font-size: 70%;
+    }  
 }

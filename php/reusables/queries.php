@@ -60,7 +60,7 @@
         //$query = "SELECT *, (numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval as calcfrec FROM ListItems WHERE listItemId=:listItemId";
         $query = "SELECT * FROM Lists WHERE listUserId=:listUserId";
         $statement = $db->prepare($query);
-        $statement->execute(array(':listUserId'=>$_SESSION['userId']));
+        $statement->execute(array(':listUserId'=>$_SESSION['userInfo']['userId']));
         if (!$allUserLists=$statement->fetchAll(PDO::FETCH_ASSOC)) {
             //NOT YET IMPLEMENTED error
             $result = "User lists not found.";
@@ -74,7 +74,7 @@
         //$query = "SELECT *, (numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval as calcfrec FROM ListItems WHERE listItemId=:listItemId";
         $query = "SELECT * FROM users WHERE userId=:userId";
         $statement = $db->prepare($query);
-        $statement->execute(array(':userId'=>$_SESSION['userId']));
+        $statement->execute(array(':userId'=>$_SESSION['userInfo']['userId']));
         if (!$userInfo=$statement->fetch(PDO::FETCH_ASSOC)) {
             //NOT YET IMPLEMENTED error
             $result = "User info not found.";

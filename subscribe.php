@@ -4,7 +4,7 @@
 <?php //sign-up
     if (isset($_POST['signupBtn'])) {
         //double-check session variables are cleared
-        if (isset($_SESSION['userId'])) {
+        if (isset($_SESSION['userInfo']['userId'])) {
             session_start();
             logout();
         }
@@ -107,15 +107,12 @@
 <body>
     <div class="outer">
         <?php include 'php/reusables/mainnav.php'; ?>
-        <?php if (isset($result)) : ?>
-            <div class="signatureBox">
-                <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
-            </div>
-        <?php endif; ?>
         <div class="subscribe signatureBox">
             <div class="subscribe__line1">
                 <h2>Easy&nbsp;&nbsp;<span>Subscribe</span>Page
-                </h2>
+                </h2>               
+                <!--If user message, show user message -->
+                <?php include 'php/reusables/messageToUser.php'; ?> 
                 <h3>Premium Subscription Includes:</h3>
                 <br>
                 <hr>
@@ -129,28 +126,34 @@
                 <h4>(83¢ a month!)
                 <h3>$10.00US per year</h3>
                 <br>
-
-                <div class='subscription__invoice--text'>Subscribe with automatic renewal via PayPal (requires a Paypal account).</div>
+                <div class='subscribe__text'>Subscribe with automatic renewal via PayPal <span>(requires a Paypal account)</span>.</div>
                 <br>
-                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                    <input type="hidden" name="cmd" value="_s-xclick">
-                    <input type="hidden" name="hosted_button_id" value="WFTRSFHYYQH4A">
-                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-                    <img alt="Credit Card Symbols" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-                </form>
-                <!-- for testing, do not go to paypal -->
-                <!-- <form action="subscribeSuccessBackend.php" method="post" target="_top">
+                <!-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                     <input type="hidden" name="cmd" value="_s-xclick">
                     <input type="hidden" name="hosted_button_id" value="WFTRSFHYYQH4A">
                     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
                     <img alt="Credit Card Symbols" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                 </form> -->
+                <!-- for testing, does not go to paypal -->
+                <form action="subscribeSuccessBackend.php" method="post" target="_top">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="hosted_button_id" value="WFTRSFHYYQH4A">
+                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                    <img alt="Credit Card Symbols" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form>
                 <br>
                 <hr>
                 <br>
-                <div class='subscription__invoice--text'>Subscribe without a PayPal account. You will be invoiced yearly by 'Frecency' List.</div>
+                <div class='subscribe__text'>Subscribe without a PayPal account. You will be invoiced yearly by 'Frecency' List. <span>(Click "Buy Now" below and on the next page scroll down for pay with credit/debit card option.)</span></div>
                 <br>
-                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <!-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="hosted_button_id" value="CYCC9YVMBWSTC">
+                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form> -->
+                <!-- for testing, does not go to paypal -->
+                <form action="subscribeSuccessBackend.php" method="post" target="_top">
                     <input type="hidden" name="cmd" value="_s-xclick">
                     <input type="hidden" name="hosted_button_id" value="CYCC9YVMBWSTC">
                     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">

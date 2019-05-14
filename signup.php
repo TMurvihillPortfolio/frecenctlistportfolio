@@ -4,7 +4,7 @@
 <?php //sign-up
     if (isset($_POST['signupBtn'])) {
         //double-check session variables are cleared
-        if (isset($_SESSION['userId'])) {
+        if (isset($_SESSION['userInfo']['userId'])) {
             session_start();
             logout();
         }
@@ -186,19 +186,16 @@
 <body>
     <div class="outer">
         <?php include 'php/reusables/mainnav.php'; ?>
-        <!-- Show user message -->
-        <?php if (isset($result) && $result !==''): ?>
-            <div class="signatureBox result">
-                <p><?php echo isset($result) ? $result : ''; ?></p>
-            </div>
-        <? endif; ?>
         <!-- if no result or any result other than success, show signup area -->
         <?php if (!isset($result) || $result == "" || strpos($result, 'Success') == false): ?>
         <div class="signup signatureBox">
             <div class="signup__line1">
                 <h3>Easy&nbsp;&nbsp;<span>Signup</span>Page
                 </h3>
-            </div>        
+            </div>
+            <!--If user message, show user message -->
+            <?php include 'php/reusables/messageToUser.php'; ?>
+            <!-- signup form -->
             <form action="signup.php" method="post" class="signup__form">                            
                 <div class="signup__form--email">
                     <label for="email">Email: </label>

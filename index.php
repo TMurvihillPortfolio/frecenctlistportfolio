@@ -5,7 +5,7 @@
 <?php include_once 'php/reusables/helpers.php'; ?>
 <?php //redirect to login if needed
     $loginNeeded = true;
-    if (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') {
+    if (isset($_SESSION['userInfo']['userId']) && $_SESSION['userInfo']['userId'] !== '') {
         $loginNeeded = false;
     } else {
         header("Location: login.php");  
@@ -158,7 +158,7 @@
             $isChecked = 'off';
 
             //create new list item id
-            $listItemId = time().mt_rand().$_SESSION['userId'];
+            $listItemId = time().mt_rand().$_SESSION['userInfo']['userId'];
 
             //sanitize and assign user input values           
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -281,6 +281,8 @@
         <br>
         <hr>
         <br>
+        <!--If user message, show user message -->
+        <?php include 'php/reusables/messageToUser.php'; ?>
         <!-- Add/Edit Item Window -->
         <div class="list__addItem" style="display: <?php echo $loginNeeded ? 'none' : 'block' ?>">
             <button class="btn btn__secondary" id="js--addItemButton" style="display: <?php echo (isset($_POST['editItem'])) ? 'none' : 'block' ?>" onClick="prepareEnvironmentAddItemForm();">Add Item</button>

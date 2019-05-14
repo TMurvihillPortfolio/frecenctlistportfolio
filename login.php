@@ -22,11 +22,12 @@
                     //echo "did we visit";
                     if ($activated | !$activated) {
                         //clear old session
-                        if (isset($_SESSION['userId'])) {
+                        if (isset($_SESSION['userInfo']['userId'])) {
+                            unset($_SESSION['userInfo']);
                             unset($_SESSION['listId']);
                             unset($_SESSION['orderBy']);
                             unset($_SESSION['viewBy']);
-                            unset($_SESSION['userId']);
+                            unset($_SESSION['userId']); //left over from early versions
 
                             // NOT YET IMPLEMENTED if(isset($_COOKIE['rememberUserCookie'])){
                             //     uset($_COOKIE['rememberUserCookie']);
@@ -104,7 +105,7 @@
                     <h3>Login<span> Page</span> </h3>
                     <h4 class="login__line1--signup"><a href="signup.php">Easy Sign-up</a></h4>              
                 </div>
-                <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
+                <?php include 'php/reusables/messageToUser.php'; ?>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="login__form">
                                                     
                     <div class="login__form--email">

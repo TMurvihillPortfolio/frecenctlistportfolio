@@ -4,7 +4,7 @@
         <li class="mainNav__nav--item">
             <a href="index.php">Home</a>
         </li>
-        <?php if(isset($_SESSION['userId']) && !$_SESSION['userId'] == '') : ?>                  
+        <?php if(isset($_SESSION['userInfo']['userId']) && !$_SESSION['userInfo']['userId'] == '') : ?>                  
             <li class="mainNav__nav--item">
                 <a href="profile.php">View Profile</a>
             </li>

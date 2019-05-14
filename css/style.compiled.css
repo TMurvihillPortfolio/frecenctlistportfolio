@@ -88,6 +88,16 @@ hr {
     color: #f0f34a; }
   .signatureBox span {
     color: #0d530d; }
+  .signatureBox__warning {
+    width: fit-content;
+    max-width: 80%;
+    margin-top: 0;
+    margin-bottom: 35px;
+    border: 1px solid #cf5b5b;
+    border-radius: 3px;
+    text-align: center;
+    font-weight: 400;
+    color: #cf5b5b; }
 
 .result {
   color: #cf5b5b;
@@ -599,6 +609,7 @@ hr {
     .profile {
       padding: 1rem; } }
   .profile__line1 > h1 {
+    text-align: center;
     padding: 1rem;
     color: #153a52; }
     @media only screen and (max-width: 37.5em) {
@@ -614,11 +625,7 @@ hr {
     border: none;
     padding: 0; }
     .profile__container--bottom {
-      padding: 2rem;
-      font-size: 100%; }
-      @media only screen and (max-width: 37.5em) {
-        .profile__container--bottom {
-          padding: .5rem; } }
+      padding: .5rem; }
       .profile__container--bottom input {
         width: 100%;
         border-radius: 7px;
@@ -682,6 +689,9 @@ hr {
     .subscribe__line1 button {
       color: #f2f8f2;
       font-size: 16px; }
+  .subscribe__text > span {
+    color: #083a08;
+    font-size: 70%; }
 
 .addEditLists__addArea--title > h3 {
   color: #0d530d; }

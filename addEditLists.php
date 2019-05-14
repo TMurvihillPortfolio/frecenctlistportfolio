@@ -42,8 +42,8 @@
         } else {
             $isDefault = 0;
         }
-        if (isset($_SESSION['userId'])) {
-            $listUserId = $_SESSION['userId'];
+        if (isset($_SESSION['userInfo']['userId'])) {
+            $listUserId = $_SESSION['userInfo']['userId'];
         } else {
             //not yet implemented userId not found error message
             $result="User not found, please logout and login again.";
@@ -85,12 +85,7 @@
     }
 ?>
 <?php
-    //Edit transaction
-    // if (isset($_POST) && count($_POST)>0){
-    //     echo count($_POST);
-    // var_dump($_POST);
-    //exit();
-    // }
+    //Edit list
     
     if(isset($_POST['saveButton'])){
         //Assign Vars
@@ -156,11 +151,9 @@
         <div class="profile__line1">
             <h1>Lists <span>Page</span></h1>
         </div>        
-        <?php if (isset($result)) : ?>
-            <div class="signatureBox">           
-                <p style="color: #153a52;;"><?php echo isset($result) ? $result : ''; ?></p>
-            </div>
-        <?php endif; ?>  
+        <!--If user message, show user message -->
+        <?php include 'php/reusables/messageToUser.php'; ?>  
+        <!-- add list -->
         <?php if($lists) : ?>
             <div class="addEditLists__editArea">
                 <div class="addEditLists__addArea">
@@ -187,6 +180,7 @@
                 <br>
                 <hr>
                 <br>
+                <!-- edit lists -->
                 <div class="addEditLists__editArea--title">
                         <h3>Edit <span> Lists </span> </h3>
                 </div>
@@ -202,7 +196,6 @@
                             </div>
                             
                             <div class="addEditLists__list--lineItem-isDefault">
-                                <!-- <label for="isDefault">Default?</label> -->
                                 <input class="addEditLists__list--lineItem-isDefault" id="js--isDefault" name="isDefault" type="checkbox" <?php echo $checked ?> hidden/>
                             </div>
                             <div class="addEdit___list--lineItem-isDefault" hidden>

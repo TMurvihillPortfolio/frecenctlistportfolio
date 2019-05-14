@@ -10,8 +10,8 @@
         $success = false;
 
         //double check and set user id
-        if (isset($_SESSION['userId'])) {
-            $userId = $_SESSION['userId'];
+        if (isset($_SESSION['userInfo']['userId'])) {
+            $userId = $_SESSION['userInfo']['userId'];
         } else {
             $result = "Session user Id was lost. Please logout and login again.";
             exit();
@@ -60,8 +60,8 @@
             //initialize variables
             $userId = $userInputPassword = $newPassword = $confirmPassword = '';
             //assign variables post and session values
-            if (isset($_SESSION['userId'])) {
-                $userId = $_SESSION['userId'];
+            if (isset($_SESSION['userInfo']['userId'])) {
+                $userId = $_SESSION['userInfo']['userId'];
             }
             if (isset($_POST['userInputPassword'])) {
                 $userInputPassword = testInput($_POST['userInputPassword']);
@@ -130,8 +130,8 @@
 <?php //close account
     if (isset($_POST['closeAccountSubmit'])) {
         //delete user
-        if (isset($_SESSION['userId'])) {
-            $result = closeAccount($db, $_SESSION['userId']);
+        if (isset($_SESSION['userInfo']['userId'])) {
+            $result = closeAccount($db, $_SESSION['userInfo']['userId']);
             //clean up environment
             if ($result === 'Account has been closed.') {
                 logout();         
@@ -143,8 +143,8 @@
 ?>
 <?php //get profile data for page render
     try {
-        if (isset($_SESSION['userId']) && $_SESSION['userId'] !== '') {
-            $userId = $_SESSION['userId'];
+        if (isset($_SESSION['userInfo']['userId']) && $_SESSION['userInfo']['userId'] !== '') {
+            $userId = $_SESSION['userInfo']['userId'];
             $splQuery = "SELECT * FROM users WHERE userId = :userId";
             $statement = $db->prepare($splQuery);
             $statement->execute(array(':userId'=>$userId));

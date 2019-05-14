@@ -2,7 +2,10 @@
     //initialize session
     session_start();
     //initialize session variables
-    if (!isset($_SESSION['userId'])) {
+    if (!isset($_SESSION['userInfo'])) {
+        $_SESSION['userInfo'] = [];
+    }
+    if (!isset($_SESSION['userId'])) { //leftover from early versions
         $_SESSION['userId'] = '';
     }
     if (!isset($_SESSION['listId'])) {

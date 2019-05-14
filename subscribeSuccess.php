@@ -13,7 +13,7 @@
 <?php include 'php/reusables/head.php'; ?>
 <body>
     <div class="outer">
-        
+        <?php include 'php/reusables/mainnav.php'; ?>      
         <?php if (isset($result)) : ?>
             <div class="signatureBox">
                 <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
@@ -23,15 +23,15 @@
             <div class="subscribe__line1">
                 <h2>Easy&nbsp;&nbsp;<span>Subscribe</span>Page
                 </h2>
-                <h3>Premium Subscription Includes:</h3>
+                <h3>Premium Member</h3>
                 <br>
                 <hr>
                 <br>
-                <ul>
+                <!-- <ul>
                     <li><img src="img/favicon.png">Keep track of Multiple Lists</li>
                     <li><img src="img/favicon.png">Create your own categories</li>
                     <li><img src="img/favicon.png">Multiple Users can access lists</li>
-                </ul>
+                </ul> -->
                 <br>
                 <h4>Congratulations!! You have successfully subscribed to our Premium Features!!</h4>               
                 <br>

@@ -4,12 +4,9 @@
 
 ## Prior to launch
 
-- check through responsive
-- test payPal signup
-- better signup messaging
-- signup change color of confirmation links
+- test payPal live signup
 - check for exit(); left from debugging
-- improve category page
+- center list items on larger screen
  
 ## Medium Priority
 
@@ -18,13 +15,14 @@
 - way to count items and notify customer when they are going to need to move to new level
 - PWA functionality
 - on lists page only allow one add/edit at a time, dialogue if user clicks elsewhere
+- ListItem categories in db should be by category id, not word
 
 ### Low Priority
 
+- check for duplicate list name
 - on tap out of change list select, revert to nice italic
 - create a way to contact support
 - get background image fed from Cloudinary
-- ListItem categories in db should be by category id, not word
 - sanitize cancelPremium input for if == statement to lowercase etc.
 - add scroll to functionality to addEditLists.php for after delete or edit
 - refactor sql insert item on signup into an array
