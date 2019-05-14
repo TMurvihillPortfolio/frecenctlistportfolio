@@ -5,10 +5,11 @@
 ## Prior to launch
 
 - check through responsive
-- make payments go to PayPal, still in test mode
+- test payPal signup
 - better signup messaging
 - signup change color of confirmation links
 - check for exit(); left from debugging
+- improve category page
  
 ## Medium Priority
 
@@ -16,7 +17,7 @@
 - page that fully explains pay levels
 - way to count items and notify customer when they are going to need to move to new level
 - PWA functionality
-- do something if user clicks outside the edit field without saving
+- on lists page only allow one add/edit at a time, dialogue if user clicks elsewhere
 
 ### Low Priority
 

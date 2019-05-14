@@ -1,0 +1,17 @@
+.about {
+    &__line1 {
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+        
+        & span {
+            color: $colorTertiary;
+        }
+    }
+    &__text {
+        font-weight: 400;
+        @include respond(phone) {
+            text-align: justify;
+            font-size: 16px;
+        }
+    }
+}

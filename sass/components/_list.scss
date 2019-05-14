@@ -199,7 +199,7 @@
                     text-align: center;
                     font-size: 24px;
                     @include respond(phone) {
-                        font-size: 16px;
+                        font-size: 18px;
                     }
                     margin: 20px;
                     @include respond(phone) {
@@ -222,7 +222,7 @@
                     background-color: $colorGreyLightPrimary; 
                     
                     @include respond(phone) {
-                        font-size: 12px;
+                        font-size: 16px;
                         padding: 7px 3px;
                     }
                 } 

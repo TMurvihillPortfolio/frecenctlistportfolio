@@ -367,7 +367,7 @@ hr {
         word-spacing: 3px; }
         @media only screen and (max-width: 37.5em) {
           .list__container--items-itemHeader {
-            font-size: 16px; } }
+            font-size: 18px; } }
         @media only screen and (max-width: 37.5em) {
           .list__container--items-itemHeader {
             margin-top: 17px;
@@ -383,7 +383,7 @@ hr {
         background-color: #fdfdf6; }
         @media only screen and (max-width: 37.5em) {
           .list__container--items-item input:not([type]), .list__container--items-item input[type="text"] {
-            font-size: 12px;
+            font-size: 16px;
             padding: 7px 3px; } }
       .list__container--items-item input[type="checkbox"] {
         margin: 10px;
@@ -598,38 +598,44 @@ hr {
   @media only screen and (max-width: 37.5em) {
     .profile {
       padding: 1rem; } }
-  .profile__line1 > h2 {
+  .profile__line1 > h1 {
     padding: 1rem;
-    color: #153a52;
-    text-align: center; }
-    .profile__line1 > h2 > span {
+    color: #153a52; }
+    @media only screen and (max-width: 37.5em) {
+      .profile__line1 > h1 {
+        padding: 0;
+        text-align: center; } }
+    .profile__line1 > h1 > span {
       color: #0d530d; }
   .profile__container {
     max-width: 500px;
     width: 90%;
-    margin: 1rem auto;
-    border: 2px solid #153a52;
+    margin: auto;
+    border: none;
     padding: 0; }
     .profile__container--bottom {
       padding: 2rem;
       font-size: 100%; }
       @media only screen and (max-width: 37.5em) {
         .profile__container--bottom {
-          padding: 1rem; } }
+          padding: .5rem; } }
       .profile__container--bottom input {
         width: 100%;
         border-radius: 7px;
         margin-bottom: 7px;
         padding: 7px; }
   .profile__form--email {
-    background-color: #153a52;
-    color: #fff;
-    width: 100%;
-    padding: 5px 7px; }
+    text-align: center;
+    font-weight: 400; }
   .profile__form--changeProfileButton {
     font-size: 100%;
     margin: auto;
     text-align: center; }
+    @media only screen and (max-width: 37.5em) {
+      .profile__form--changeProfileButton {
+        margin: 0;
+        margin-bottom: 5px;
+        font-size: 16px; } }
     .profile__form--changeProfileButton a {
       text-decoration: none;
       color: white; }
@@ -678,11 +684,7 @@ hr {
       font-size: 16px; }
 
 .addEditLists__addArea--title > h3 {
-  color: #0d530d;
-  font-size: 32px; }
-  @media only screen and (max-width: 37.5em) {
-    .addEditLists__addArea--title > h3 {
-      font-size: inherit; } }
+  color: #0d530d; }
   .addEditLists__addArea--title > h3 > span {
     color: #3C7496; }
 
@@ -696,6 +698,12 @@ hr {
     font-size: 20px;
     margin: 10px;
     border-radius: 5px; }
+    @media only screen and (max-width: 37.5em) {
+      .addEditLists__addArea > form input[type=text] {
+        margin: 0;
+        width: 100%;
+        font-size: 16px;
+        padding: 3px 5px; } }
   .addEditLists__addArea > form input[type=checkbox] {
     transform: scale(1.5);
     margin: 10px; }
@@ -720,8 +728,7 @@ hr {
       margin: auto;
       border: none; } }
   .addEditLists__editArea--title {
-    margin-bottom: 25px;
-    font-size: 32px; }
+    margin-bottom: 25px; }
     .addEditLists__editArea--title > h3 {
       color: #0d530d; }
       .addEditLists__editArea--title > h3 > span {
@@ -733,14 +740,18 @@ hr {
   display: flex; }
   @media only screen and (max-width: 56.25em) {
     .addEditLists__list--lineItem {
-      display: block; } }
+      display: block;
+      padding: 15px 5px 15px 15px; } }
   .addEditLists__list--lineItem-listName {
-    flex: 3;
     flex: 3;
     padding: 3px 5px;
     border-radius: 5px;
     font-size: 16px;
+    font-weight: 500;
     width: 300px; }
+    @media only screen and (max-width: 56.25em) {
+      .addEditLists__list--lineItem-listName {
+        width: 95%; } }
     .addEditLists__list--lineItem-listName > p > span {
       font-style: italic;
       color: #3C7496; }
@@ -767,3 +778,16 @@ hr {
   background-color: #f0f34a;
   margin-left: 5px;
   color: #333; }
+
+.about__line1 {
+  margin-top: 1rem;
+  margin-bottom: 2rem; }
+  .about__line1 span {
+    color: #3C7496; }
+
+.about__text {
+  font-weight: 400; }
+  @media only screen and (max-width: 37.5em) {
+    .about__text {
+      text-align: justify;
+      font-size: 16px; } }

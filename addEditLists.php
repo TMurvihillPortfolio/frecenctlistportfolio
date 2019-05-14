@@ -154,7 +154,7 @@
     <div class="outer">
         <?php include 'php/reusables/mainnav.php'; ?>
         <div class="profile__line1">
-            <h2>Add/Edit Lists <span>Page</span></h2>
+            <h1>Lists <span>Page</span></h1>
         </div>        
         <?php if (isset($result)) : ?>
             <div class="signatureBox">           

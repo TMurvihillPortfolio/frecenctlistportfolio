@@ -168,7 +168,7 @@
     <div class="outer">
         <?php include 'php/reusables/mainnav.php'; ?>
         <div class="profile__line1">
-            <h2>Profile<span>Page</span></h2>
+            <h1>Profile<span>Page</span></h1>
         </div>        
         <?php if (isset($result)) : ?>
             <div class="signatureBox">           
@@ -185,15 +185,16 @@
                     }
                 ?>
             </div>
+            <br>
+            <hr>
+            <br>
             <div class="profile__container--bottom">
                 <div class="profile_form profile__form--changeProfileButton">
-                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href='<?php echo ($_SESSION['userInfo']['premium']) ? 'editCategories.php' : ''; ?>'>Add/Edit Categories <span>(Premium, coming soon)</span></a></button>                
+                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href='<?php echo ($_SESSION['userInfo']['premium']) ? 'editCategories.php' : ''; ?>'>Add/Edit Categories<br><span>(Premium, coming soon)</span></a></button>                
                 </div>
-                <br>
                 <div class="profile_form profile__form--changeProfileButton">
-                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href=" <?php echo ($_SESSION['userInfo']['premium']) ? 'addEditLists.php' : ''; ?>">Add/Edit Lists <span>(Premium)</span></a></button>                
+                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href=" <?php echo ($_SESSION['userInfo']['premium']) ? 'addEditLists.php' : ''; ?>">Add/Edit Lists<br><span>(Premium)</span></a></button>                
                 </div>
-                <br>
                 <form action="profile.php" method="post">              
                     <div class="profile_form profile__form--changeProfileButton">                         
                         <button name="cancelPremiumSubscription" type="button" class="btn btn__secondary profile__form--changeProfileButton" style="<?php echo ($_SESSION['userInfo']['premium'])? '' : 'display: none'; ?>" id='js--cancelPremium' onClick="cancelPremium('<?php echo $_SESSION["userInfo"]["email"]; ?>');">Cancel Premium Subscription</button>
@@ -214,9 +215,7 @@
                         <button name="emailSubmit" type="button" class="btn btn__secondary profile__form--changeProfileButton" onClick="startChangeEmail(this)" id="js--profileChangeSaveEmail">Change Email</button>
                         <button name="emailCancel" type="button" class="btn btn__primaryVeryDark profile__form--changeProfileButton" onClick="startChangeEmail(this)" id="js--profileCancelEmail" hidden>Cancel</button>                 
                     </div>
-                </form> 
-                <br>                                         
-                                
+                </form>        
                 <div class="profile__form--changePassword profile__form--changeProfileButton">
                     <form action="profile.php" method="post">
                         <div id="js--profileChangePassword" hidden>
@@ -236,9 +235,7 @@
                             ?>
                         </div>
                     </form>
-                </div>    
-                
-                <br>
+                </div>
                 <form action="profile.php" method="post">              
                     <div class="profile_form profile__form--changeProfileButton">                             
                         <button name="closeAccountSubmit" type="button" class="btn btn__secondary profile__form--changeProfileButton" onClick="startCloseAccount(this, '<?php echo $row['email']; ?>')" id="js--profileCloseAccount">Close Account</button>

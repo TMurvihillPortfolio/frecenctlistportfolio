@@ -14,13 +14,13 @@
                 <p style="color: tomato;"><?php echo isset($result) ? $result : ''; ?></p>
             </div>
         <?php endif; ?>
-        <div class="signup signatureBox">
-            <div class="signup__line1">
-                <h2><span style="color: #3C7496">About</span>Page
-                </h2>
+        <div class="about signatureBox">
+            <div class="about__line1">
+                <h1><span>About</span>Page
+                </h1>
             </div>        
             <form action="signup.php" method="post" class="signup__form">                            
-                <div style="font-weight: 400;">Website designed and developed by Tisha Murvihill <a href="mailto:tech@take2tech.ca">tech@take2tech.ca</a>. <br><br>The 'Frecent List' uses a 'frecency' algorhythm developed by Tisha Murvihill. Wikipedia defines frecency as "any heuristic that combines the frequency and recency into a single measure." <br><br><span style="font-size: 16px">Tech Specs -- HTML, CSS, Vanilla JS with PHP(PDO) and SQL.Images served by Cloudinary content delivery network. Subscriptions powered by PayPal.</span></div>               
+                <div class="about__text">Website designed and developed by Tisha Murvihill <a href="mailto:tech@take2tech.ca">tech@take2tech.ca</a>. <br><br>The 'Frecent List' uses a 'frecency' algorhythm developed by Tisha Murvihill. Wikipedia defines frecency as "any heuristic that combines the frequency and recency into a single measure." <br><br><span style="font-size: 16px">Tech Specs -- HTML, CSS, Vanilla JS with PHP(PDO) and SQL.Images served by Cloudinary content delivery network. Subscriptions powered by PayPal.</span></div>               
             </form>
         </div>
     </div>
