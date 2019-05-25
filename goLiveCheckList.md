@@ -1,1 +1,5 @@
 - change config root directory
+- check for echo
+- check for exit();
+- check for variables without isset
+- check that payPal is live

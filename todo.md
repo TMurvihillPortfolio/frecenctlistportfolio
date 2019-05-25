@@ -4,9 +4,15 @@
 
 ## Prior to launch
 
+- expand catgories (https://edsoehnel.com/retail-cpg-grocery-categories/)
+    - <s>create database test environment</s>
+    - <s>add new categories</s>
+    - change current categories to category ids in test list item table
+    - test everything in test environment
+    - go live
+
 - test payPal live signup
 - check for exit(); left from debugging
-- center list items on larger screen
  
 ## Medium Priority
 

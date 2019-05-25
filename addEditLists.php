@@ -22,7 +22,7 @@
         $result = "No lists found. Please go to profile from main menu and add a list.";
     }
 ?>
-<?php //add  list
+<?php //add list
     if (isset($_POST['addListCancel'])) {
         header('Location: profile.php');
         exit();
@@ -84,8 +84,7 @@
         }
     }
 ?>
-<?php
-    //Edit list
+<?php //Edit list
     
     if(isset($_POST['saveButton'])){
         //Assign Vars

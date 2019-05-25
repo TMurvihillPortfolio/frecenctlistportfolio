@@ -114,7 +114,8 @@ hr {
       display: block; } }
   .flex__line1 {
     display: flex;
-    justify-content: space-between; }
+    justify-content: space-between;
+    width: 100%; }
     @media only screen and (max-width: 37.5em) {
       .flex__line1 {
         margin-bottom: .5rem; } }
@@ -801,3 +802,20 @@ hr {
     .about__text {
       text-align: justify;
       font-size: 16px; } }
+
+.editCategories > h4 {
+  font-weight: 400;
+  font-style: italic;
+  color: #3C7496;
+  margin-bottom: 25px; }
+
+.editCategories__listItem {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #3C7496;
+  margin: 5px;
+  padding: 5px 7px; }
+  .editCategories__listItem > img {
+    height: 30px; }
+  .editCategories__listItem > p {
+    color: #0d530d; }

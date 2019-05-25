@@ -78,6 +78,7 @@
     &__line1 {
         display: flex;
         justify-content: space-between;
+        width: 100%;
 
         @include respond(phone) {
             margin-bottom: .5rem;
