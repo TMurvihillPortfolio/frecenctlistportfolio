@@ -29,8 +29,6 @@ function renderBoxes(data) {
         // let element = `<div class='box box${index} droptarget' id='box${index}'><p draggable="true" id="dragTarget${el}">${el}</p></div>`;
         document.querySelector('#container').innerHTML += element;
     });
-    document.querySelector("#js--PHPArrayTransfer").innerText = data;
-    console.log('catListUpdate', catList);
 }
 
 function getCategoryArray() {
@@ -75,14 +73,13 @@ document.addEventListener("dragend", function(event) {
 
 // When the draggable p element enters the droptarget, change the DIVS's border style
 document.addEventListener("dragenter", function(event) {
+    const enteredBox = event.target.classList.contains('dropTarget') ? event.target : event.target.parentElement;   
     dragEnterDiv = event.target;
-    if (event.target.classList.contains("dropTarget")) {
+    if (enteredBox.classList.contains("dropTarget")) {
         //console.log('dragenter if statement');
-        event.target.style.border = "5px dotted goldenrod";       
-    }
-    if (event.target.parentElement.classList.contains("dropTarget")) {
-        //console.log('dragenter if parent statement');
-        event.target.parentElement.style.border = "5px dotted goldenrod";
+        enteredBox.style.border = "2px solid #083a08";
+        //enteredBox.style.transform = "scale(1.05)";
+
     }
 });
 
@@ -93,11 +90,13 @@ document.addEventListener("dragover", function(event) {
 });
 
 // When the draggable element leaves the droptarget, reset the DIVS's border style
-document.addEventListener("dragleave", function(event) {   
-    if (event.target.classList.contains("dropTarget") && !(dragEnterDiv.classList.contains('childPointerNone'))) {
+document.addEventListener("dragleave", function(event) {
+    const leftBox = event.target.classList.contains('dropTarget') ? event.target : event.target.parentElement;   
+    
+    if (leftBox.classList.contains("dropTarget") && !(dragEnterDiv.classList.contains('childPointerNone'))) {
         //console.log('dragleave');
-        //event.target.transform = "scale(1)";
-        event.target.style.border="1px solid #3C7496";
+        //leftBox.transform = "scale(1)";
+        leftBox.style.border="1px solid #3C7496";
     }
 });
 
@@ -109,6 +108,7 @@ document.addEventListener("dragleave", function(event) {
 document.addEventListener("drop", function(event) {
     event.preventDefault();
     const targetBox = event.target.classList.contains('dropTarget') ? event.target : event.target.parentElement;
+    
     //console.log('dropItem');
     if (targetBox.classList.contains("dropTarget")) {
         targetBox.style.border="1px solid #3C7496";
@@ -124,36 +124,23 @@ document.addEventListener("drop", function(event) {
         //get index of origin and target elements
         const dragOriginIndex = getChildIndex(dragStartingDiv);                 
         const dragTargetIndex = getChildIndex(targetBox);
-        console.log('origin index: ', dragOriginIndex);
-        console.log('target index: ', dragTargetIndex);
 
         //delete dragged item from original location in array
         data.splice(dragOriginIndex,1);
         
         //add dragged item to new location in array
         data.splice(dragTargetIndex, 0, dragStartingContent);
-        
-        //rerender list
-        console.log('dataAfeter', data);
+              
+        //update PHPTransfer field
         catList = data.join();
+        document.querySelector("#js--PHPArrayTransfer").innerText = catList;
+        console.log('PHPTransferFieldUpdate', catList);
+        
+        //rerender list       
         renderBoxes(catList);
         
-        //         //get id and element of dragged item
-//         const dragElementId = event.dataTransfer.getData("Text");
-//         const dragElement = document.querySelector(`#${dragElementId}`);
-                      
-//         //get index of origin and target elements
-//         const dragOriginIndex = getChildIndex(dragElement.parentElement);                 
-//         const dragTargetIndex = getChildIndex(event.target.parentElement);
-
-//         //delete dragged item from original location in array
-//         data.splice(dragOriginIndex,1);
-        
-//         //add dragged item to new location in array
-//         data.splice(dragTargetIndex, 0, dragStartingContent);
-        
-//         //rerender list
-//         renderBoxes(data);                 
+        //update database
+        updateCategoryOrder(catList, 'testit2');
     }
 
     //Fire an api to change the category db order
