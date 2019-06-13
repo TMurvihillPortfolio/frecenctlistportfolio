@@ -17,7 +17,7 @@
         exit();
     } else {
         foreach ($categories as $row) {
-            $categoryArray = explode(',', $row['custCatList']);
+            $categoryArray = explode('|', $row['custCatList']);
             $categoryString = $row['custCatList'];
         }
     }
@@ -30,7 +30,7 @@
     <div class="outer">
         <?php include 'php/reusables/mainnav.php'; ?>
         <div class="profile__line1">
-                <h1>Categories<span>Page</span><?php echo $_SESSION['userInfo']['userId'] ?></h1>
+                <h1>Categories<span>Page</span></h1>
         </div>
         <div class='signatureBox editCategories'>
             <h2>Categories</h2>
@@ -51,23 +51,7 @@
     </div>
      <!-- update number of clicks API -->
      <script>
-        function updateCategoryOrder(catList, var2) {
-            // //intialize variables
-            // const checkedElement = document.querySelector(`[data-itemid="${listItemId}"]`);
-            // const filterByChecked = document.querySelector('#js--filterByChecked');
-            // const filterByUnchecked = document.querySelector('#js--filterByUnchecked');
-
-            // // remove item from list if checked/unchecked does not matched list state
-            // if (filterByChecked.classList.contains('btn__secondary--selected')) {
-            //     isChecked ? '' : checkedElement.parentElement.parentElement.parentElement.style.display = 'none';            
-            // } else if (filterByUnchecked.classList.contains('btn__secondary--selected')) {
-            //     !isChecked ? '' : checkedElement.parentElement.parentElement.parentElement.style.display = 'none';                       
-            // }
-
-            // //if last element, in displayed grouping in list, remove header from list
-            // removeHeader(checkedElement.parentElement.parentElement.parentElement.parentElement);
-            
-            //isChecked ? '' : console.log('isChecked false'); 
+        function updateCategoryOrder(catList) {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function (){               
                 //NOT YET implemented Message to user box on error
@@ -79,7 +63,7 @@
                     //document.getElementById("js--tempId").innerHTML = this.responseText;
                 }
             };
-            xmlhttp.open("GET", "php/reusables/updateCategoryOrderAPI.php?catlist=" + catList + "&var2=" + var2, true);
+            xmlhttp.open("GET", "php/reusables/updateCategoryOrderAPI.php?catlist=" + catList, true);
             xmlhttp.send();       
         }   
     </script>

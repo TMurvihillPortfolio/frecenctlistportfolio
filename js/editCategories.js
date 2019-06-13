@@ -19,12 +19,11 @@ console.log('catList', catList);
 
 function renderBoxes(data) {
     document.querySelector('#container').innerHTML = '';
-    const dataArray = data.split(',');
+    const dataArray = data.split('|');
     dataArray.forEach((el, index) => {
         let element = `<div class='editCategories__listItem dropTarget'>
                     <div class="flex editCategories__listItem--dragGrouping childPointerNone" draggable="true"><p>${el}</p><img src='./img/dragDropBars.png' draggable=false /></div>
                 </div>`;
-
 
         // let element = `<div class='box box${index} droptarget' id='box${index}'><p draggable="true" id="dragTarget${el}">${el}</p></div>`;
         document.querySelector('#container').innerHTML += element;
@@ -107,18 +106,16 @@ document.addEventListener("dragleave", function(event) {
 // */
 document.addEventListener("drop", function(event) {
     event.preventDefault();
+
+    //Make sure target is the 'dropTarget' and not the '<p>' element
     const targetBox = event.target.classList.contains('dropTarget') ? event.target : event.target.parentElement;
     
-    //console.log('dropItem');
     if (targetBox.classList.contains("dropTarget")) {
+        //replace border
         targetBox.style.border="1px solid #3C7496";
-        console.log("event target", event.target);
 
-        console.log('targetBox', targetBox);
-        console.log('targetBox', targetBox.children[0].innerText);
-        console.log('dragStartingDiv', dragStartingDiv.children[0].innerText);
-
-        let data = catList.split(',');
+        //create category array
+        let data = catList.split('|');
         console.log('dataBefore', data);
         
         //get index of origin and target elements
@@ -132,7 +129,7 @@ document.addEventListener("drop", function(event) {
         data.splice(dragTargetIndex, 0, dragStartingContent);
               
         //update PHPTransfer field
-        catList = data.join();
+        catList = data.join('|');
         document.querySelector("#js--PHPArrayTransfer").innerText = catList;
         console.log('PHPTransferFieldUpdate', catList);
         
@@ -140,8 +137,6 @@ document.addEventListener("drop", function(event) {
         renderBoxes(catList);
         
         //update database
-        updateCategoryOrder(catList, 'testit2');
+        updateCategoryOrder(catList);
     }
-
-    //Fire an api to change the category db order
 });

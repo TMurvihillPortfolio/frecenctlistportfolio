@@ -19,7 +19,7 @@
     }
 ?>
 <?php //get userInfo, lists and categories
-    
+    //reset session orderBy if user selected a reorder button
     if (!isset($_SESSION['orderBy']) || $_SESSION['orderBy'] == '') $_SESSION['orderBy'] = 'category';
     if (isset($_POST['category'])) {
         $_SESSION['orderBy'] = 'category';
@@ -47,8 +47,14 @@
         $_SESSION['viewBy'] = 'all';
         unset($_POST['viewAll']);
     }
+
     //Get Categories - Query dependency: php/reusables/queries.php
-    $categories=getCategories($db);
+    if ($_SESSION['userInfo']['premium']==0) {
+        $categories=getCategories($db);
+    } else if ($_SESSION['userInfo']['premium']==1) {
+        $categoryString=getCustomCategories($db);
+        $categories = explode('|', $categoryString);
+    }
     
     //Get List Info for List Name - Query dependency: php/reusables/queries.php
     $listInfo=getListInfo($db);
@@ -316,19 +322,38 @@
                         <div class="list__addItem--addItemForm-category">
                             <label for="addCategory">Category</label>
                             <select name="addCategory">
-                                <?php foreach($categories as $row) : ?> 
-                                    <?php if (isset($_POST['editItem'])) : ?>
-                                        <?php $selected = ""; ?> 
-                                        <?php if(strtolower($row['category'])==strtolower($_SESSION['editItemObject']['category'])) {$selected = 'selected';} ?>
-                                        <option value="<?php echo $row['category']; ?>" <?php echo $selected; ?>>
-                                            <?php echo $row['category']; ?>
-                                        </option>
-                                    <?php else : ?>                                       
-                                        <option value="<?php echo $row['category']; ?>">
-                                            <?php echo $row['category']; ?>
-                                        </option>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
+                                <?php if ($_SESSION['userInfo']['premium']) : ?>
+                                    <?php foreach($categories as $category) : ?> 
+                                        <?php if (isset($_POST['editItem'])) : ?>
+                                            <?php $selected = ""; ?> 
+                                            <?php if(strtolower($category)==strtolower($_SESSION['editItemObject']['category'])) {$selected = 'selected';} ?>
+                                            <option value="<?php echo $category; ?>" <?php echo $selected; ?>>
+                                                <?php echo $category; ?>
+                                            </option>
+                                        <?php else : ?>                                       
+                                            <option value="<?php echo $category; ?>">
+                                                <?php echo $category; ?>
+                                            </option>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+
+                                <?php else : ?>
+                                    
+                                    <?php foreach($categories as $row) : ?> 
+                                        <?php if (isset($_POST['editItem'])) : ?>
+                                            <?php $selected = ""; ?> 
+                                            <?php if(strtolower($row['category'])==strtolower($_SESSION['editItemObject']['category'])) {$selected = 'selected';} ?>
+                                            <option value="<?php echo $row['category']; ?>" <?php echo $selected; ?>>
+                                                <?php echo $row['category']; ?>
+                                            </option>
+                                        <?php else : ?>                                       
+                                            <option value="<?php echo $row['category']; ?>">
+                                                <?php echo $row['category']; ?>
+                                            </option>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                                
                             </select>                                   
                         </div>
                         <div class="list__addItem--addItemForm-frecency">

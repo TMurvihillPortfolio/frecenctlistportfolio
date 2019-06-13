@@ -31,6 +31,14 @@
 
         return $categories;
     }
+    function getCustomCategories($db) {
+        $query = "SELECT * FROM customCategories WHERE custCatUserId = :id";
+        $statement = $db->prepare($query);
+        $statement->execute(array(':id'=>$_SESSION['userInfo']['userId']));
+        $customCategories=$statement->fetch(PDO::FETCH_ASSOC);
+        $custCatList = $customCategories['custCatList'];
+        return $custCatList;
+    }
 
     function getListItemById($db, $listItemId, $frecencyInterval) {
         //$query = "SELECT *, (numClicks/((CURRENT_DATE-firstClick)/86400))/ :frecencyInterval as calcfrec FROM ListItems WHERE listItemId=:listItemId";
