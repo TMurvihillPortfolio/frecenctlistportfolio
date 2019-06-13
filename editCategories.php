@@ -4,6 +4,7 @@
 <?php include 'php/reusables/helpers.php'; ?>
 <?php
     $categoryArray;
+    $categoryString = '';
     //get custom category list
     $query = "SELECT * FROM customCategories WHERE custCatUserId=62";
     $statement = $db->prepare($query);
@@ -17,12 +18,14 @@
     } else {
         foreach ($categories as $row) {
             $categoryArray = explode(',', $row['custCatList']);
+            $categoryString = $row['custCatList'];
         }
     }
 ?>
 <!DOCTYPE html>
 <html>
 <?php include 'php/reusables/head.php'; ?>
+
 <body>   
     <div class="outer">
         <?php include 'php/reusables/mainnav.php'; ?>
@@ -35,11 +38,18 @@
             <br>
             <hr>
             <br>
+            <div id="container"> <!-- this div is a dependency of 'getChildIndex' function in editCategories.js -->
             <?php foreach ($categoryArray as $arrayItem) : ?>
-                <div class='editCategories__listItem'><p><?php echo $arrayItem ?></p><img src='./img/dragDropBars.png' /></div>
-            <?php endforeach; ?>        
+                <div class='editCategories__listItem dropTarget'>
+                    <div class="flex editCategories__listItem--dragGrouping childPointerNone" draggable="true"><p><?php echo $arrayItem ?></p><img src='./img/dragDropBars.png' draggable=false /></div>
+                </div>
+            <?php endforeach; ?>
+            </div>
+            <div id="js--PHPArrayTransfer" hidden><?php echo $categoryString ?></div>       
         </div>
           
     </div>
+    
+    <script type="text/javascript" src="js/editCategories.js"></script>
 </body>
 </html>

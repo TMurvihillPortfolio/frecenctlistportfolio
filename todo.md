@@ -1,6 +1,7 @@
 # TODO
 
 - frecency calc needs to be run on num clicks on render list to accommodate new date
+- delete item button is broken
 
 ## Prior to launch
 

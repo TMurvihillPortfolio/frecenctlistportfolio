@@ -29,6 +29,9 @@ hr {
   background-size: cover;
   background-attachment: scroll; }
 
+.childPointerNone * {
+  pointer-events: none; }
+
 /*****************
 *Mobile Menu Classes
 *****************/
@@ -127,6 +130,9 @@ hr {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap; }
+
+.zIndex1000 {
+  z-index: 1000; }
 
 .header {
   width: 100%;
@@ -806,16 +812,16 @@ hr {
 .editCategories > h4 {
   font-weight: 400;
   font-style: italic;
-  color: #3C7496;
-  margin-bottom: 25px; }
+  color: #3C7496; }
 
 .editCategories__listItem {
-  display: flex;
-  justify-content: space-between;
   border: 1px solid #3C7496;
   margin: 5px;
   padding: 5px 7px; }
-  .editCategories__listItem > img {
-    height: 30px; }
-  .editCategories__listItem > p {
-    color: #0d530d; }
+  .editCategories__listItem--dragGrouping {
+    width: 100%;
+    height: 100%; }
+    .editCategories__listItem--dragGrouping > p {
+      color: #0d530d; }
+    .editCategories__listItem--dragGrouping > img {
+      height: 30px; }

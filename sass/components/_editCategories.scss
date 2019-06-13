@@ -5,16 +5,20 @@
         color: $colorTertiary;
     }
     &__listItem {
-        display: flex;
-        justify-content: space-between;
+        
         border: 1px solid $colorTertiary;
         margin: 5px;
-        padding: 5px 7px;
-        &>img {
-            height: 30px;
-        }
-        &>p {
-            color: $colorSecondary;
-        }
+        padding: 5px 7px;        
+        &--dragGrouping {
+            width: 100%;
+            height: 100%;
+
+            &>p {
+                color: $colorSecondary;               
+            }
+            &>img {
+                height: 30px;
+            }
+        }       
     }
 }

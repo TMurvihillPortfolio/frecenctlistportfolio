@@ -37,6 +37,10 @@ hr {
      background-attachment:scroll;
 }
 
+.childPointerNone * {
+    pointer-events: none;
+}
+
 /*****************
 *Mobile Menu Classes
 *****************/

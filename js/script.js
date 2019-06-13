@@ -386,4 +386,7 @@ function mobileNav() {
         mainNav.classList.remove('displayNone');
         mainNav.classList.add('flex');
     }
-} 
+}  
+
+
+
