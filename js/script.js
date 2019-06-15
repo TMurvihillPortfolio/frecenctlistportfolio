@@ -53,7 +53,7 @@ function restoreEnvironmentAddItemForm() {
     document.getElementById('js--addItemListContainer').style.display = 'block';
 }
 function verifyDeleteItem(item) {
-    const listItem = item.parentElement.previousElementSibling.children[2].children[0].value;
+    const listItem = item.parentElement.children[3].children[0].value;
     const yesNo = confirm(`Delete item: ${listItem}?`);
     if (yesNo) {
         const scrollPositionInput = item.nextElementSibling;

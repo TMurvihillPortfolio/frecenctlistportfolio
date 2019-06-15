@@ -1,6 +1,9 @@
 <?php
     //initialize session
-    session_start();
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+
     //initialize session variables
     if (!isset($_SESSION['userInfo'])) {
         $_SESSION['userInfo'] = [];

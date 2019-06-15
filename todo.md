@@ -1,8 +1,9 @@
 # TODO
 
-- frecency calc needs to be run on num clicks on render list to accommodate new date
-- delete item button is broken
-- get list items to order by custom category order
+- frecency calc needs to be run on num clicks on render list to accommodate new date-
+- add/edit categories
+- convert categories to custom categories when customer goes <i>Premium</i>
+- categories page needs to be responsive
 
 ## Prior to launch
 
@@ -38,6 +39,6 @@
 ### FUTURE FEATURES !!
 
 - up/down arrows to adjust quantities with possible increment field
-- add/edit/reorder categories
+- add/edit categories
 - allow multiple users
 - allow user to adjust frecency parameters

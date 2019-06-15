@@ -144,18 +144,15 @@
      *******************/
     //order list by custom category
     function orderByCustomCategory($db, $listItems) {
-        //functions for data manipulation
+        //functions to add and remove custom category index number to category for sorting
         function addIndexToItem(&$item, $key) {
-            //$item = mysql_real_escape_string($item);
             if ($key == "category") {               
                 $myIndex = sprintf('%02d', array_search($item, $_SESSION['customCategories']));
                 $item= $myIndex.$item;
             }           
         }
         function removeIndexFromItem(&$item, $key) {
-            //$item = mysql_real_escape_string($item);
             if ($key == "category") {               
-                $myIndex = sprintf('%02d', array_search($item, $_SESSION['customCategories']));
                 $item= substr($item, 2);
             }           
         }
@@ -163,10 +160,11 @@
         //add index number to beginning of category field for sorting
         array_walk_recursive($listItems,'addIndexToItem');
 
-        //sort by array by field name in $orderby
+        //sort by listItems array by field name in $orderby
         $orderby = "category"; //change this to whatever key you want from the array
         $sortArray = array(); 
 
+        //prepare sorting array
         foreach($listItems as $listItem){ 
             foreach($listItem as $key=>$value){ 
                 if(!isset($sortArray[$key])){ 
@@ -174,8 +172,9 @@
                 } 
                 $sortArray[$key][] = $value; 
             } 
-        } 
-
+        }
+         
+        //perform sort
         array_multisort($sortArray[$orderby],SORT_ASC,$listItems);
 
         //remove index number from category field
