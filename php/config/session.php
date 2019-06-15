@@ -20,4 +20,7 @@
     if (!isset($_SESSION['scrollPosition'])) {
         $_SESSION['scrollPosition'] = '';
     }
+    if (!isset($_SESSION['customCategories'])) {
+        $_SESSION['customCategories'] = '';
+    }
 

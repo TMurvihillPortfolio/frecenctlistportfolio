@@ -2,6 +2,7 @@
 
 - frecency calc needs to be run on num clicks on render list to accommodate new date
 - delete item button is broken
+- get list items to order by custom category order
 
 ## Prior to launch
 

@@ -17,6 +17,12 @@
                 $statement->execute(array(':listId'=>$listId));
             }           
             $listItems=$statement->fetchAll(PDO::FETCH_ASSOC);
+
+            //if custom category list, reorder list
+            if (($_SESSION['orderBy'] == 'category') && ($_SESSION['userInfo']['premium'])) {
+                $listItems = orderByCustomCategory($db, $listItems);
+            }
+
             return $listItems;
         } catch (Exception $e) {
             echo $e;

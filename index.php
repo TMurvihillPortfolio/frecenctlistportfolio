@@ -19,6 +19,14 @@
     }
 ?>
 <?php //get userInfo, lists and categories
+    //Get Categories - Query dependency: php/reusables/queries.php
+    if ($_SESSION['userInfo']['premium']==0) {
+        $categories=getCategories($db);
+    } else if ($_SESSION['userInfo']['premium']==1) {
+        $categoryString=getCustomCategories($db);
+        $categories = explode('|', $categoryString);
+        $_SESSION['customCategories'] = $categories;
+    }
     //reset session orderBy if user selected a reorder button
     if (!isset($_SESSION['orderBy']) || $_SESSION['orderBy'] == '') $_SESSION['orderBy'] = 'category';
     if (isset($_POST['category'])) {
@@ -46,15 +54,7 @@
     } else if (isset($_POST['viewAll'])) {
         $_SESSION['viewBy'] = 'all';
         unset($_POST['viewAll']);
-    }
-
-    //Get Categories - Query dependency: php/reusables/queries.php
-    if ($_SESSION['userInfo']['premium']==0) {
-        $categories=getCategories($db);
-    } else if ($_SESSION['userInfo']['premium']==1) {
-        $categoryString=getCustomCategories($db);
-        $categories = explode('|', $categoryString);
-    }
+    }   
     
     //Get List Info for List Name - Query dependency: php/reusables/queries.php
     $listInfo=getListInfo($db);
