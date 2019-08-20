@@ -14,7 +14,6 @@
             $userId = $_SESSION['userInfo']['userId'];
         } else {
             $result = "Session user Id was lost. Please logout and login again.";
-            exit();
         }
 
         //sanitize user input
@@ -28,7 +27,6 @@
         $encodeNewEmail = base64_encode("encodenewemail{$newEmail}");
 
         //prepare email body
-
         $mail_body = '<html>
         <body style="color:#083a08; font-family: Lato, Arial, Helvetica, sans-serif;
                             line-height:1.8em;">
@@ -72,7 +70,7 @@
             if (isset($_POST['userInputPassword'])) {
                 $confirmPassword = testInput($_POST['confirmPassword']);
             }
-            //verifty that new and confirm new passwords match
+            //verifty that "new" and "confirm new" passwords match
             if ($newPassword === $confirmPassword) {
                 //Get old hashed password from db
                 $splQuery = "SELECT password FROM users WHERE userId = :userId";
@@ -104,20 +102,19 @@
             }
         }
     } catch (Exception $ex) {
-        $result = "An error occurred. Password may not be updated: ".$ex;
+        $result = "An error occurred. Password might not have been updated: ".$ex;
     }
 ?>
 <?php //cancel premium subscription
     if (isset($_POST['cancelPremiumSubscription'])) {
-        //delete user
+        //set user premium to false
         if (isset($_SESSION['userInfo'])) {
             try {
                 $query = 'UPDATE users SET premium = false WHERE userId = :userId';
                 $statement = $db->prepare($query);
                 $statement->execute(array(':userId'=>$_SESSION['userInfo']['userId']));
                 $_SESSION['userInfo']['premium'] = 0;
-                $result = "Your premium subscription has been cancelled. You may still use the Frecency List at the basic level.";
-    
+                $result = "Your premium subscription has been cancelled. You may still use the Frecency List at the basic level.";  
             } catch (Exception $e) {
                 //NOT YET IMPLEMENTED
                 $result = 'Cancel subscription failed. Please try logging out and logging in again.';
@@ -169,7 +166,7 @@
         <?php include 'php/reusables/mainnav.php'; ?>
         <div class="profile__line1">
             <h1>Profile<span>Page</span></h1>
-        </div>        
+        </div>         
         <?php if (isset($result)) : ?>
             <div class="signatureBox">           
                 <p style="color: #153a52;;"><?php echo isset($result) ? $result : ''; ?></p>
@@ -185,62 +182,21 @@
                     }
                 ?>
             </div>
-            <br>
-            <hr>
-            <br>
+            <br><hr><br>
             <div class="profile__container--bottom">
-                <div class="profile_form profile__form--changeProfileButton">
-                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href='<?php echo ($_SESSION['userInfo']['premium']) ? 'editCategories.php' : ''; ?>'>Add/Edit Categories<br><span>(Premium, coming soon)</span></a></button>                
-                </div>
-                <div class="profile_form profile__form--changeProfileButton">
-                    <button class="btn btn__secondary profile__form--changeProfileButton"><a href=" <?php echo ($_SESSION['userInfo']['premium']) ? 'addEditLists.php' : ''; ?>">Add/Edit Lists<br><span>(Premium)</span></a></button>                
-                </div>
-                <form action="profile.php" method="post">              
-                    <div class="profile_form profile__form--changeProfileButton">                         
-                        <button name="cancelPremiumSubscription" type="button" class="btn btn__secondary profile__form--changeProfileButton" style="<?php echo ($_SESSION['userInfo']['premium'])? '' : 'display: none'; ?>" id='js--cancelPremium' onClick="cancelPremium('<?php echo $_SESSION["userInfo"]["email"]; ?>');">Cancel Premium Subscription</button>
-                        <button type="button" class="btn btn__secondary profile__form--changeProfileButton" style="<?php echo ($_SESSION['userInfo']['premium'])? 'display: none' : ''; ?>" ><a href='subscribe.php'>Go Premium!</a></button>
-                    </div>
-                </form>
-                <br>
-                <hr>
-                <br>
-                <form action="profile.php" method="post">
-                    <div id="js--emailInput" hidden>
-                        <div style="display: flex">
-                            <h3>Change Email:</h3>
-                        </div>
-                        <input name="email" type="email" placeholder="enter new email">
-                    </div>
-                    <div class="profile_form profile__form--changeProfileButton">                             
-                        <button name="emailSubmit" type="button" class="btn btn__secondary profile__form--changeProfileButton" onClick="startChangeEmail(this)" id="js--profileChangeSaveEmail">Change Email</button>
-                        <button name="emailCancel" type="button" class="btn btn__primaryVeryDark profile__form--changeProfileButton" onClick="startChangeEmail(this)" id="js--profileCancelEmail" hidden>Cancel</button>                 
-                    </div>
-                </form>        
-                <div class="profile__form--changePassword profile__form--changeProfileButton">
-                    <form action="profile.php" method="post">
-                        <div id="js--profileChangePassword" hidden>
-                            <input type="password" placeholder="enter current password" name="userInputPassword">
-                            <input type="password" placeholder="enter new password" name="newPassword" id="js--profileNewPassword">
-                            <input type="password" placeholder="confirm new password" name="confirmPassword">
-                        </div>
-                        <div class="profile__form profile__form--changePasswordButton">
-                            <button name="passwordSubmit" type="button" class="btn btn__secondary profile__form--changeProfileButton" onClick="startChangePassword(this)" id='js--profileChangePasswordButton'>Change Password</button>
-                            <button name="passwordCancel" type="button" class="btn btn__primaryVeryDark profile__form--changeProfileButton" onClick="startChangePassword(this)" id="js--profileCancelPasswordButton" hidden>Cancel</button>                 
-                        </div>                        
-                        <div class="profile__form profile__form--password" id="js--profileOriginalPassword" hidden>
-                            <?php 
-                                if ($row['password']) {
-                                    echo $row['password'];
-                                }
-                            ?>
-                        </div>
-                    </form>
-                </div>
-                <form action="profile.php" method="post">              
-                    <div class="profile_form profile__form--changeProfileButton">                             
-                        <button name="closeAccountSubmit" type="button" class="btn btn__secondary profile__form--changeProfileButton" onClick="startCloseAccount(this, '<?php echo $row['email']; ?>')" id="js--profileCloseAccount">Close Account</button>
-                    </div>
-                </form>               
+                <!-- Add/Edit Categories -->
+                <?php include 'php/reusables/profilePage/addEditCategories.php'; ?>
+                <!-- Add/Edit Lists -->
+                <?php include 'php/reusables/profilePage/addEditListsInsert.php'; ?>
+                <!-- SignUp/Cancel Premium Subscription -->
+                <?php include 'php/reusables/profilePage/enrollCancelPremium.php'; ?>
+                <br><hr><br>
+                <!-- Change Email -->
+                <?php include 'php/reusables/profilePage/changeEmail.php'; ?>
+                <!-- Change password -->
+                <?php include 'php/reusables/profilePage/changePassword.php'; ?>
+                <!-- Close Account -->
+                <?php include 'php/reusables/profilePage/closeAccount.php'; ?>          
             </div>
         </div>
     </div>

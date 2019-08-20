@@ -3,30 +3,33 @@
 <?php include_once 'php/classes/Database.php'; ?>
 <?php include_once 'php/reusables/queries.php'; ?>
 <?php include_once 'php/reusables/helpers.php'; ?>
-<?php
+<?php //get user lists
+    //redirect if user not logged in
     if (!isset($_SESSION['userInfo']['userId'])) {
         header("Location: login.php");
         exit();
     }
-
+    //get user lists
     try {
-        //Run  list  Query
         $query  = "SELECT * FROM Lists WHERE listUserId=:listUserId ORDER BY listName";
         $statement = $db->prepare($query);
         $statement->execute(array(':listUserId'=>$_SESSION['userInfo']['userId']));
         $lists = $statement->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOexception $ex) {
         $result = "An error occurred. Logout and login and try again.";
-    }   
+    }
+    //if user has no lists 
     if (!$lists) {
         $result = "No lists found. Please go to profile from main menu and add a list.";
     }
 ?>
 <?php //add list
+    //if cancel button pressed
     if (isset($_POST['addListCancel'])) {
         header('Location: profile.php');
         exit();
     }
+    //if submit button, prepare variables and sanitize input
     if (isset($_POST['addListSubmit'])) {
         $success=false;
         if (isset($_POST['addListName'])) {
@@ -49,7 +52,7 @@
             $result="User not found, please logout and login again.";
         }
 
-        //if isDefault is true, turn off on all other lists
+        //if isDefault is true, turn off default on all other lists
         if ($isDefault) {
             try {
                 //Create and execute query
@@ -61,7 +64,7 @@
                 $result = "Failed to turn default off on all but new list.";
             } 
         }
-
+        //add list to backend
         try {
             $query = "INSERT INTO Lists (listName, listUserId, isDefault)
                                 VALUES (:listName, :listUserId, :isDefault);";
@@ -77,15 +80,14 @@
             //NOT YET IMPLEMENTED
             $result = "Something went wrong. List not added.";
         }
-
+        //redirect on success
         if ($success) {
             header('Location: index.php');
             exit;
         }
     }
 ?>
-<?php //Edit list
-    
+<?php //Edit list   
     if(isset($_POST['saveButton'])){
         //Assign Vars
         $listUserId = $_SESSION['userInfo']['userId'];
@@ -152,67 +154,21 @@
         </div>        
         <!--If user message, show user message -->
         <?php include 'php/reusables/messageToUser.php'; ?>  
-        <!-- add list -->
-        <?php if($lists) : ?>
+        <?php if($lists) : ?>           
             <div class="addEditLists__editArea">
+                <!-- add list -->
                 <div class="addEditLists__addArea">
                     <div class="addEditLists__addArea--title">
                        <h3>Add <span> List</span> </h3>
                     </div>
-                    <form action="addEditLists.php" method="post">
-                        <div class="flex">
-                            <div class="addEditLists__addArea--name">
-                                <label for="email">List Name: </label>
-                                <input name="addListName" type="text" required>                                           
-                            </div>
-                            <div class="addEditLists__addArea--default">
-                                <label for="default">Set as default? </label>
-                                <input name="isDefault" type="checkbox">             
-                            </div>
-                        </div>
-                        <div class="addEditLists__addArea--submit">                             
-                            <button name="addListSubmit" type="submit" class="btn btn__secondary">Add List</button>
-                            <button name="addListCancel" type="reset" class="btn btn__primaryVeryDark" id="addListCancel">Reset</button>                 
-                        </div>
-                    </form> 
+                    <?php include 'php/reusables/addList.php'; ?>
                 </div>                            
-                <br>
-                <hr>
-                <br>
+                <br><hr><br>
                 <!-- edit lists -->
                 <div class="addEditLists__editArea--title">
                         <h3>Edit <span> Lists </span> </h3>
                 </div>
-                <?php foreach($lists as $list) : ?>
-                    <form method="post" name="edit" action="addEditLists.php">                  
-                        <div class="addEditLists__list--lineItem">
-                            <?php if($list['isDefault']==1) {$checked = 'checked';}else{$checked="";} ?>
-                            <div class="addEditLists__list--lineItem-listName" id="js--listName">
-                                <p><?php echo $list['listName']; ?>&nbsp;<span><?php echo $checked ? '(default)':''; ?></span></p>
-                            </div>
-                            <div class="addEditLists__list--lineItem-listName" hidden>
-                                <input class="addEditLists__list--lineItem-listName" name="listName" id="js--listNameEdit" type="text" value="<?php echo $list['listName']; ?>"/>                            
-                            </div>
-                            
-                            <div class="addEditLists__list--lineItem-isDefault">
-                                <input class="addEditLists__list--lineItem-isDefault" id="js--isDefault" name="isDefault" type="checkbox" <?php echo $checked ?> hidden/>
-                            </div>
-                            <div class="addEdit___list--lineItem-isDefault" hidden>
-                                <label for="isDefault">Default?</label>
-                                <input class="addEditLists__list--lineItem-isDefault" id="js--isDefaultEdit" name="isDefault" type="checkbox" <?php echo $checked ?> />
-                            </div>
-                            <div class="addEditLists__list--lineItem-listId" hidden>
-                                <input class="list__lineItem--listId" name="listId" type="text" value="<?php echo $list['listId']; ?>" hidden/>
-                            </div>
-                            <div class="addEditLists__list--lineItem-editDelete">
-                                <button type='button' class="addEditLists__list--lineItem-editDeletePencil" name="editPencil" onClick="startEditLists(this)"><img src="./img/editItemIcon.png" alt="Pencil icon for edit list item"></button>                                                                                                
-                                <button type='button' class="addEditLists__list--lineItem-editDeleteX" name='delete' onClick="deleteList(this);"><img src="./img/deleteRedX.png" name="deleteItem" alt="Big red X icon for delete list item"></button>
-                                <button name="saveButton" type="button" class="btn btn__secondary" onClick="startEditLists(this)" hidden>Save</button>
-                                <button name="cancelButton" type="button" class="btn btn__primaryVeryDark" onClick="startEditLists(this)" hidden>Cancel</button>
-                            </div>
-                        </div>
-                    </form>
-                <?php endforeach; ?>
+                <?php include 'php/reusables/editLists.php'; ?>
             </div>
         <?php endif; ?>
     </div>  

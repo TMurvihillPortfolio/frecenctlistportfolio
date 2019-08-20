@@ -175,7 +175,7 @@
         }
          
         //perform sort
-        array_multisort($sortArray[$orderby],SORT_ASC,$listItems);
+        //array_multisort($sortArray[$orderby],SORT_ASC,$listItems);
 
         //remove index number from category field
         array_walk_recursive($listItems,'removeIndexFromItem');

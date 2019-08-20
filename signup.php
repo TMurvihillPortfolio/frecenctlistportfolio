@@ -196,25 +196,54 @@
             <!--If user message, show user message -->
             <?php include 'php/reusables/messageToUser.php'; ?>
             <!-- signup form -->
-            <form action="signup.php" method="post" class="signup__form">                            
+            <form 
+                action="signup.php" 
+                method="post" 
+                class="signup__form"
+            >                            
                 <div class="signup__form--email">
                     <label for="email">Email: </label>
-                    <input name="email" type="email" placeholder="A confirmation email will appear in your inbox." required> 
+                    <input 
+                        name="email" 
+                        type="email" 
+                        placeholder="A confirmation email will appear in your inbox." 
+                        required
+                    /> 
                 </div>                 
                 <div class="signup__form--password">
                     <label for="password">Password: </label>
-                    <input name="password" type="password" value='password' required>                
+                    <input 
+                        name="password" 
+                        type="password" 
+                        value='password' 
+                        required
+                    />                
                 </div>
                 <div class="signup__form--password">
                     <label for="confirmPassword">Confirm Password: </label>
-                    <input name="confirmPassword" type="password" value='password' required>                
+                    <input 
+                        name="confirmPassword" 
+                        type="password" 
+                        value='password' 
+                        required
+                    />                
                 </div>
                 <div class="signup__form--listName">
                     <label for="listName">List Name: </label>
-                    <input name="listName" type="text" value='My List' placeholder="For example 'shopping' or 'todo'" >
+                    <input 
+                        name="listName" 
+                        type="text" 
+                        value='My List' 
+                        placeholder="For example 'shopping' or 'todo'" 
+                    />
                 </div>
                 <div class="signup__form--submit">
-                    <input type="submit" name="signupBtn" class="btn" value="Submit"/>
+                    <input 
+                        type="submit" 
+                        name="signupBtn" 
+                        class="btn" 
+                        value="Submit"
+                    />
                 </div>
             </form>
         </div>

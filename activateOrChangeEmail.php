@@ -2,18 +2,19 @@
 <?php include 'php/classes/Database.php'; ?>
 <?php include 'php/reusables/helpers.php' ?>
 <?php
-    //if this is an email change from the profile page
+    //if email-change from the profile page and not a new account
     if(isset($_GET['userId']) && isset($_GET['newEmail'])) {
+        //get userId from parameters
         $encoded_id = $_GET['userId'];
         $decode_id = base64_decode($encoded_id);
         $user_id_array = explode("encodeuserid", $decode_id);
         $userId = $user_id_array[1];
-
+        //get new email from parameters
         $encoded_email = $_GET['newEmail'];
         $decode_email = base64_decode($encoded_email);
         $user_email_array = explode("encodenewemail", $decode_email);
         $newEmail = $user_email_array[1];
-        
+        //update email in backend
         try {
             $sql = "UPDATE users SET email =:newEmail WHERE userId=:userId";       
             $statement = $db->prepare($sql);
@@ -28,15 +29,15 @@
         } catch(PDOException $ex) {
             $result = "An error occurred. ".$ex;
         }
-    //if a new account
+    //if activating a new account or email change
     } else if(isset($_GET['userId']) && !isset($_GET['newEmail'])) {
-        
+        //get userId from parameters
         $encoded_id = $_GET['userId'];
         unset($_GET['userId']);
         $decode_id = base64_decode($encoded_id);
         $user_id_array = explode("encodeuserid", $decode_id);
         $userId = $user_id_array[1];
-        
+        //set account to active
         try {
             $sql = "UPDATE users SET active =:active WHERE userId=:userId AND active='0'";       
             $statement = $db->prepare($sql);
@@ -68,8 +69,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php include 'php/reusables/head.php'; ?>
-<body>
-    
+<body>    
     <div class="profile__line1">
         <h2>Activation <span>Page</span></h2>       
     </div>        

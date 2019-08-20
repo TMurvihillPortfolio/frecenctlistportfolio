@@ -112,11 +112,10 @@
                 <h2>Easy&nbsp;&nbsp;<span>Subscribe</span>Page
                 </h2>               
                 <!--If user message, show user message -->
-                <?php include 'php/reusables/messageToUser.php'; ?> 
+                <?php include 'php/reusables/messageToUser.php'; ?>
+                <!--Premium Subscription Info --> 
                 <h3>Premium Subscription Includes:</h3>
-                <br>
-                <hr>
-                <br>
+                <br><hr><br>
                 <ul>
                     <li><img src="img/favicon.png">Keep track of Multiple Lists</li>
                     <li><img src="img/favicon.png">Create your own categories</li>
@@ -128,6 +127,7 @@
                 <br>
                 <div class='subscribe__text'>Subscribe with automatic renewal via PayPal <span>(requires a Paypal account)</span>.</div>
                 <br>
+                <!-- On submit w/Paypal account, open Paypal gateway ->
                 <!-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                     <input type="hidden" name="cmd" value="_s-xclick">
                     <input type="hidden" name="hosted_button_id" value="WFTRSFHYYQH4A">
@@ -141,11 +141,10 @@
                     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
                     <img alt="Credit Card Symbols" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
                 </form>
-                <br>
-                <hr>
-                <br>
+                <br><hr><br>
                 <div class='subscribe__text'>Subscribe without a PayPal account. You will be invoiced yearly by 'Frecency' List. <span>(Click "Buy Now" below and on the next page scroll down for pay with credit/debit card option.)</span></div>
                 <br>
+                <!-- without paypal account (still Paypal gateway, does not require a Paypal account) -->
                 <!-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                     <input type="hidden" name="cmd" value="_s-xclick">
                     <input type="hidden" name="hosted_button_id" value="CYCC9YVMBWSTC">

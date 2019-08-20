@@ -1,9 +1,12 @@
 # TODO
 
+- list sort function in helpers line 178 busted, commented out for now
 - frecency calc needs to be run on num clicks on render list to accommodate new date-
 - add/edit categories
 - convert categories to custom categories when customer goes <i>Premium</i>
 - categories page needs to be responsive
+- try catch to add/edit lists
+- add lists needs cancel button
 
 ## Prior to launch
 

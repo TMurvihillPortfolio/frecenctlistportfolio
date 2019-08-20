@@ -2,7 +2,7 @@
 <?php include 'php/config/config.php'; ?>
 <?php include 'php/classes/Database.php'; ?>
 <?php include 'php/reusables/helpers.php'; ?>
-<?php //sign-up for Premium
+<?php //sign-up for Premium backend functionality
     //set premium to true on user id
     try {
         $query = 'UPDATE users SET premium = true WHERE userId = :userId';
